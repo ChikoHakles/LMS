@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Student\MaterialController as StudentMaterialController;
 use App\Http\Controllers\Student\QuizController as StudentQuizController;
 use App\Http\Controllers\Tutor\MaterialController as TutorMaterialController;
+use App\Http\Controllers\Tutor\EssayReviewController;
 use App\Http\Controllers\Tutor\QuizMaterialController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,8 +52,8 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
         Route::put('materials/{material}/quiz', [QuizMaterialController::class, 'update'])->name('materials.quiz.update');
         Route::patch('materials/{material}/quiz/publish', [QuizMaterialController::class, 'publish'])->name('materials.quiz.publish');
         Route::get('materials', [TutorMaterialController::class, 'index'])->name('materials.index');
-        Route::get('essays', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Penilaian esai']))
-            ->name('essays.index');
+        Route::get('essays', [EssayReviewController::class, 'index'])->name('essays.index');
+        Route::patch('essays/{answer}', [EssayReviewController::class, 'grade'])->name('essays.grade');
         Route::get('students/progress', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Progres murid']))
             ->name('students.progress');
     });
@@ -65,6 +66,7 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
         Route::get('quizzes', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Kuis dan latihan']))
             ->name('quizzes.index');
         Route::get('quizzes/{material}', [StudentQuizController::class, 'show'])->name('quizzes.show');
+        Route::post('quizzes/{material}', [StudentQuizController::class, 'submit'])->name('quizzes.submit');
     });
 });
 

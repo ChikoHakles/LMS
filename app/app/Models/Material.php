@@ -53,6 +53,11 @@ class Material extends Model
         return $this->hasMany(QuizQuestion::class)->orderBy('position');
     }
 
+    public function attempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class)->orderByDesc('submitted_at');
+    }
+
     public function scopeOwnedBy(Builder $query, User $owner): Builder
     {
         return $query->where('owner_id', $owner->getKey());

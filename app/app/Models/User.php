@@ -88,4 +88,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Material::class, 'owner_id');
     }
+
+    public function quizAttempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class, 'student_id');
+    }
 }

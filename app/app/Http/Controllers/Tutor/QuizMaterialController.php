@@ -9,7 +9,6 @@ use App\Models\QuizQuestion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -57,19 +56,20 @@ class QuizMaterialController extends Controller
     public function update(SaveQuizRequest $request, Material $material): RedirectResponse
     {
         abort_unless($material->type === Material::TYPE_QUIZ, 404);
-        if ($this->hasAttempts($material)) {
-            throw ValidationException::withMessages(['questions' => 'Kuis tidak dapat diubah setelah ada siswa mengirim jawaban.']);
-        }
-
         $data = $request->validated();
         DB::transaction(function () use ($material, $data): void {
-            $material->forceFill([
+            $lockedMaterial = Material::query()->whereKey($material->getKey())->lockForUpdate()->firstOrFail();
+            if ($lockedMaterial->attempts()->exists()) {
+                throw ValidationException::withMessages(['questions' => 'Kuis tidak dapat diubah setelah ada siswa mengirim jawaban.']);
+            }
+
+            $lockedMaterial->forceFill([
                 'title' => $data['title'],
                 'summary' => $data['summary'] ?? null,
                 'status' => Material::STATUS_DRAFT,
                 'published_at' => null,
             ])->save();
-            $this->replaceQuestions($material, $data['questions']);
+            $this->replaceQuestions($lockedMaterial, $data['questions']);
         });
 
         return to_route('tutor.materials.quiz.edit', $material)->with('status', 'Draf kuis berhasil diperbarui.');
@@ -79,25 +79,27 @@ class QuizMaterialController extends Controller
     {
         Gate::authorize('publish', $material);
         abort_unless($material->type === Material::TYPE_QUIZ, 404);
-        if ($this->hasAttempts($material)) {
-            throw ValidationException::withMessages(['quiz' => 'Kuis dengan jawaban siswa tidak dapat diterbitkan ulang.']);
-        }
+        DB::transaction(function () use ($material): void {
+            $lockedMaterial = Material::query()->whereKey($material->getKey())->lockForUpdate()->firstOrFail();
+            if ($lockedMaterial->attempts()->exists()) {
+                throw ValidationException::withMessages(['quiz' => 'Kuis dengan jawaban siswa tidak dapat diterbitkan ulang.']);
+            }
 
-        $questions = $material->quizQuestions()->with('choices')->get();
-        $valid = $questions->isNotEmpty() && $questions->every(fn (QuizQuestion $question) =>
-            trim($question->prompt) !== ''
-            && (float) $question->points > 0
-            && ($question->type === QuizQuestion::TYPE_ESSAY
-                ? $question->choices->isEmpty()
-                : $question->type === QuizQuestion::TYPE_CHOICE
-                    && $question->choices->count() >= 2
-                    && $question->choices->where('is_correct', true)->count() === 1));
+            $questions = $lockedMaterial->quizQuestions()->with('choices')->get();
+            $valid = $questions->isNotEmpty() && $questions->every(fn (QuizQuestion $question) => trim($question->prompt) !== ''
+                && (float) $question->points > 0
+                && ($question->type === QuizQuestion::TYPE_ESSAY
+                    ? $question->choices->isEmpty()
+                    : $question->type === QuizQuestion::TYPE_CHOICE
+                        && $question->choices->count() >= 2
+                        && $question->choices->where('is_correct', true)->count() === 1));
 
-        if (! $valid) {
-            throw ValidationException::withMessages(['questions' => 'Lengkapi semua soal dan kunci jawaban sebelum menerbitkan kuis.']);
-        }
+            if (! $valid) {
+                throw ValidationException::withMessages(['questions' => 'Lengkapi semua soal dan kunci jawaban sebelum menerbitkan kuis.']);
+            }
 
-        $material->forceFill(['status' => Material::STATUS_PUBLISHED, 'published_at' => now()])->save();
+            $lockedMaterial->forceFill(['status' => Material::STATUS_PUBLISHED, 'published_at' => now()])->save();
+        });
 
         return to_route('tutor.materials.quiz.edit', $material)->with('status', 'Kuis berhasil diterbitkan.');
     }
@@ -124,12 +126,6 @@ class QuizMaterialController extends Controller
                 }
             }
         }
-    }
-
-    private function hasAttempts(Material $material): bool
-    {
-        return Schema::hasTable('quiz_attempts')
-            && DB::table('quiz_attempts')->where('material_id', $material->getKey())->exists();
     }
 
     /** @return array<string, mixed> */
