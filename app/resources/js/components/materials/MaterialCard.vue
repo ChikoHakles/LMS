@@ -37,8 +37,17 @@ const icons = { article: FileText, video: Play, quiz: ClipboardList };
         <p v-if="readOnly && material.owner" class="mt-3 text-xs text-muted-foreground">Oleh {{ material.owner.name }}</p>
         <div class="mt-auto flex flex-wrap gap-2 pt-5">
             <Link
-                v-if="!readOnly && (material.type === 'article' || material.type === 'video')"
-                :href="route(material.type === 'article' ? 'tutor.materials.edit' : 'tutor.materials.video.edit', material.id)"
+                v-if="!readOnly"
+                :href="
+                    route(
+                        material.type === 'article'
+                            ? 'tutor.materials.edit'
+                            : material.type === 'video'
+                              ? 'tutor.materials.video.edit'
+                              : 'tutor.materials.quiz.edit',
+                        material.id,
+                    )
+                "
                 class="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
             >
                 <PencilLine class="size-4" aria-hidden="true" /> Edit

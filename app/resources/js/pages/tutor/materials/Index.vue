@@ -6,7 +6,7 @@ import RuangCard from '@/components/ruang/RuangCard.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/vue3';
-import { Plus } from 'lucide-vue-next';
+import { ClipboardList, Plus } from 'lucide-vue-next';
 
 type Material = {
     id: number;
@@ -58,6 +58,12 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: heading, href: page.url }];
                         class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
                     >
                         <Plus class="size-4" aria-hidden="true" /> Buat video
+                    </Link>
+                    <Link
+                        :href="route('tutor.materials.quiz.create')"
+                        class="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-semibold hover:bg-muted"
+                    >
+                        <ClipboardList class="size-4" aria-hidden="true" /> Buat kuis
                     </Link>
                 </div>
             </header>
