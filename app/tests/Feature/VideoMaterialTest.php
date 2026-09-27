@@ -13,6 +13,16 @@ class VideoMaterialTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_tutor_can_open_the_video_editor_route(): void
+    {
+        $this->actingAs($this->userWithRole(User::ROLE_TUTOR))
+            ->get(route('tutor.materials.video.create', absolute: false))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('tutor/materials/VideoEditor')
+                ->where('material', null));
+    }
+
     public function test_tutor_can_save_allowed_youtube_url_forms_as_video_ids(): void
     {
         $tutor = $this->userWithRole(User::ROLE_TUTOR);
@@ -20,6 +30,7 @@ class VideoMaterialTest extends TestCase
 
         foreach ([
             'https://www.youtube.com/watch?v=abcdefghijk&t=30s' => 'abcdefghijk',
+            'https://youtube.com:443/watch?v=00000000000' => '00000000000',
             'https://youtu.be/ZYXWVUTSRQ1?si=share' => 'ZYXWVUTSRQ1',
             'https://www.youtube.com/shorts/a_b-CdEf123' => 'a_b-CdEf123',
         ] as $url => $videoId) {
@@ -48,7 +59,8 @@ class VideoMaterialTest extends TestCase
             'https://youtube.com.attacker.test/watch?v=abcdefghijk',
             'https://youtu.be.attacker.test/abcdefghijk',
             'https://youtube.com/watch?v=too-short',
-            'https://youtube.com:443/watch?v=abcdefghijk',
+            'https://youtube.com:444/watch?v=abcdefghijk',
+            'https://@youtube.com/watch?v=abcdefghijk',
             'javascript:alert(1)',
         ] as $url) {
             $this->post(route('tutor.materials.video.store', absolute: false), [
@@ -114,7 +126,6 @@ class VideoMaterialTest extends TestCase
         $this->get(route('student.materials.show', $draft, absolute: false))->assertForbidden();
 
         $this->app->instance(StudentMaterialAssignments::class, new AssignedVideoMaterial($student->id, $published->id));
-        config(['inertia.testing.ensure_pages_exist' => false]);
         $this->get(route('student.materials.show', $published, absolute: false))
             ->assertOk()
             ->assertInertia(fn ($page) => $page

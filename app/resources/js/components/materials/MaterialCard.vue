@@ -37,8 +37,8 @@ const icons = { article: FileText, video: Play, quiz: ClipboardList };
         <p v-if="readOnly && material.owner" class="mt-3 text-xs text-muted-foreground">Oleh {{ material.owner.name }}</p>
         <div class="mt-auto flex flex-wrap gap-2 pt-5">
             <Link
-                v-if="!readOnly && material.type === 'article'"
-                :href="route('tutor.materials.edit', material.id)"
+                v-if="!readOnly && (material.type === 'article' || material.type === 'video')"
+                :href="route(material.type === 'article' ? 'tutor.materials.edit' : 'tutor.materials.video.edit', material.id)"
                 class="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
             >
                 <PencilLine class="size-4" aria-hidden="true" /> Edit
@@ -51,11 +51,11 @@ const icons = { article: FileText, video: Play, quiz: ClipboardList };
                 <ArrowUpRight class="size-4" aria-hidden="true" /> Pratinjau
             </Link>
             <Link
-                v-if="showStudentAction && material.type === 'article'"
+                v-if="showStudentAction && (material.type === 'article' || material.type === 'video')"
                 :href="route('student.materials.show', material.id)"
                 class="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
             >
-                <ArrowUpRight class="size-4" aria-hidden="true" /> Baca artikel
+                <ArrowUpRight class="size-4" aria-hidden="true" /> {{ material.type === 'article' ? 'Baca artikel' : 'Tonton video' }}
             </Link>
         </div>
     </RuangCard>

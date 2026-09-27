@@ -14,7 +14,7 @@ final class YouTubeVideoUrl
             || strtolower($parts['scheme'] ?? '') !== 'https'
             || isset($parts['user'])
             || isset($parts['pass'])
-            || isset($parts['port'])) {
+            || (isset($parts['port']) && $parts['port'] !== 443)) {
             return null;
         }
 

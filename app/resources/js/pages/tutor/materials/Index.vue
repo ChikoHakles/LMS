@@ -46,13 +46,20 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: heading, href: page.url }];
                     <h1 class="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">{{ heading }}</h1>
                     <p class="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Temukan artikel, video, dan kuis untuk kegiatan belajar.</p>
                 </div>
-                <Link
-                    v-if="!readOnly"
-                    :href="route('tutor.materials.article.create')"
-                    class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
-                >
-                    <Plus class="size-4" aria-hidden="true" /> Buat artikel
-                </Link>
+                <div v-if="!readOnly" class="flex flex-wrap gap-2">
+                    <Link
+                        :href="route('tutor.materials.article.create')"
+                        class="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-semibold hover:bg-muted"
+                    >
+                        <Plus class="size-4" aria-hidden="true" /> Buat artikel
+                    </Link>
+                    <Link
+                        :href="route('tutor.materials.video.create')"
+                        class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+                    >
+                        <Plus class="size-4" aria-hidden="true" /> Buat video
+                    </Link>
+                </div>
             </header>
 
             <div
