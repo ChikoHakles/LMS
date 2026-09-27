@@ -315,7 +315,7 @@ RUANG-37,Kuis pilihan ganda dan esai,4,code-review,[BE] Code Review: Kuis piliha
 
 Also covers **2 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",4.5,"RUANG-31,RUANG-32,RUANG-33,RUANG-34","design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai",not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",4.5,"RUANG-31,RUANG-32,RUANG-33,RUANG-34","design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai",done,,BE review passed after fixing concurrent essay grading with attempt-row locking and guarding malformed non-array question payloads. Verified owner-scoped draft edit publish assignment gates server scoring one-submit uniqueness and answer-key-free student props. Acceptance tests cover role failures and essay lifecycle. Build and SQLite suite passed 58 tests/401 assertions.
 RUANG-46,Tasklist tutor dan ritme harian siswa,4,code-review,[BE] Code Review: Tasklist tutor dan ritme harian siswa,"Review all BE work delivered for **Tasklist tutor dan ritme harian siswa** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Model rencana harian kelas dan penugasan materi**  ·  _design/README.md: Tasklist harian_

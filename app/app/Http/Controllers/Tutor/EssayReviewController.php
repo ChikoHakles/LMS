@@ -50,11 +50,16 @@ class EssayReviewController extends Controller
         $data = $request->validated();
 
         DB::transaction(function () use ($request, $answer, $data): void {
+            $answer = QuizAnswer::query()->whereKey($answer->getKey())->firstOrFail();
+            $attempt = QuizAttempt::query()->whereKey($answer->attempt_id)->lockForUpdate()->firstOrFail();
             $answer = QuizAnswer::query()->whereKey($answer->getKey())->lockForUpdate()->firstOrFail();
             if ($answer->graded_at !== null) {
                 throw ValidationException::withMessages(['score' => 'Jawaban esai ini sudah dinilai.']);
             }
-            $answer->load(['question', 'attempt.answers.question']);
+            if ($attempt->status !== QuizAttempt::STATUS_AWAITING_REVIEW) {
+                throw ValidationException::withMessages(['score' => 'Kuis ini tidak lagi menunggu penilaian.']);
+            }
+            $answer->load('question');
             $answer->forceFill([
                 'score' => $data['score'],
                 'reviewer_comment' => $data['comment'] ?? null,
@@ -62,8 +67,6 @@ class EssayReviewController extends Controller
                 'graded_at' => now(),
             ])->save();
 
-            $attempt = $answer->attempt;
-            $attempt->unsetRelation('answers');
             $answers = $attempt->answers()->with('question')->get();
             $allEssaysGraded = $answers->every(fn (QuizAnswer $item) => $item->question->type !== QuizQuestion::TYPE_ESSAY || $item->graded_at !== null);
 

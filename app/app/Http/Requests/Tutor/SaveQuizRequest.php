@@ -37,7 +37,12 @@ class SaveQuizRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator): void {
-            foreach ($this->input('questions', []) as $index => $question) {
+            $questions = $this->input('questions', []);
+            if (! is_array($questions)) {
+                return;
+            }
+
+            foreach ($questions as $index => $question) {
                 if (! is_array($question)) {
                     continue;
                 }
