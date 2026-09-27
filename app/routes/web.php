@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\MaterialController as AdminMaterialController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Student\MaterialController as StudentMaterialController;
+use App\Http\Controllers\Student\QuizController as StudentQuizController;
 use App\Http\Controllers\Tutor\MaterialController as TutorMaterialController;
+use App\Http\Controllers\Tutor\QuizMaterialController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -43,8 +45,11 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
         Route::get('materials/{material}/video/edit', [TutorMaterialController::class, 'editVideo'])->name('materials.video.edit');
         Route::put('materials/{material}/video', [TutorMaterialController::class, 'updateVideo'])->name('materials.video.update');
         Route::patch('materials/{material}/video/publish', [TutorMaterialController::class, 'publishVideo'])->name('materials.video.publish');
-        Route::get('materials/quiz/create', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Buat Materi: Kuis']))
-            ->name('materials.quiz.create');
+        Route::get('materials/quiz/create', [QuizMaterialController::class, 'create'])->name('materials.quiz.create');
+        Route::post('materials/quiz', [QuizMaterialController::class, 'store'])->name('materials.quiz.store');
+        Route::get('materials/{material}/quiz/edit', [QuizMaterialController::class, 'edit'])->name('materials.quiz.edit');
+        Route::put('materials/{material}/quiz', [QuizMaterialController::class, 'update'])->name('materials.quiz.update');
+        Route::patch('materials/{material}/quiz/publish', [QuizMaterialController::class, 'publish'])->name('materials.quiz.publish');
         Route::get('materials', [TutorMaterialController::class, 'index'])->name('materials.index');
         Route::get('essays', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Penilaian esai']))
             ->name('essays.index');
@@ -59,6 +64,7 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
         Route::get('materials/{material}', [StudentMaterialController::class, 'show'])->name('materials.show');
         Route::get('quizzes', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Kuis dan latihan']))
             ->name('quizzes.index');
+        Route::get('quizzes/{material}', [StudentQuizController::class, 'show'])->name('quizzes.show');
     });
 });
 
