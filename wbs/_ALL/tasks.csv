@@ -63,7 +63,7 @@ This is a separate task because aplikasi Laravel 12 has a coverage gate; the cod
 - Tutor dapat mengubah tautan videonya
 - The golden path plus at least one failure case per branch the parent task introduced.
 
-**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",4.0,RUANG-25,design/README.md: Buat Materi Video,not-done,,
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",4.0,RUANG-25,design/README.md: Buat Materi Video,done,,Tests cover allowed URL forms and ID-only storage; foreign and malformed links; owner-only edit; assigned published video playback. SQLite suite passed 50 tests/249 assertions after build
 RUANG-29,Video YouTube tersemat,2,code-review,[FE] Code Review: Video YouTube tersemat,"Review all FE work delivered for **Video YouTube tersemat** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Bangun form tutor dan halaman video siswa**  ·  _design/README.md: Buat Materi Video dan Tonton video_
