@@ -52,7 +52,7 @@ RUANG-23,Pustaka materi dan artikel,2,code-review,[FE] Code Review: Pustaka mate
   - Status draft/terbit terlihat
   - Navigasi ke editor atau pratinjau tepat
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-20,RUANG-21",design/README.md: Buat Materi Artikel dan Pustaka materi,not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-20,RUANG-21",design/README.md: Buat Materi Artikel dan Pustaka materi,done,,"FE review passed: tutor block editing and draft flow, student-matching preview renderer, library filters/status/actions, and assigned student article navigation through tasklist; Vite build passed."
 RUANG-26,Video YouTube tersemat,2,unit-test,[BE] Unit Test: Validasi dan simpan identitas video YouTube,"Write unit tests for the work delivered in **Validasi dan simpan identitas video YouTube**.
 
 This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
