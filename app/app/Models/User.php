@@ -3,13 +3,35 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    public const ROLE_ADMIN = 'admin';
+
+    public const ROLE_TUTOR = 'tutor';
+
+    public const ROLE_STUDENT = 'student';
+
+    public const STATUS_ACTIVE = 'active';
+
+    public const STATUS_INACTIVE = 'inactive';
+
+    /** @var list<string> */
+    public const ROLES = [self::ROLE_ADMIN, self::ROLE_TUTOR, self::ROLE_STUDENT];
+
+    /** @var list<string> */
+    public const MANAGEABLE_ROLES = [self::ROLE_TUTOR, self::ROLE_STUDENT];
+
+    protected $attributes = [
+        'role' => self::ROLE_STUDENT,
+        'status' => self::STATUS_ACTIVE,
+    ];
+
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -44,5 +66,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function hasRole(string ...$roles): bool
+    {
+        return in_array($this->role, $roles, true);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(self::ROLE_ADMIN);
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
     }
 }
