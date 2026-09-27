@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -27,5 +28,21 @@ class RegistrationTest extends TestCase
 
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
+    }
+
+    public function test_public_registration_cannot_assign_a_privileged_role_or_inactive_status()
+    {
+        $this->post('/register', [
+            'name' => 'New Student',
+            'email' => 'new-student@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'role' => User::ROLE_ADMIN,
+            'status' => User::STATUS_INACTIVE,
+        ])->assertRedirect(route('dashboard', absolute: false));
+
+        $user = User::query()->where('email', 'new-student@example.com')->firstOrFail();
+        $this->assertSame(User::ROLE_STUDENT, $user->role);
+        $this->assertSame(User::STATUS_ACTIVE, $user->status);
     }
 }
