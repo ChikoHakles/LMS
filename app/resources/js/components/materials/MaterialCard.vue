@@ -60,11 +60,12 @@ const icons = { article: FileText, video: Play, quiz: ClipboardList };
                 <ArrowUpRight class="size-4" aria-hidden="true" /> Pratinjau
             </Link>
             <Link
-                v-if="showStudentAction && (material.type === 'article' || material.type === 'video')"
-                :href="route('student.materials.show', material.id)"
+                v-if="showStudentAction"
+                :href="route(material.type === 'quiz' ? 'student.quizzes.show' : 'student.materials.show', material.id)"
                 class="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
             >
-                <ArrowUpRight class="size-4" aria-hidden="true" /> {{ material.type === 'article' ? 'Baca artikel' : 'Tonton video' }}
+                <ArrowUpRight class="size-4" aria-hidden="true" />
+                {{ material.type === 'article' ? 'Baca artikel' : material.type === 'video' ? 'Tonton video' : 'Kerjakan kuis' }}
             </Link>
         </div>
     </RuangCard>

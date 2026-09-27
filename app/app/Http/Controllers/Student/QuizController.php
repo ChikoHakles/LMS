@@ -104,8 +104,8 @@ class QuizController extends Controller
                 'question_id' => $answer->question_id,
                 'choice_id' => $answer->choice_id,
                 'response' => $answer->response,
-                'score' => $answer->score,
-                'comment' => $answer->reviewer_comment,
+                'score' => $attempt->status === QuizAttempt::STATUS_COMPLETED ? $answer->score : null,
+                'comment' => $attempt->status === QuizAttempt::STATUS_COMPLETED ? $answer->reviewer_comment : null,
             ])->values(),
         ];
     }
