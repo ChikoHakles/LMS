@@ -300,7 +300,7 @@ RUANG-22,Pustaka materi dan artikel,4,code-review,[BE] Code Review: Pustaka mate
 
 Also covers **2 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",4.5,"RUANG-16,RUANG-17,RUANG-18,RUANG-19",design/README.md: Buat Materi Artikel dan Pustaka materi,not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",4.5,"RUANG-16,RUANG-17,RUANG-18,RUANG-19",design/README.md: Buat Materi Artikel dan Pustaka materi,done,,"BE review passed ownership/published-only gates, filtered library scope, block validation, and owner-only publishing. Feature assertions cover the listed criteria; full suite: 66 passed, 500 assertions."
 RUANG-37,Kuis pilihan ganda dan esai,4,code-review,[BE] Code Review: Kuis pilihan ganda dan esai,"Review all BE work delivered for **Kuis pilihan ganda dan esai** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Model soal pilihan dan esai beserta validasi**  ·  _design/README.md: Buat Materi Kuis_
