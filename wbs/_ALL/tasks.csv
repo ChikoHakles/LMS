@@ -270,7 +270,7 @@ RUANG-6,Fondasi VILT dan navigasi Ruang,3,code-review,[FE] Code Review: Fondasi 
   - Tidak ada warna literal baru di halaman/komponen Ruang
   - Tampilan desktop dan ponsel konsisten dengan palet v2
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-2,RUANG-3",design/README.md: peta halaman dan konsep dashboard v2,not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-2,RUANG-3",design/README.md: peta halaman dan konsep dashboard v2,done,,"FE review passed: Tutor and student menus, route-name fallbacks and keyboard-accessible mobile Sheet behavior verified; shared tokens keep desktop/mobile colors consistent. Literal-color scan clean and no blocking findings. Build and 27 Laravel tests pass; vue-tsc remains limited by starter config/type diagnostics."
 RUANG-13,Autentikasi dan RBAC admin tutor siswa,4,code-review,[BE] Code Review: Autentikasi dan RBAC admin tutor siswa,"Review all BE work delivered for **Autentikasi dan RBAC admin tutor siswa** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Tambahkan peran pengguna dan pembatasan route**  ·  _Permintaan teknis: RBAC admin, tutor, siswa_
