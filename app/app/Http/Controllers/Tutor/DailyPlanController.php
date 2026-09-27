@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\DailyPlan;
 use App\Models\LearningClass;
 use App\Models\Material;
+use App\Models\MaterialCompletion;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -72,7 +74,12 @@ class DailyPlanController extends Controller
 
     public function storeClass(Request $request): RedirectResponse
     {
-        $data = $request->validate(['name' => ['required', 'string', 'max:120']]);
+        $data = $request->validate([
+            'name' => [
+                'required', 'string', 'max:120',
+                Rule::unique('learning_classes', 'name')->where(fn ($query) => $query->where('tutor_id', $request->user()->getKey())),
+            ],
+        ]);
         $class = new LearningClass(['name' => trim($data['name'])]);
         $class->tutor()->associate($request->user());
         $class->save();
@@ -93,6 +100,11 @@ class DailyPlanController extends Controller
         if ($validCount !== $ids->count()) {
             throw ValidationException::withMessages(['student_ids' => 'Pilih akun murid aktif yang valid.']);
         }
+        $removedIds = $learningClass->students()->pluck('users.id')->diff($ids);
+        if ($removedIds->isNotEmpty() && MaterialCompletion::query()->whereIn('user_id', $removedIds)
+            ->whereHas('planMaterial.plan', fn ($query) => $query->where('class_id', $learningClass->getKey()))->exists()) {
+            throw ValidationException::withMessages(['student_ids' => 'Murid dengan penyelesaian tersimpan tidak dapat dikeluarkan dari kelas agar riwayatnya tetap tersedia.']);
+        }
         $learningClass->students()->sync($ids->all());
 
         return to_route('tutor.daily-plans.index', ['class_id' => $learningClass->id])->with('status', 'Daftar murid kelas berhasil disimpan.');
@@ -100,17 +112,16 @@ class DailyPlanController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $classData = $request->validate(['class_id' => ['required', 'integer', 'exists:learning_classes,id']]);
+        $tutor = $request->user();
+        $class = LearningClass::query()->whereKey($classData['class_id'])->where('tutor_id', $tutor->getKey())->firstOrFail();
         $data = $request->validate([
-            'class_id' => ['required', 'integer', 'exists:learning_classes,id'],
             'date' => ['required', 'date_format:Y-m-d'],
             'target_minutes' => ['required', 'integer', 'min:1', 'max:600'],
-            'materials' => ['present', 'array', 'max:3'],
+            'materials' => ['required', 'array', 'size:3'],
             'materials.*.type' => ['required', 'string', 'in:article,video,quiz', 'distinct'],
             'materials.*.material_id' => ['required', 'integer', 'distinct', 'exists:materials,id'],
         ]);
-        $tutor = $request->user();
-        $class = LearningClass::query()->whereKey($data['class_id'])->where('tutor_id', $tutor->getKey())->firstOrFail();
-
         foreach ($data['materials'] as $slot) {
             $material = Material::query()->whereKey($slot['material_id'])->where('owner_id', $tutor->getKey())->first();
             if (! $material || $material->type !== $slot['type'] || ! $material->isPublished()) {

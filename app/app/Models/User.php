@@ -5,8 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -102,6 +102,16 @@ class User extends Authenticatable
 
     public function learningClasses(): BelongsToMany
     {
-        return $this->belongsToMany(LearningClass::class, 'class_students', 'student_id', 'learning_class_id')->withTimestamps();
+        return $this->belongsToMany(LearningClass::class, 'class_students', 'student_id', 'class_id')->withTimestamps();
+    }
+
+    public function prayerLogs(): HasMany
+    {
+        return $this->hasMany(PrayerLog::class);
+    }
+
+    public function materialCompletions(): HasMany
+    {
+        return $this->hasMany(MaterialCompletion::class, 'user_id');
     }
 }

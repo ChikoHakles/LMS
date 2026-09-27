@@ -11,7 +11,7 @@ class DailyPlanMaterial extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'position', 'target_minutes'];
+    protected $fillable = ['material_id', 'tutor_id', 'type', 'position', 'target_minutes'];
 
     public function plan(): BelongsTo
     {

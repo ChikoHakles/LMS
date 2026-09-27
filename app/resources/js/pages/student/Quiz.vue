@@ -28,9 +28,12 @@ const props = defineProps<{
     material: { id: number; type: 'quiz'; title: string; summary: string | null; published_at: string | null };
     questions: Question[];
     attempt: Attempt | null;
+    assignmentId?: number | null;
+    planContext?: { classId: number; date: string } | null;
 }>();
 const page = usePage<SharedData & { flash: { status?: string } }>();
 const form = useForm({
+    daily_plan_material_id: props.assignmentId ?? null,
     answers: props.questions.map((question) => ({
         question_id: question.id,
         choice_id: null as number | null,
@@ -41,7 +44,12 @@ const errors = computed(() => form.errors as Record<string, string>);
 const totalPoints = computed(() => props.questions.reduce((total, question) => total + question.points, 0));
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Materi belajar', href: route('student.materials.index') },
-    { title: props.material.title, href: route('student.quizzes.show', props.material.id) },
+    {
+        title: props.material.title,
+        href: props.assignmentId
+            ? route('student.quizzes.show', { material: props.material.id, assignment: props.assignmentId })
+            : route('student.quizzes.show', props.material.id),
+    },
 ];
 
 function submitQuiz(): void {
@@ -104,7 +112,7 @@ function answerFor(questionId: number) {
                     </div>
                 </div>
                 <Link
-                    :href="route('student.daily-rhythm')"
+                    :href="route('student.daily-rhythm', planContext ? { class_id: planContext.classId, date: planContext.date } : {})"
                     class="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium hover:bg-muted"
                 >
                     <Check class="size-4" aria-hidden="true" /> Kembali ke Ritme hari ini

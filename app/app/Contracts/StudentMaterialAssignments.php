@@ -9,8 +9,8 @@ use Illuminate\Support\Collection;
 /**
  * Assignment boundary for student material access.
  *
- * RUANG-40 should back these methods with daily_plan_materials. Until then,
- * the registered implementation returns no assignments and denies reads.
+ * The registered implementation resolves dated daily_plan_materials through
+ * the student's current class membership.
  */
 interface StudentMaterialAssignments
 {

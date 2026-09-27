@@ -3,7 +3,7 @@ import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ArrowLeft, Check, Play } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -16,8 +16,10 @@ const props = defineProps<{
         published_at: string | null;
         embedUrl: string;
         completed?: boolean;
+        assignmentId?: number | null;
     };
 }>();
+const completion = useForm({});
 
 const safeEmbedUrl = computed(() => {
     const match = props.material.embedUrl.match(/^https:\/\/www\.youtube-nocookie\.com\/embed\/([A-Za-z0-9_-]{11})$/);
@@ -27,6 +29,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Materi belajar', href: route('student.materials.index') },
     { title: 'Tonton video', href: route('student.materials.show', props.material.id) },
 ];
+
+function markComplete(): void {
+    if (!props.material.assignmentId || props.material.completed) return;
+    completion.put(route('student.daily-plan-materials.complete', props.material.assignmentId), { preserveScroll: true });
+}
 </script>
 
 <template>
@@ -70,9 +77,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <div class="mt-5 flex flex-wrap items-center gap-3 border-t border-border pt-5">
                         <button
                             type="button"
-                            disabled
+                            :disabled="!material.assignmentId || material.completed || completion.processing"
                             :aria-pressed="material.completed ? 'true' : 'false'"
-                            class="inline-flex cursor-not-allowed items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground opacity-60"
+                            class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+                            @click="markComplete"
                         >
                             <Check class="size-4" aria-hidden="true" /> {{ material.completed ? 'Sudah selesai' : 'Tandai selesai' }}
                         </button>
@@ -83,6 +91,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                             Buka Ritme hari ini
                         </Link>
                     </div>
+                    <p v-if="completion.errors.assignment" role="alert" class="mt-3 text-sm text-destructive">{{ completion.errors.assignment }}</p>
                     <p v-if="!material.completed" class="mt-3 text-xs leading-5 text-muted-foreground">
                         Status penyelesaian mengikuti checklist materi yang ditugaskan.
                     </p>

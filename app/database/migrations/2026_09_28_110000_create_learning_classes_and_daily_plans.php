@@ -18,21 +18,21 @@ return new class extends Migration
 
         Schema::create('class_students', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('learning_class_id')->constrained('learning_classes')->cascadeOnDelete();
+            $table->foreignId('class_id')->constrained('learning_classes')->cascadeOnDelete();
             $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
-            $table->unique(['learning_class_id', 'student_id']);
-            $table->index(['student_id', 'learning_class_id']);
+            $table->unique(['class_id', 'student_id']);
+            $table->index(['student_id', 'class_id']);
         });
 
         Schema::create('daily_plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('learning_class_id')->constrained('learning_classes')->cascadeOnDelete();
+            $table->foreignId('class_id')->constrained('learning_classes')->cascadeOnDelete();
             $table->foreignId('tutor_id')->constrained('users')->cascadeOnDelete();
             $table->date('plan_date');
             $table->unsignedSmallInteger('target_minutes')->default(45);
             $table->timestamps();
-            $table->unique(['learning_class_id', 'plan_date']);
+            $table->unique(['class_id', 'plan_date']);
             $table->index(['tutor_id', 'plan_date']);
         });
 

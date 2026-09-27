@@ -15,7 +15,7 @@ class QuizAttempt extends Model
 
     public const STATUS_COMPLETED = 'completed';
 
-    protected $fillable = ['material_id', 'student_id', 'status', 'submitted_at', 'score'];
+    protected $fillable = ['material_id', 'student_id', 'daily_plan_material_id', 'status', 'submitted_at', 'score'];
 
     protected function casts(): array
     {
@@ -35,5 +35,10 @@ class QuizAttempt extends Model
     public function answers(): HasMany
     {
         return $this->hasMany(QuizAnswer::class, 'attempt_id');
+    }
+
+    public function dailyPlanMaterial(): BelongsTo
+    {
+        return $this->belongsTo(DailyPlanMaterial::class);
     }
 }

@@ -25,6 +25,7 @@ class SubmitQuizRequest extends FormRequest
     {
         return [
             'student_id' => ['prohibited'],
+            'daily_plan_material_id' => ['nullable', 'integer'],
             'answers' => ['required', 'array', 'min:1', 'max:50'],
             'answers.*.question_id' => ['required', 'integer', 'distinct'],
             'answers.*.choice_id' => ['nullable', 'integer'],

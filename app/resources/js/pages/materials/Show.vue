@@ -4,8 +4,8 @@ import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
-import { ArrowLeft, PencilLine } from 'lucide-vue-next';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ArrowLeft, Check, PencilLine } from 'lucide-vue-next';
 
 const props = defineProps<{
     material: {
@@ -18,7 +18,15 @@ const props = defineProps<{
         blocks: ArticleBlock[] | null;
     };
     canEdit: boolean;
+    assignmentId?: number | null;
+    completed?: boolean;
 }>();
+const completion = useForm({});
+
+function markComplete(): void {
+    if (!props.assignmentId || props.completed) return;
+    completion.put(route('student.daily-plan-materials.complete', props.assignmentId), { preserveScroll: true });
+}
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Pustaka materi', href: props.canEdit ? route('tutor.materials.index') : route('student.materials.index') },
@@ -56,6 +64,17 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </header>
                 <ArticleRenderer :blocks="material.blocks" />
             </RuangCard>
+            <div v-if="!canEdit && assignmentId" class="flex flex-wrap items-center gap-3">
+                <button
+                    type="button"
+                    :disabled="completed || completion.processing"
+                    class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+                    @click="markComplete"
+                >
+                    <Check class="size-4" aria-hidden="true" /> {{ completed ? 'Sudah selesai' : 'Tandai selesai' }}
+                </button>
+                <span v-if="completion.errors.assignment" role="alert" class="text-sm text-destructive">{{ completion.errors.assignment }}</span>
+            </div>
         </div>
     </AppLayout>
 </template>

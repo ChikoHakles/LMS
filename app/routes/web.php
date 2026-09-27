@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\Admin\MaterialController as AdminMaterialController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Student\DailyRhythmController;
+use App\Http\Controllers\Student\MaterialCompletionController;
 use App\Http\Controllers\Student\MaterialController as StudentMaterialController;
 use App\Http\Controllers\Student\QuizController as StudentQuizController;
-use App\Http\Controllers\Tutor\MaterialController as TutorMaterialController;
-use App\Http\Controllers\Tutor\EssayReviewController;
-use App\Http\Controllers\Tutor\QuizMaterialController;
 use App\Http\Controllers\Tutor\DailyPlanController;
+use App\Http\Controllers\Tutor\EssayReviewController;
+use App\Http\Controllers\Tutor\MaterialController as TutorMaterialController;
+use App\Http\Controllers\Tutor\QuizMaterialController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -62,8 +64,9 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
     });
 
     Route::prefix('student')->name('student.')->middleware('role:student')->group(function () {
-        Route::get('daily-rhythm', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Ritme hari ini']))
-            ->name('daily-rhythm');
+        Route::get('daily-rhythm', [DailyRhythmController::class, 'show'])->name('daily-rhythm');
+        Route::put('prayer-logs', [DailyRhythmController::class, 'updatePrayer'])->name('prayer-logs.update');
+        Route::put('daily-plan-materials/{assignment}/complete', [MaterialCompletionController::class, 'store'])->name('daily-plan-materials.complete');
         Route::get('materials', [StudentMaterialController::class, 'index'])->name('materials.index');
         Route::get('materials/{material}', [StudentMaterialController::class, 'show'])->name('materials.show');
         Route::get('quizzes', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Kuis dan latihan']))

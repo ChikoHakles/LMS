@@ -21,11 +21,11 @@ class LearningClass extends Model
 
     public function students(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'class_students', 'learning_class_id', 'student_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'class_students', 'class_id', 'student_id')->withTimestamps();
     }
 
     public function dailyPlans(): HasMany
     {
-        return $this->hasMany(DailyPlan::class);
+        return $this->hasMany(DailyPlan::class, 'class_id');
     }
 }

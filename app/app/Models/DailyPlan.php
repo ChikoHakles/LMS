@@ -11,7 +11,7 @@ class DailyPlan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['plan_date', 'target_minutes'];
+    protected $fillable = ['tutor_id', 'plan_date', 'target_minutes'];
 
     protected function casts(): array
     {
@@ -20,7 +20,7 @@ class DailyPlan extends Model
 
     public function learningClass(): BelongsTo
     {
-        return $this->belongsTo(LearningClass::class);
+        return $this->belongsTo(LearningClass::class, 'class_id');
     }
 
     public function tutor(): BelongsTo
