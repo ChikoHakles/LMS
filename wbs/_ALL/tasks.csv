@@ -216,7 +216,7 @@ RUANG-28,Video YouTube tersemat,3,code-review,[BE] Code Review: Video YouTube te
 
 Also covers **1 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.0,"RUANG-25,RUANG-26",design/README.md: Buat Materi Video dan Tonton video,not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.0,"RUANG-25,RUANG-26",design/README.md: Buat Materi Video dan Tonton video,done,,BE review passed: allowlisted URL parsing stores only validated 11-character IDs; owner checks cover create and update; player URLs use youtube-nocookie; assignment and publication gate student reads; 50 SQLite tests pass
 RUANG-34,Kuis pilihan ganda dan esai,3,unit-test,[BE] Unit Test: Pengumpulan kuis dan penilaian esai,"Write unit tests for the work delivered in **Pengumpulan kuis dan penilaian esai**.
 
 This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
