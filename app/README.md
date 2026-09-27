@@ -29,6 +29,7 @@ Pastikan versi PHP CLI yang dipakai adalah 8.2 (`php -v`). Versi MariaDB dapat d
    php artisan key:generate
    php artisan migrate
    ```
+   Before running `php artisan db:seed`, set `RUANG_LOCAL_ADMIN_EMAIL` and `RUANG_LOCAL_ADMIN_PASSWORD` in `.env` to create the local administrator. Keep the password in local environment configuration; it is intentionally not stored in the repository. The seeder is restricted to local and testing environments.
 5. Buat aset production:
 
    ```powershell
