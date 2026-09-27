@@ -206,7 +206,7 @@ This is a separate task because aplikasi Laravel 12 has a coverage gate; the cod
 - Hanya tutor pemilik dapat menerbitkan
 - The golden path plus at least one failure case per branch the parent task introduced.
 
-**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",5.0,RUANG-18,design/README.md: Buat Materi Artikel,not-done,,
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",5.0,RUANG-18,design/README.md: Buat Materi Artikel,done,,"Tests cover valid block persistence/readback, malformed block and unsafe-link rejection, owner-only publishing, and empty-content publication failure. Full post-build suite: 66 passed, 500 assertions."
 RUANG-28,Video YouTube tersemat,3,code-review,[BE] Code Review: Video YouTube tersemat,"Review all BE work delivered for **Video YouTube tersemat** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Validasi dan simpan identitas video YouTube**  ·  _design/README.md: Buat Materi Video_
