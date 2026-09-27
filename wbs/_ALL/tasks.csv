@@ -97,7 +97,7 @@ RUANG-38,Kuis pilihan ganda dan esai,2,code-review,[FE] Code Review: Kuis piliha
   - Esai menunggu penilaian ditampilkan tutor
   - Hasil tidak menampilkan kunci sebelum submit
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-35,RUANG-36","design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai",not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-35,RUANG-36","design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai",done,,FE review passed for mixed ordered tutor editing key selection draft edit student confirmation single-submit result display and tutor essay scoring comments. Student result UI never renders answer keys. The assignment service remains deny-all until RUANG-40 integration so student quiz routes intentionally return 403 until then. Build and SQLite suite passed 58 tests/401 assertions.
 RUANG-41,Tasklist tutor dan ritme harian siswa,2,unit-test,[BE] Unit Test: Model rencana harian kelas dan penugasan materi,"Write unit tests for the work delivered in **Model rencana harian kelas dan penugasan materi**.
 
 This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
