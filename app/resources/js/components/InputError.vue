@@ -1,13 +1,11 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
     message?: string;
 }>();
 </script>
 
 <template>
-    <div v-show="message">
-        <p class="text-sm text-red-600 dark:text-red-500">
-            {{ message }}
-        </p>
-    </div>
+    <p v-if="props.message" class="text-sm text-destructive" role="alert" aria-live="polite">
+        {{ props.message }}
+    </p>
 </template>

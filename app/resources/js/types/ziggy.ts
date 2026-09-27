@@ -1,7 +1,11 @@
-import { Config, RouteParams } from 'ziggy-js';
+import type { RouteParams } from 'ziggy-js';
 
 declare global {
-    function route(): Config;
+    interface RouteHelper {
+        has(name: string): boolean;
+    }
+
+    function route(): RouteHelper;
     function route(name: string, params?: RouteParams<typeof name> | undefined, absolute?: boolean): string;
 }
 

@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import type { HTMLAttributes } from 'vue';
 
 interface Props {
-    class?: string;
+    class?: HTMLAttributes['class'];
+    tone?: 'sidebar' | 'surface';
 }
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+    tone: 'sidebar',
+});
 </script>
 
 <template>
-    <div class="flex aspect-square size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-        <AppLogoIcon class="size-5 fill-current text-white dark:text-black" />
-    </div>
-    <div class="ml-1 grid flex-1 text-left text-sm">
-        <span class="mb-0.5 truncate font-semibold leading-none">Laravel Starter Kit</span>
-    </div>
+    <span class="flex min-w-0 items-center gap-2.5" :class="props.class">
+        <span class="flex size-9 shrink-0 items-center justify-center rounded-lg" :class="props.tone === 'sidebar' ? 'bg-sidebar-accent' : 'bg-secondary'">
+            <AppLogoIcon class-name="size-6 text-[hsl(var(--ruang-warm))]" />
+        </span>
+        <span class="truncate text-lg font-bold tracking-tight" :class="props.tone === 'sidebar' ? 'text-sidebar-foreground' : 'text-foreground'">ruang<span class="text-[hsl(var(--ruang-warm))]">.</span></span>
+    </span>
 </template>

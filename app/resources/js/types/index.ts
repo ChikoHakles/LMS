@@ -1,5 +1,12 @@
 import type { LucideIcon } from 'lucide-vue-next';
 
+export interface Quote {
+    message: string;
+    author: string;
+}
+
+export type Appearance = 'light' | 'dark' | 'system';
+
 export interface Auth {
     user: User;
 }
@@ -17,8 +24,9 @@ export interface NavItem {
 }
 
 export interface SharedData {
+    [key: string]: unknown;
     name: string;
-    quote: { message: string; author: string };
+    quote: Quote;
     auth: Auth;
     ziggy: {
         location: string;
@@ -34,6 +42,7 @@ export interface User {
     name: string;
     email: string;
     avatar?: string;
+    role?: string;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;

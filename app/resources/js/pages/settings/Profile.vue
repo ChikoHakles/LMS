@@ -72,19 +72,19 @@ const submit = () => {
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
-                        <p class="mt-2 text-sm text-neutral-800">
+                        <p class="mt-2 text-sm text-foreground">
                             Your email address is unverified.
                             <Link
                                 :href="route('verification.send')"
                                 method="post"
                                 as="button"
-                                class="focus:outline-hidden rounded-md text-sm text-neutral-600 underline hover:text-neutral-900 focus:ring-2 focus:ring-offset-2"
+                                class="focus:outline-hidden rounded-md text-sm text-muted-foreground underline hover:text-foreground focus:ring-2 focus:ring-offset-2"
                             >
                                 Click here to re-send the verification email.
                             </Link>
                         </p>
 
-                        <div v-if="status === 'verification-link-sent'" class="mt-2 text-sm font-medium text-green-600">
+                        <div v-if="status === 'verification-link-sent'" class="mt-2 text-sm font-medium text-success">
                             A new verification link has been sent to your email address.
                         </div>
                     </div>
@@ -99,7 +99,7 @@ const submit = () => {
                             leave="transition ease-in-out"
                             leave-to="opacity-0"
                         >
-                            <p class="text-sm text-neutral-600">Saved.</p>
+                            <p class="text-sm text-muted-foreground">Saved.</p>
                         </TransitionRoot>
                     </div>
                 </form>
@@ -109,3 +109,7 @@ const submit = () => {
         </SettingsLayout>
     </AppLayout>
 </template>
+
+
+
+

@@ -24,6 +24,7 @@ html {
         --ruang-success: 143 25% 40%;
         --ruang-success-soft: 132 29% 93%;
         --ruang-danger: 7 47% 44%;
+        --ruang-danger-soft: 7 47% 95%;
         --background: var(--ruang-background);
         --foreground: var(--ruang-ink);
         --card: var(--ruang-paper);
@@ -31,15 +32,18 @@ html {
         --popover: var(--ruang-paper);
         --popover-foreground: var(--ruang-ink);
         --primary: var(--ruang-terracotta);
-        --primary-foreground: 0 0% 100%;
+        --primary-foreground: var(--ruang-paper);
         --secondary: var(--ruang-soft);
         --secondary-foreground: var(--ruang-ink);
         --muted: var(--ruang-soft);
         --muted-foreground: var(--ruang-muted);
         --accent: var(--ruang-soft);
-        --accent-foreground: var(--ruang-terracotta);
+        --accent-foreground: var(--ruang-terracotta-dark);
         --destructive: var(--ruang-danger);
-        --destructive-foreground: 0 0% 100%;
+        --success: var(--ruang-success);
+        --success-foreground: var(--ruang-paper);
+        --success-soft: var(--ruang-success-soft);
+        --destructive-foreground: var(--ruang-paper);
         --border: var(--ruang-line);
         --input: var(--ruang-line);
         --ring: var(--ruang-terracotta);
@@ -48,7 +52,7 @@ html {
         --chart-3: var(--ruang-sidebar);
         --chart-4: var(--ruang-warm);
         --chart-5: var(--ruang-danger);
-        --radius: 0.5rem;
+        --radius: 0.625rem;
         --sidebar-background: var(--ruang-sidebar);
         --sidebar-foreground: var(--ruang-sidebar-text);
         --sidebar-primary: var(--ruang-paper);
@@ -60,42 +64,26 @@ html {
     }
 
     .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 6.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 84% 60%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
-        --sidebar-background: 0 0% 7%;
-        --sidebar-foreground: 0 0% 95.9%;
-        --sidebar-primary: 360, 100%, 100%;
-        --sidebar-primary-foreground: 0 0% 100%;
-        --sidebar-accent: 0 0% 15.9%;
-        --sidebar-accent-foreground: 240 4.8% 95.9%;
-        --sidebar-border: 0 0% 15.9%;
-        --sidebar-ring: 217.2 91.2% 59.8%;
+        --ruang-background: 24 14% 12%;
+        --ruang-paper: 24 14% 16%;
+        --ruang-ink: 36 35% 94%;
+        --ruang-muted: 28 10% 68%;
+        --ruang-line: 24 12% 27%;
+        --ruang-terracotta: 12 48% 61%;
+        --ruang-terracotta-dark: 12 49% 52%;
+        --ruang-soft: 24 13% 23%;
+        --ruang-warm: 36 57% 63%;
+        --ruang-sidebar: 18 20% 10%;
+        --ruang-sidebar-text: 34 30% 87%;
+        --ruang-success: 143 34% 63%;
+        --ruang-success-soft: 143 23% 22%;
+        --ruang-danger: 7 57% 66%;
+        --primary-foreground: var(--ruang-ink);
+        --destructive-foreground: var(--ruang-ink);
+        --success-foreground: var(--ruang-ink);
+        --ruang-danger-soft: 7 28% 23%;
     }
-}
 
-@layer base {
     * {
         @apply border-border;
     }
@@ -104,3 +92,4 @@ html {
         @apply bg-background text-foreground;
     }
 }
+
