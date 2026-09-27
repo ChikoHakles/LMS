@@ -1,34 +1,63 @@
 # Ruang 1.0
 
-Fondasi aplikasi dari **Laravel Vue starter kit resmi**, dengan PHP 8.2/Laravel 12, Vue 3, Inertia, Vite, dan MySQL. Implementasi modul Ruang mengikuti backlog di `../wbs/_ALL/tasks.csv`; tampilan acuan ada di `../design/index.html`.
+Fondasi aplikasi Laravel 12, PHP 8.2, Vue 3, Inertia, dan Vite. Aplikasi terhubung ke MySQL/MariaDB. Petunjuk berikut menyiapkan lingkungan lokal XAMPP tanpa mengubah variabel lingkungan Windows.
 
 ## Menjalankan dengan XAMPP
 
-1. Jalankan **Apache** dan **MySQL** dari XAMPP Control Panel. XAMPP pada mesin ini berada di `C:\Program Files\xampp`; MySQL perlu hak tulis atas direktori data XAMPP.
-2. Buat database baru tanpa mengubah database yang sudah ada:
+### Prasyarat
+
+- XAMPP dengan PHP 8.2 dan MariaDB 10.4, serta Apache dan MySQL/MariaDB aktif dari XAMPP Control Panel.
+- Node.js dan npm untuk membuat aset frontend.
+- Composer dan PHP CLI. Pada mesin ini launcher PHP XAMPP tersedia melalui PATH; di mesin lain, gunakan PHP CLI milik XAMPP.
+
+Pastikan versi PHP CLI yang dipakai adalah 8.2 (`php -v`). Versi MariaDB dapat diperiksa dari XAMPP Shell dengan `mysql --version` atau di phpMyAdmin.
+
+### Konfigurasi aplikasi
+
+1. Dari XAMPP Control Panel, jalankan Apache dan MySQL. Jika MySQL gagal menyala, periksa log XAMPP dan izin akses direktori data sebelum melanjutkan.
+2. Buat database aplikasi di phpMyAdmin atau XAMPP Shell:
 
    ```sql
    CREATE DATABASE IF NOT EXISTS ruang_lms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```
 
-3. Salin `.env.example` ke `.env` jika belum ada. Isi `DB_USERNAME` dan `DB_PASSWORD` sesuai akun MySQL lokal, lalu jalankan `php artisan key:generate` dan `php artisan migrate` dari direktori `app`.
-4. Jalankan `npm install` dan `npm run build`. Untuk pengembangan, `npm run dev` menyalakan Vite.
-5. Arahkan Apache ke folder **`app/public`**, bukan ke akar proyek. Contoh VirtualHost ada di `docs/xampp-vhost.conf.example`; sesuaikan nama host dan jalurnya, lalu aktifkan `mod_rewrite` dan `AllowOverride All`. Alternatif tanpa VirtualHost: `php artisan serve`.
+   Jangan gunakan atau hapus database lain yang sudah ada.
+3. Dari folder `app`, salin `.env.example` menjadi `.env` bila belum ada. Atur `DB_DATABASE=ruang_lms`, `DB_USERNAME`, dan `DB_PASSWORD` sesuai akun MariaDB lokal. Simpan kredensial hanya di `.env`; jangan commit file tersebut atau menaruh kata sandi pada konfigurasi Apache. File `.env` diabaikan Git.
+4. Buat kunci aplikasi dan jalankan migrasi:
 
-Perintah `php`, `composer`, dan `laravel` tersedia melalui launcher di `C:\Users\hakle\.local\bin` yang sudah berada di PATH. Launcher memakai PHP XAMPP. Tidak ada nilai variabel lingkungan sistem yang diubah oleh penyiapan ini.
+   ```powershell
+   php artisan key:generate
+   php artisan migrate
+   ```
+5. Buat aset production:
+
+   ```powershell
+   npm install
+   npm run build
+   ```
+
+### Apache VirtualHost
+
+Contoh konfigurasi ada di [`docs/xampp-vhost.conf.example`](docs/xampp-vhost.conf.example). Salin atau gabungkan ke konfigurasi VirtualHost Apache XAMPP, lalu sesuaikan `ServerName` dan path checkout. `DocumentRoot` dan blok `<Directory>` harus menunjuk ke `app/public`, bukan ke folder proyek atau `app`.
+
+Aktifkan `mod_rewrite` di `apache/conf/httpd.conf` (baris `LoadModule rewrite_module modules/mod_rewrite.so` tidak boleh dikomentari), dan pastikan konfigurasi `<Directory>` mengizinkan `AllowOverride All`. Restart Apache setelah mengubah konfigurasi. Tambahkan entri `127.0.0.1 ruang.test` ke berkas `hosts` Windows bila memakai contoh `ServerName ruang.test`.
+
+Contoh tersebut mengandalkan `app/public/.htaccess` untuk meneruskan permintaan ke Laravel. Jangan menaruh `.env`, `vendor`, atau berkas aplikasi lain di bawah DocumentRoot.
+
+Alternatif pengembangan tanpa VirtualHost adalah menjalankan `php artisan serve` dari folder `app` setelah konfigurasi database selesai.
 
 ## Struktur awal
 
-- `resources/css/app.css`: seluruh token warna global, termasuk palet Ruang v2 dan pemetaan semantik komponen.
-- `resources/js/components` dan `resources/js/pages`: komponen dan halaman Vue dari starter kit.
-- `.env.example`: contoh koneksi MySQL, zona waktu Asia/Jakarta, dan nama aplikasi. `.env` lokal tidak masuk Git.
-- `tests`: pengujian bawaan starter kit.
+- `resources/css/app.css`: token warna global dan pemetaan semantik Ruang.
+- `resources/js/components` dan `resources/js/pages`: shell serta halaman Vue.
+- `.env.example`: contoh konfigurasi lokal tanpa kata sandi.
+- `tests`: pengujian Laravel.
 
 ## Pemeriksaan fondasi
 
-```text
+```powershell
 npm run build
 php artisan test --compact
 ```
 
-Migrasi MySQL belum dijalankan pada mesin ini karena proses MariaDB XAMPP tidak memiliki izin tulis pada `C:\Program Files\xampp\mysql\data` saat dijalankan dari sesi ini. Jalankan MySQL lewat XAMPP Control Panel dengan izin yang sesuai, lalu buat database dan jalankan migrasi.
+Migrasi memerlukan layanan MariaDB XAMPP yang berjalan dan akun lokal yang memiliki izin membuat/mengubah tabel pada `ruang_lms`.

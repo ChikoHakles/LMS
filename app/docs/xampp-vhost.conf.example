@@ -1,10 +1,10 @@
-# Contoh: letakkan di konfigurasi VirtualHost Apache XAMPP setelah menyesuaikan path.
-# Tambahkan 127.0.0.1 ruang.test ke hosts bila memakai nama host ini.
+# Salin ke konfigurasi VirtualHost Apache XAMPP, sesuaikan ServerName dan path checkout.
+# Aktifkan mod_rewrite di httpd.conf dan gunakan AllowOverride All agar public/.htaccess berjalan.
 <VirtualHost *:80>
     ServerName ruang.test
-    DocumentRoot "C:/Users/hakle/Claude/Projects/Learning Management System/ruang-1.0/app/public"
+    DocumentRoot "C:/path/to/ruang-1.0/app/public"
 
-    <Directory "C:/Users/hakle/Claude/Projects/Learning Management System/ruang-1.0/app/public">
+    <Directory "C:/path/to/ruang-1.0/app/public">
         AllowOverride All
         Require all granted
     </Directory>
