@@ -37,8 +37,12 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
         Route::patch('materials/{material}/publish', [TutorMaterialController::class, 'publish'])->name('materials.publish');
         Route::get('materials/{material}/edit', [TutorMaterialController::class, 'edit'])->name('materials.edit');
         Route::get('materials/{material}', [TutorMaterialController::class, 'show'])->name('materials.show');
-        Route::get('materials/video/create', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Buat Materi: Video']))
+        Route::get('materials/video/create', [TutorMaterialController::class, 'createVideo'])
             ->name('materials.video.create');
+        Route::post('materials/video', [TutorMaterialController::class, 'storeVideo'])->name('materials.video.store');
+        Route::get('materials/{material}/video/edit', [TutorMaterialController::class, 'editVideo'])->name('materials.video.edit');
+        Route::put('materials/{material}/video', [TutorMaterialController::class, 'updateVideo'])->name('materials.video.update');
+        Route::patch('materials/{material}/video/publish', [TutorMaterialController::class, 'publishVideo'])->name('materials.video.publish');
         Route::get('materials/quiz/create', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Buat Materi: Kuis']))
             ->name('materials.quiz.create');
         Route::get('materials', [TutorMaterialController::class, 'index'])->name('materials.index');

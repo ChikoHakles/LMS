@@ -30,6 +30,16 @@ class MaterialController extends Controller
     public function show(Material $material): Response
     {
         Gate::authorize('view', $material);
+
+        if ($material->type === Material::TYPE_VIDEO) {
+            $embedUrl = $material->youtubeEmbedUrl();
+            abort_unless($embedUrl !== null, 404);
+
+            return Inertia::render('student/Video', [
+                'material' => $material->only(['id', 'type', 'title', 'summary', 'published_at']) + ['embedUrl' => $embedUrl],
+            ]);
+        }
+
         abort_unless($material->type === Material::TYPE_ARTICLE, 404);
 
         return Inertia::render('materials/Show', [

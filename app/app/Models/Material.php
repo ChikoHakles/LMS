@@ -31,6 +31,7 @@ class Material extends Model
         'status',
         'published_at',
         'blocks',
+        'youtube_video_id',
     ];
 
     protected function casts(): array
@@ -67,5 +68,16 @@ class Material extends Model
     public function isPublished(): bool
     {
         return $this->status === self::STATUS_PUBLISHED && $this->published_at !== null;
+    }
+
+    public function youtubeEmbedUrl(): ?string
+    {
+        if ($this->type !== self::TYPE_VIDEO
+            || ! is_string($this->youtube_video_id)
+            || preg_match('/^[A-Za-z0-9_-]{11}$/D', $this->youtube_video_id) !== 1) {
+            return null;
+        }
+
+        return 'https://www.youtube-nocookie.com/embed/'.$this->youtube_video_id;
     }
 }
