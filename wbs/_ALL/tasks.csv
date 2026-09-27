@@ -238,7 +238,7 @@ This is a separate task because aplikasi Laravel 12 has a coverage gate; the cod
 - Kuis tidak bisa ditandai selesai tanpa submit
 - The golden path plus at least one failure case per branch the parent task introduced.
 
-**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",6.0,RUANG-42,design/README.md: Ritme hari ini,not-done,,
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",6.0,RUANG-42,design/README.md: Ritme hari ini,done,,"Added tests for exactly five prayer identifiers, idempotence and date separation, membership-scoped completion, immutable completed plans, server-attempt-only quiz completion, same quiz on separate dates, duplicate submission, and stale/mismatched slots. Post-build suite: 66 passed, 500 assertions."
 RUANG-52,Pelacakan waktu belajar aktif,3,code-review,[BE] Code Review: Pelacakan waktu belajar aktif,"Review all BE work delivered for **Pelacakan waktu belajar aktif** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Catat interval belajar aktif dengan batas server**  ·  _design/README.md: Jam belajar aktif_
