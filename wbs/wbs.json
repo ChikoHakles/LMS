@@ -1,0 +1,226 @@
+{
+  "project_key": "RUANG",
+  "profile": {
+    "be_label": "aplikasi Laravel 12",
+    "test_command": "php artisan test",
+    "coverage_gate": "alur berhasil, validasi gagal, dan otorisasi lintas peran diuji",
+    "unit_test_disciplines": ["BE"],
+    "review_per_discipline": true
+  },
+  "epics": [
+    {
+      "key": "FOUNDATION",
+      "title": "Fondasi VILT dan navigasi Ruang",
+      "source": "design/README.md: peta halaman dan konsep dashboard v2",
+      "summary": "Lanjutkan starter kit resmi menjadi kerangka Ruang yang responsif dan siap dijalankan di XAMPP.",
+      "tasks": [
+        {
+          "id": "SHELL", "discipline": "FE", "title": "Bangun shell aplikasi berbasis komponen dan navigasi per peran", "estimate_hours": 12,
+          "description": "Ganti tampilan bawaan pada resources/js/components/AppSidebar.vue, AppHeader.vue, AppLogo.vue, dan layouts/app/*.vue dengan shell Ruang v2. Pecah sidebar, header, kartu, badge, dan progress menjadi komponen reusable. Siapkan susunan menu admin, tutor, siswa tanpa mengandalkan kontrol menu sebagai keamanan; tautan diarahkan ke route bernama. Responsive sampai lebar ponsel.",
+          "acceptance_criteria": ["Menu tutor memuat Tasklist harian dan Buat Materi dengan anak Artikel, Video, Kuis", "Menu siswa memuat Beranda, Ritme hari ini, dan Materi", "Navigasi ponsel dapat dibuka dan ditutup dengan keyboard"],
+          "traceability": "design/README.md: peta halaman; dashboard-concepts/render.html: v2"
+        },
+        {
+          "id": "TOKENS", "discipline": "FE", "title": "Audit token warna global dan komponen dasar", "estimate_hours": 6, "depends_on": ["SHELL"],
+          "description": "Audit resources/css/app.css, tailwind.config.js, dan komponen Vue yang digunakan oleh shell. Pertahankan palet Ruang v2 sebagai variabel CSS global; ganti warna literal baru atau bawaan yang terlihat pada layar Ruang dengan token semantik. Pastikan state fokus, hover, error, sukses, dan disabled menggunakan token.",
+          "acceptance_criteria": ["Tidak ada warna literal baru di halaman/komponen Ruang", "Tampilan desktop dan ponsel konsisten dengan palet v2"],
+          "traceability": "Permintaan teknis: setiap warna variabel CSS global"
+        },
+        {
+          "id": "XAMPP", "discipline": "BE", "title": "Dokumentasikan dan verifikasi alur XAMPP MySQL", "estimate_hours": 5, "touches_be_source": false,
+          "description": "Tambahkan petunjuk ruang-1.0/app/README.md dan contoh konfigurasi Apache VirtualHost dengan DocumentRoot mengarah ke public/, AllowOverride All, serta mod_rewrite. Jelaskan pembuatan database ruang_lms melalui XAMPP, penyesuaian DB_USERNAME/DB_PASSWORD lokal, npm build, dan php artisan migrate. Jangan menaruh kata sandi di repo atau mengubah variabel lingkungan sistem.",
+          "acceptance_criteria": ["Petunjuk dapat diikuti dengan XAMPP PHP 8.2 dan MariaDB 10.4", "Apache hanya mengekspos public/", "Kredensial lokal tetap di .env yang diabaikan Git"],
+          "traceability": "Permintaan teknis: MySQL dan XAMPP"
+        }
+      ]
+    },
+    {
+      "key": "ACCESS",
+      "title": "Autentikasi dan RBAC admin tutor siswa",
+      "source": "Permintaan teknis: RBAC admin, tutor, siswa",
+      "summary": "Gunakan autentikasi starter kit dan otorisasi sisi server untuk tiga peran.",
+      "tasks": [
+        {
+          "id": "ROLE", "discipline": "BE", "title": "Tambahkan peran pengguna dan pembatasan route", "estimate_hours": 12, "touches_be_source": true,
+          "description": "Tambah migrasi role pada users atau tabel role terpisah, enum/konstanta peran pada app/Models/User.php, middleware role pada app/Http/Middleware, alias di bootstrap/app.php, dan route grup di routes/web.php. Default registrasi publik harus siswa; admin/tutor hanya dibuat admin. Semua route dan aksi tulis memeriksa peran server-side.",
+          "acceptance_criteria": ["Siswa tidak dapat mengakses URL tutor/admin secara langsung", "Tutor tidak dapat mengelola akun admin", "Registrasi publik tidak dapat memilih peran istimewa"],
+          "traceability": "Permintaan teknis: RBAC admin, tutor, siswa"
+        },
+        {
+          "id": "USERS", "discipline": "BE", "title": "Kelola akun tutor dan siswa oleh admin", "estimate_hours": 12, "touches_be_source": true, "depends_on": ["ROLE"],
+          "description": "Buat controller dan FormRequest untuk daftar, tambah, ubah status, dan reset akses akun pada app/Http/Controllers/Admin serta route admin. Batasi perubahan peran berbahaya dan gunakan validasi email unik. Siapkan seeder akun admin lokal dengan kredensial dari konfigurasi lokal, bukan literal di repository.",
+          "acceptance_criteria": ["Admin dapat membuat tutor dan siswa", "Tutor dan siswa tidak dapat memanggil aksi admin", "Tidak ada password seed di source"],
+          "traceability": "Permintaan teknis: RBAC admin, tutor, siswa"
+        },
+        {
+          "id": "ADMINUI", "discipline": "FE", "title": "Bangun halaman admin untuk akun dan kelas", "estimate_hours": 12,
+          "description": "Buat resources/js/pages/admin/Users.vue dan komponen form/tabel di resources/js/components/admin. Tampilkan daftar akun, peran, status, dan aksi pembuatan tutor/siswa. Gunakan validasi dan error server Inertia. Sidebar admin hanya menampilkan menu yang relevan.",
+          "acceptance_criteria": ["Admin dapat mengelola akun melalui antarmuka", "Validasi gagal terlihat pada field", "Halaman responsif"],
+          "traceability": "Permintaan teknis: RBAC admin, tutor, siswa"
+        }
+      ]
+    },
+    {
+      "key": "CONTENT",
+      "title": "Pustaka materi dan artikel",
+      "source": "design/README.md: Buat Materi Artikel dan Pustaka materi",
+      "summary": "Tutor mengelola artikel berbasis blok dan memilihnya untuk ritme murid.",
+      "tasks": [
+        {
+          "id": "MODEL", "discipline": "BE", "title": "Model materi, status publikasi, dan hak akses tutor", "estimate_hours": 12, "touches_be_source": true,
+          "description": "Buat migrasi materials dengan tipe artikel/video/kuis, title, summary, owner_id, status, published_at, timestamps; model, policy, FormRequest, dan controller pustaka. Tutor hanya mengubah materi miliknya; siswa hanya membaca materi terbit yang ditugaskan. Sediakan pencarian/filter tipe yang dipaginasi.",
+          "acceptance_criteria": ["Materi draft tidak bisa dibaca siswa", "Tutor lain tidak bisa mengubah materi", "Pustaka bisa difilter per tipe"],
+          "traceability": "design/README.md: Pustaka materi"
+        },
+        {
+          "id": "ARTICLE", "discipline": "BE", "title": "Simpan dan validasi blok artikel", "estimate_hours": 10, "touches_be_source": true, "depends_on": ["MODEL"],
+          "description": "Tambahkan penyimpanan isi artikel berupa JSON blok terstruktur pada materials atau tabel article_contents. Validasi jenis dan ukuran blok; sanitasi output teks/tautan saat render, serta larang HTML tak tepercaya. Implementasikan create/update/publish controller dan request tutor.",
+          "acceptance_criteria": ["Blok valid dapat disimpan dan dibaca ulang", "HTML/script tak tepercaya tidak dieksekusi", "Hanya tutor pemilik dapat menerbitkan"],
+          "traceability": "design/README.md: Buat Materi Artikel"
+        },
+        {
+          "id": "EDITOR", "discipline": "FE", "title": "Bangun editor artikel berbasis blok", "estimate_hours": 16,
+          "description": "Buat resources/js/pages/tutor/materials/ArticleEditor.vue dengan integrasi editor blok, form judul/ringkasan, simpan draft, pratinjau, dan publish. Buat komponen renderer artikel siswa di resources/js/components/materials. Susunan konten mengikuti design/index.html#/buat-artikel dan #/baca/a1.",
+          "acceptance_criteria": ["Tutor dapat menambah/mengubah blok dan menyimpan draft", "Pratinjau sesuai renderer siswa", "Siswa membaca artikel yang ditugaskan"],
+          "traceability": "design/README.md: Buat Materi Artikel dan Baca artikel"
+        },
+        {
+          "id": "LIBRARY", "discipline": "FE", "title": "Bangun halaman pustaka materi dan kartu konten", "estimate_hours": 8,
+          "description": "Buat resources/js/pages/tutor/materials/Index.vue serta komponen kartu, filter, dan empty state. Tampilkan tipe, judul, ringkasan, status, dan aksi sesuai peran. Gunakan komponen global dan token warna Ruang.",
+          "acceptance_criteria": ["Filter artikel/video/kuis bekerja", "Status draft/terbit terlihat", "Navigasi ke editor atau pratinjau tepat"],
+          "traceability": "design/README.md: Pustaka materi"
+        }
+      ]
+    },
+    {
+      "key": "VIDEO",
+      "title": "Video YouTube tersemat",
+      "source": "design/README.md: Buat Materi Video dan Tonton video",
+      "summary": "Tutor menautkan video YouTube dan murid menonton pada halaman belajar.",
+      "tasks": [
+        {
+          "id": "LINK", "discipline": "BE", "title": "Validasi dan simpan identitas video YouTube", "estimate_hours": 8, "touches_be_source": true,
+          "description": "Tambah field youtube_video_id/metadata pada materials dan request/controller tutor. Terima URL youtube.com/watch, youtu.be, dan Shorts dari host yang diizinkan; simpan ID valid, bukan HTML iframe mentah. Policy kepemilikan mengikuti materi.",
+          "acceptance_criteria": ["URL domain asing ditolak", "Embed dibangun dari video ID valid", "Tutor dapat mengubah tautan videonya"],
+          "traceability": "design/README.md: Buat Materi Video"
+        },
+        {
+          "id": "PLAYER", "discipline": "FE", "title": "Bangun form tutor dan halaman video siswa", "estimate_hours": 12,
+          "description": "Buat resources/js/pages/tutor/materials/VideoEditor.vue dan resources/js/pages/student/Video.vue. Form memberi pratinjau embed YouTube, judul, ringkasan, validasi dan status. Halaman siswa menampilkan player, konteks, dan aksi selesai; gunakan URL youtube-nocookie.com dari ID tervalidasi.",
+          "acceptance_criteria": ["Pratinjau bekerja untuk URL valid", "URL salah mendapat pesan field", "Video terbit dapat diputar dari tasklist siswa"],
+          "traceability": "design/README.md: Buat Materi Video dan Tonton video"
+        }
+      ]
+    },
+    {
+      "key": "QUIZ",
+      "title": "Kuis pilihan ganda dan esai",
+      "source": "design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai",
+      "summary": "Tutor menyusun soal, siswa mengerjakan, pilihan dinilai otomatis dan esai ditinjau tutor.",
+      "tasks": [
+        {
+          "id": "QUESTIONS", "discipline": "BE", "title": "Model soal pilihan dan esai beserta validasi", "estimate_hours": 14, "touches_be_source": true,
+          "description": "Buat migrasi quizzes/questions/options atau struktur setara, model relasi, FormRequest, dan controller tutor. Pilihan memerlukan sekurangnya dua opsi dan tepat satu kunci; esai tidak memiliki kunci otomatis. Simpan poin dan urutan soal; jangan kirim kunci ke props siswa sebelum submit.",
+          "acceptance_criteria": ["Soal pilihan dan esai tersimpan berurutan", "Kunci tidak bocor ke halaman siswa", "Soal tidak valid ditolak"],
+          "traceability": "design/README.md: Buat Materi Kuis"
+        },
+        {
+          "id": "SUBMIT", "discipline": "BE", "title": "Pengumpulan kuis dan penilaian esai", "estimate_hours": 14, "touches_be_source": true, "depends_on": ["QUESTIONS"],
+          "description": "Buat attempt, answer, score, dan status review pada migrasi/model/controller siswa serta tutor. Nilai pilihan ganda server-side memakai kunci tersimpan; esai masuk antrean tutor untuk diberi poin dan komentar. Cegah submit ganda tanpa kebijakan ulang yang jelas.",
+          "acceptance_criteria": ["Skor pilihan dihitung di server", "Esai menunggu tutor lalu skor final diperbarui", "Siswa tidak dapat mengirim jawaban sebagai siswa lain"],
+          "traceability": "design/README.md: Kerjakan kuis dan Penilaian esai"
+        },
+        {
+          "id": "AUTHOR", "discipline": "FE", "title": "Bangun penyusun kuis tutor", "estimate_hours": 16,
+          "description": "Buat resources/js/pages/tutor/materials/QuizEditor.vue dengan komponen QuestionEditor dan ChoiceEditor. Tutor dapat menambah, menyusun ulang, menghapus, dan mengubah jenis soal; isi opsi/kunci/poin untuk pilihan atau prompt esai. Tampilkan error validasi per soal.",
+          "acceptance_criteria": ["Pilihan dan esai bisa dicampur dalam satu kuis", "Kunci dipilih jelas", "Draft kuis tersimpan dan dapat diedit"],
+          "traceability": "design/README.md: Buat Materi Kuis"
+        },
+        {
+          "id": "TAKE", "discipline": "FE", "title": "Bangun pengerjaan kuis siswa dan antrean esai tutor", "estimate_hours": 16,
+          "description": "Buat resources/js/pages/student/Quiz.vue serta resources/js/pages/tutor/EssayReview.vue. Siswa mengisi semua soal dan melihat konfirmasi pengiriman; tutor melihat esai, memberi skor/komentar, dan menandai selesai. Pisahkan komponen jawaban pilihan dan esai.",
+          "acceptance_criteria": ["Siswa dapat mengirim kuis sekali", "Esai menunggu penilaian ditampilkan tutor", "Hasil tidak menampilkan kunci sebelum submit"],
+          "traceability": "design/README.md: Kerjakan kuis dan Penilaian esai"
+        }
+      ]
+    },
+    {
+      "key": "DAILY",
+      "title": "Tasklist tutor dan ritme harian siswa",
+      "source": "design/README.md: Tasklist harian, Ritme hari ini",
+      "summary": "Lima sholat tetap; tutor memilih artikel, video, kuis, dan target menit untuk tiap tanggal/kelas.",
+      "tasks": [
+        {
+          "id": "PLAN", "discipline": "BE", "title": "Model rencana harian kelas dan penugasan materi", "estimate_hours": 14, "touches_be_source": true,
+          "description": "Buat daily_plans dan daily_plan_materials dengan class_id/date unik, slot artikel/video/kuis, urutan, target_minutes, tutor_id. Controller tutor memvalidasi jenis materi tiap slot dan kepemilikan kelas. Snapshot penugasan per tanggal agar perubahan rencana berikutnya tidak menghapus riwayat.",
+          "acceptance_criteria": ["Satu rencana per kelas dan tanggal", "Slot artikel/video/kuis menerima tipe yang tepat", "Tutor kelas lain tidak dapat mengubah rencana"],
+          "traceability": "design/README.md: Tasklist harian"
+        },
+        {
+          "id": "PROGRESS", "discipline": "BE", "title": "Simpan checklist sholat dan penyelesaian materi per siswa per tanggal", "estimate_hours": 12, "touches_be_source": true, "depends_on": ["PLAN"],
+          "description": "Buat prayer_logs dengan lima nama waktu yang tetap dan material_completions per user/plan/material. Endpoints siswa idempoten untuk menandai sholat serta selesai artikel/video; kuis selesai dari pengiriman attempt. Hitung ringkasan 5+3 tanpa menerima jumlah checklist dari klien.",
+          "acceptance_criteria": ["Checklist hari berbeda terpisah", "Tidak ada sholat keenam atau penghapusan slot wajib", "Kuis tidak bisa ditandai selesai tanpa submit"],
+          "traceability": "design/README.md: Ritme hari ini"
+        },
+        {
+          "id": "TUTORUI", "discipline": "FE", "title": "Bangun pengatur tasklist tutor", "estimate_hours": 12,
+          "description": "Buat resources/js/pages/tutor/DailyPlan.vue dengan pemilih kelas/tanggal, slot artikel/video/kuis dari pustaka, target menit, pratinjau, dan simpan. Tampilkan lima sholat sebagai struktur tetap. Ikuti design/index.html#/tasklist.",
+          "acceptance_criteria": ["Tutor dapat memilih konten tiap tipe dan target", "Lima sholat tampak tanpa kontrol hapus", "Error konflik/validasi dapat dipahami"],
+          "traceability": "design/README.md: Tasklist harian"
+        },
+        {
+          "id": "STUDENTUI", "discipline": "FE", "title": "Bangun halaman Ritme hari ini siswa", "estimate_hours": 12,
+          "description": "Buat resources/js/pages/student/DailyRhythm.vue dan komponen PrayerTracker, MaterialChecklist, StudyTime. Tampilkan status 5 sholat, artikel/video/kuis, target dan durasi aktif; tiap kartu materi menuju halaman belajar. Ikuti design/index.html#/ritme.",
+          "acceptance_criteria": ["Checklist menunjukkan 5+3 langkah", "Status tersimpan setelah reload", "Tautan materi membuka halaman yang benar"],
+          "traceability": "design/README.md: Ritme hari ini"
+        }
+      ]
+    },
+    {
+      "key": "TIME",
+      "title": "Pelacakan waktu belajar aktif",
+      "source": "design/README.md: aturan rancangan jam belajar",
+      "summary": "Durasi siswa terakumulasi hanya di artikel, video, dan kuis saat sesi aktif.",
+      "tasks": [
+        {
+          "id": "SERVER", "discipline": "BE", "title": "Catat interval belajar aktif dengan batas server", "estimate_hours": 14, "touches_be_source": true,
+          "description": "Buat study_sessions/heartbeats terhubung user, material, daily_plan, started_at, last_seen_at, seconds. Endpoint terautentikasi memverifikasi penugasan, membatasi delta heartbeat, mencegah overlap dan duplikasi, lalu mengagregasi menit per hari dan materi. Jangan mempercayai total detik dari browser.",
+          "acceptance_criteria": ["Siswa tidak dapat menaikkan waktu dengan payload sewenang-wenang", "Tab ganda tidak menggandakan hitungan", "Agregasi memakai tanggal Asia/Jakarta"],
+          "traceability": "design/README.md: Jam belajar aktif"
+        },
+        {
+          "id": "CLIENT", "discipline": "FE", "title": "Buat composable pelacak waktu di halaman belajar", "estimate_hours": 12,
+          "description": "Buat resources/js/composables/useStudyTimer.ts dan komponen StudyTimer.vue. Aktif hanya pada artikel/video/kuis siswa; pause saat document.hidden atau tanpa interaksi 60 detik; kirim heartbeat berkala dan saat meninggalkan halaman. Tampilkan waktu dari server, bukan akumulasi lokal sebagai sumber kebenaran.",
+          "acceptance_criteria": ["Timer berhenti saat tab disembunyikan", "Timer tutor pada mode pratinjau tidak menambah durasi siswa", "Reload mempertahankan total dari server"],
+          "traceability": "design/README.md: Jam belajar aktif"
+        }
+      ]
+    },
+    {
+      "key": "DASHBOARD",
+      "title": "Dashboard v2 dan progres kelas",
+      "source": "design/README.md: Beranda dan Progres murid",
+      "summary": "Bawa visual v2 ke halaman Inertia dengan ritme menggantikan sesi terdekat.",
+      "tasks": [
+        {
+          "id": "DATA", "discipline": "BE", "title": "Sediakan ringkasan dashboard sesuai peran", "estimate_hours": 10, "touches_be_source": true,
+          "description": "Buat controller/query untuk ringkasan siswa (rencana hari ini, 5+3, menit, materi) dan tutor (kelas, pengumpulan, esai, progres siswa). Scoped query berdasarkan role dan kelas; data siswa lain tidak dikirim ke props siswa.",
+          "acceptance_criteria": ["Ringkasan siswa hanya miliknya", "Ringkasan tutor hanya kelas yang diajar", "Tanggal mengikuti Asia/Jakarta"],
+          "traceability": "design/README.md: Beranda dan Progres murid"
+        },
+        {
+          "id": "STUDENT", "discipline": "FE", "title": "Bangun dashboard siswa v2 yang diperkuat", "estimate_hours": 14,
+          "description": "Ganti resources/js/pages/Dashboard.vue dengan dashboard siswa berbasis komponen: agenda, tenggat, Ritme hari ini, materi baru, catatan, kalender, prioritas, dan waktu. Kartu Ritme menggantikan Sesi terdekat dan menuju halaman DailyRhythm. Gunakan token warna global serta desain di design/index.html#/beranda.",
+          "acceptance_criteria": ["Tidak ada kartu Sesi terdekat", "Kartu Ritme menampilkan sholat, materi, dan menit", "Layout responsif"],
+          "traceability": "design/README.md: Beranda murid"
+        },
+        {
+          "id": "TUTOR", "discipline": "FE", "title": "Bangun dashboard tutor dan progres murid", "estimate_hours": 14,
+          "description": "Buat resources/js/pages/tutor/Dashboard.vue dan StudentProgress.vue. Kartu agenda, tasklist, materi, pengumpulan, esai, dan progres menaut ke modul terkait. Tabel progres memuat sholat 5, materi 3, dan durasi aktif tiap siswa.",
+          "acceptance_criteria": ["Aksi dashboard membuka halaman yang sesuai", "Progres per siswa hanya kelas tutor", "Status kosong dan loading jelas"],
+          "traceability": "design/README.md: Beranda tutor dan Progres murid"
+        }
+      ]
+    }
+  ]
+}

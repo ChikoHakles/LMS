@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer base {
+    :root {
+        /* Satu sumber warna Ruang v2. Gunakan token semantik di komponen. */
+        --ruang-background: 36 42% 95%;
+        --ruang-paper: 40 100% 99%;
+        --ruang-ink: 18 14% 18%;
+        --ruang-muted: 25 9% 49%;
+        --ruang-line: 31 35% 87%;
+        --ruang-terracotta: 12 43% 47%;
+        --ruang-terracotta-dark: 12 48% 38%;
+        --ruang-soft: 27 60% 90%;
+        --ruang-warm: 36 57% 59%;
+        --ruang-sidebar: 11 28% 23%;
+        --ruang-sidebar-text: 22 62% 89%;
+        --ruang-success: 143 25% 40%;
+        --ruang-success-soft: 132 29% 93%;
+        --ruang-danger: 7 47% 44%;
+        --background: var(--ruang-background);
+        --foreground: var(--ruang-ink);
+        --card: var(--ruang-paper);
+        --card-foreground: var(--ruang-ink);
+        --popover: var(--ruang-paper);
+        --popover-foreground: var(--ruang-ink);
+        --primary: var(--ruang-terracotta);
+        --primary-foreground: 0 0% 100%;
+        --secondary: var(--ruang-soft);
+        --secondary-foreground: var(--ruang-ink);
+        --muted: var(--ruang-soft);
+        --muted-foreground: var(--ruang-muted);
+        --accent: var(--ruang-soft);
+        --accent-foreground: var(--ruang-terracotta);
+        --destructive: var(--ruang-danger);
+        --destructive-foreground: 0 0% 100%;
+        --border: var(--ruang-line);
+        --input: var(--ruang-line);
+        --ring: var(--ruang-terracotta);
+        --chart-1: var(--ruang-terracotta);
+        --chart-2: var(--ruang-success);
+        --chart-3: var(--ruang-sidebar);
+        --chart-4: var(--ruang-warm);
+        --chart-5: var(--ruang-danger);
+        --radius: 0.5rem;
+        --sidebar-background: var(--ruang-sidebar);
+        --sidebar-foreground: var(--ruang-sidebar-text);
+        --sidebar-primary: var(--ruang-paper);
+        --sidebar-primary-foreground: var(--ruang-sidebar);
+        --sidebar-accent: var(--ruang-terracotta-dark);
+        --sidebar-accent-foreground: var(--ruang-paper);
+        --sidebar-border: var(--ruang-terracotta-dark);
+        --sidebar-ring: var(--ruang-warm);
+    }
+
+    .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 6.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 0% 83.1%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+        --sidebar-background: 0 0% 7%;
+        --sidebar-foreground: 0 0% 95.9%;
+        --sidebar-primary: 360, 100%, 100%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 0 0% 15.9%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 0 0% 15.9%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}

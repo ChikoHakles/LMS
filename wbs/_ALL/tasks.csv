@@ -1,0 +1,333 @@
+ID,Feature,Wave,Type,Summary,Description,Estimate (h),Depends On,Traceability,Status,Owner,Result/Notes
+RUANG-12,Autentikasi dan RBAC admin tutor siswa,1,frontend,[FE] Bangun halaman admin untuk akun dan kelas,"Buat resources/js/pages/admin/Users.vue dan komponen form/tabel di resources/js/components/admin. Tampilkan daftar akun, peran, status, dan aksi pembuatan tutor/siswa. Gunakan validasi dan error server Inertia. Sidebar admin hanya menampilkan menu yang relevan.",12.0,,"Permintaan teknis: RBAC admin, tutor, siswa",not-done,,
+RUANG-16,Pustaka materi dan artikel,1,backend,"[BE] Model materi, status publikasi, dan hak akses tutor","Buat migrasi materials dengan tipe artikel/video/kuis, title, summary, owner_id, status, published_at, timestamps; model, policy, FormRequest, dan controller pustaka. Tutor hanya mengubah materi miliknya; siswa hanya membaca materi terbit yang ditugaskan. Sediakan pencarian/filter tipe yang dipaginasi.",12.0,,design/README.md: Pustaka materi,not-done,,
+RUANG-2,Fondasi VILT dan navigasi Ruang,1,frontend,[FE] Bangun shell aplikasi berbasis komponen dan navigasi per peran,"Ganti tampilan bawaan pada resources/js/components/AppSidebar.vue, AppHeader.vue, AppLogo.vue, dan layouts/app/*.vue dengan shell Ruang v2. Pecah sidebar, header, kartu, badge, dan progress menjadi komponen reusable. Siapkan susunan menu admin, tutor, siswa tanpa mengandalkan kontrol menu sebagai keamanan; tautan diarahkan ke route bernama. Responsive sampai lebar ponsel.",12.0,,design/README.md: peta halaman; dashboard-concepts/render.html: v2,not-done,,
+RUANG-20,Pustaka materi dan artikel,1,frontend,[FE] Bangun editor artikel berbasis blok,"Buat resources/js/pages/tutor/materials/ArticleEditor.vue dengan integrasi editor blok, form judul/ringkasan, simpan draft, pratinjau, dan publish. Buat komponen renderer artikel siswa di resources/js/components/materials. Susunan konten mengikuti design/index.html#/buat-artikel dan #/baca/a1.",16.0,,design/README.md: Buat Materi Artikel dan Baca artikel,not-done,,
+RUANG-21,Pustaka materi dan artikel,1,frontend,[FE] Bangun halaman pustaka materi dan kartu konten,"Buat resources/js/pages/tutor/materials/Index.vue serta komponen kartu, filter, dan empty state. Tampilkan tipe, judul, ringkasan, status, dan aksi sesuai peran. Gunakan komponen global dan token warna Ruang.",8.0,,design/README.md: Pustaka materi,not-done,,
+RUANG-25,Video YouTube tersemat,1,backend,[BE] Validasi dan simpan identitas video YouTube,"Tambah field youtube_video_id/metadata pada materials dan request/controller tutor. Terima URL youtube.com/watch, youtu.be, dan Shorts dari host yang diizinkan; simpan ID valid, bukan HTML iframe mentah. Policy kepemilikan mengikuti materi.",8.0,,design/README.md: Buat Materi Video,not-done,,
+RUANG-27,Video YouTube tersemat,1,frontend,[FE] Bangun form tutor dan halaman video siswa,"Buat resources/js/pages/tutor/materials/VideoEditor.vue dan resources/js/pages/student/Video.vue. Form memberi pratinjau embed YouTube, judul, ringkasan, validasi dan status. Halaman siswa menampilkan player, konteks, dan aksi selesai; gunakan URL youtube-nocookie.com dari ID tervalidasi.",12.0,,design/README.md: Buat Materi Video dan Tonton video,not-done,,
+RUANG-31,Kuis pilihan ganda dan esai,1,backend,[BE] Model soal pilihan dan esai beserta validasi,"Buat migrasi quizzes/questions/options atau struktur setara, model relasi, FormRequest, dan controller tutor. Pilihan memerlukan sekurangnya dua opsi dan tepat satu kunci; esai tidak memiliki kunci otomatis. Simpan poin dan urutan soal; jangan kirim kunci ke props siswa sebelum submit.",14.0,,design/README.md: Buat Materi Kuis,not-done,,
+RUANG-35,Kuis pilihan ganda dan esai,1,frontend,[FE] Bangun penyusun kuis tutor,"Buat resources/js/pages/tutor/materials/QuizEditor.vue dengan komponen QuestionEditor dan ChoiceEditor. Tutor dapat menambah, menyusun ulang, menghapus, dan mengubah jenis soal; isi opsi/kunci/poin untuk pilihan atau prompt esai. Tampilkan error validasi per soal.",16.0,,design/README.md: Buat Materi Kuis,not-done,,
+RUANG-36,Kuis pilihan ganda dan esai,1,frontend,[FE] Bangun pengerjaan kuis siswa dan antrean esai tutor,"Buat resources/js/pages/student/Quiz.vue serta resources/js/pages/tutor/EssayReview.vue. Siswa mengisi semua soal dan melihat konfirmasi pengiriman; tutor melihat esai, memberi skor/komentar, dan menandai selesai. Pisahkan komponen jawaban pilihan dan esai.",16.0,,design/README.md: Kerjakan kuis dan Penilaian esai,not-done,,
+RUANG-4,Fondasi VILT dan navigasi Ruang,1,backend,[BE] Dokumentasikan dan verifikasi alur XAMPP MySQL,"Tambahkan petunjuk ruang-1.0/app/README.md dan contoh konfigurasi Apache VirtualHost dengan DocumentRoot mengarah ke public/, AllowOverride All, serta mod_rewrite. Jelaskan pembuatan database ruang_lms melalui XAMPP, penyesuaian DB_USERNAME/DB_PASSWORD lokal, npm build, dan php artisan migrate. Jangan menaruh kata sandi di repo atau mengubah variabel lingkungan sistem.",5.0,,Permintaan teknis: MySQL dan XAMPP,not-done,,
+RUANG-40,Tasklist tutor dan ritme harian siswa,1,backend,[BE] Model rencana harian kelas dan penugasan materi,"Buat daily_plans dan daily_plan_materials dengan class_id/date unik, slot artikel/video/kuis, urutan, target_minutes, tutor_id. Controller tutor memvalidasi jenis materi tiap slot dan kepemilikan kelas. Snapshot penugasan per tanggal agar perubahan rencana berikutnya tidak menghapus riwayat.",14.0,,design/README.md: Tasklist harian,not-done,,
+RUANG-44,Tasklist tutor dan ritme harian siswa,1,frontend,[FE] Bangun pengatur tasklist tutor,"Buat resources/js/pages/tutor/DailyPlan.vue dengan pemilih kelas/tanggal, slot artikel/video/kuis dari pustaka, target menit, pratinjau, dan simpan. Tampilkan lima sholat sebagai struktur tetap. Ikuti design/index.html#/tasklist.",12.0,,design/README.md: Tasklist harian,not-done,,
+RUANG-45,Tasklist tutor dan ritme harian siswa,1,frontend,[FE] Bangun halaman Ritme hari ini siswa,"Buat resources/js/pages/student/DailyRhythm.vue dan komponen PrayerTracker, MaterialChecklist, StudyTime. Tampilkan status 5 sholat, artikel/video/kuis, target dan durasi aktif; tiap kartu materi menuju halaman belajar. Ikuti design/index.html#/ritme.",12.0,,design/README.md: Ritme hari ini,not-done,,
+RUANG-49,Pelacakan waktu belajar aktif,1,backend,[BE] Catat interval belajar aktif dengan batas server,"Buat study_sessions/heartbeats terhubung user, material, daily_plan, started_at, last_seen_at, seconds. Endpoint terautentikasi memverifikasi penugasan, membatasi delta heartbeat, mencegah overlap dan duplikasi, lalu mengagregasi menit per hari dan materi. Jangan mempercayai total detik dari browser.",14.0,,design/README.md: Jam belajar aktif,not-done,,
+RUANG-51,Pelacakan waktu belajar aktif,1,frontend,[FE] Buat composable pelacak waktu di halaman belajar,"Buat resources/js/composables/useStudyTimer.ts dan komponen StudyTimer.vue. Aktif hanya pada artikel/video/kuis siswa; pause saat document.hidden atau tanpa interaksi 60 detik; kirim heartbeat berkala dan saat meninggalkan halaman. Tampilkan waktu dari server, bukan akumulasi lokal sebagai sumber kebenaran.",12.0,,design/README.md: Jam belajar aktif,not-done,,
+RUANG-55,Dashboard v2 dan progres kelas,1,backend,[BE] Sediakan ringkasan dashboard sesuai peran,"Buat controller/query untuk ringkasan siswa (rencana hari ini, 5+3, menit, materi) dan tutor (kelas, pengumpulan, esai, progres siswa). Scoped query berdasarkan role dan kelas; data siswa lain tidak dikirim ke props siswa.",10.0,,design/README.md: Beranda dan Progres murid,not-done,,
+RUANG-57,Dashboard v2 dan progres kelas,1,frontend,[FE] Bangun dashboard siswa v2 yang diperkuat,"Ganti resources/js/pages/Dashboard.vue dengan dashboard siswa berbasis komponen: agenda, tenggat, Ritme hari ini, materi baru, catatan, kalender, prioritas, dan waktu. Kartu Ritme menggantikan Sesi terdekat dan menuju halaman DailyRhythm. Gunakan token warna global serta desain di design/index.html#/beranda.",14.0,,design/README.md: Beranda murid,not-done,,
+RUANG-58,Dashboard v2 dan progres kelas,1,frontend,[FE] Bangun dashboard tutor dan progres murid,"Buat resources/js/pages/tutor/Dashboard.vue dan StudentProgress.vue. Kartu agenda, tasklist, materi, pengumpulan, esai, dan progres menaut ke modul terkait. Tabel progres memuat sholat 5, materi 3, dan durasi aktif tiap siswa.",14.0,,design/README.md: Beranda tutor dan Progres murid,not-done,,
+RUANG-8,Autentikasi dan RBAC admin tutor siswa,1,backend,[BE] Tambahkan peran pengguna dan pembatasan route,"Tambah migrasi role pada users atau tabel role terpisah, enum/konstanta peran pada app/Models/User.php, middleware role pada app/Http/Middleware, alias di bootstrap/app.php, dan route grup di routes/web.php. Default registrasi publik harus siswa; admin/tutor hanya dibuat admin. Semua route dan aksi tulis memeriksa peran server-side.",12.0,,"Permintaan teknis: RBAC admin, tutor, siswa",not-done,,
+RUANG-10,Autentikasi dan RBAC admin tutor siswa,2,backend,[BE] Kelola akun tutor dan siswa oleh admin,"Buat controller dan FormRequest untuk daftar, tambah, ubah status, dan reset akses akun pada app/Http/Controllers/Admin serta route admin. Batasi perubahan peran berbahaya dan gunakan validasi email unik. Siapkan seeder akun admin lokal dengan kredensial dari konfigurasi lokal, bukan literal di repository.",12.0,RUANG-8,"Permintaan teknis: RBAC admin, tutor, siswa",not-done,,
+RUANG-14,Autentikasi dan RBAC admin tutor siswa,2,code-review,[FE] Code Review: Autentikasi dan RBAC admin tutor siswa,"Review all FE work delivered for **Autentikasi dan RBAC admin tutor siswa** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Bangun halaman admin untuk akun dan kelas**  ·  _Permintaan teknis: RBAC admin, tutor, siswa_
+  - Admin dapat mengelola akun melalui antarmuka
+  - Validasi gagal terlihat pada field
+  - Halaman responsif
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",2.5,RUANG-12,"Permintaan teknis: RBAC admin, tutor, siswa",not-done,,
+RUANG-17,Pustaka materi dan artikel,2,unit-test,"[BE] Unit Test: Model materi, status publikasi, dan hak akses tutor","Write unit tests for the work delivered in **Model materi, status publikasi, dan hak akses tutor**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Materi draft tidak bisa dibaca siswa
+- Tutor lain tidak bisa mengubah materi
+- Pustaka bisa difilter per tipe
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",6.0,RUANG-16,design/README.md: Pustaka materi,not-done,,
+RUANG-18,Pustaka materi dan artikel,2,backend,[BE] Simpan dan validasi blok artikel,"Tambahkan penyimpanan isi artikel berupa JSON blok terstruktur pada materials atau tabel article_contents. Validasi jenis dan ukuran blok; sanitasi output teks/tautan saat render, serta larang HTML tak tepercaya. Implementasikan create/update/publish controller dan request tutor.",10.0,RUANG-16,design/README.md: Buat Materi Artikel,not-done,,
+RUANG-23,Pustaka materi dan artikel,2,code-review,[FE] Code Review: Pustaka materi dan artikel,"Review all FE work delivered for **Pustaka materi dan artikel** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Bangun editor artikel berbasis blok**  ·  _design/README.md: Buat Materi Artikel dan Baca artikel_
+  - Tutor dapat menambah/mengubah blok dan menyimpan draft
+  - Pratinjau sesuai renderer siswa
+  - Siswa membaca artikel yang ditugaskan
+
+**Bangun halaman pustaka materi dan kartu konten**  ·  _design/README.md: Pustaka materi_
+  - Filter artikel/video/kuis bekerja
+  - Status draft/terbit terlihat
+  - Navigasi ke editor atau pratinjau tepat
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-20,RUANG-21",design/README.md: Buat Materi Artikel dan Pustaka materi,not-done,,
+RUANG-26,Video YouTube tersemat,2,unit-test,[BE] Unit Test: Validasi dan simpan identitas video YouTube,"Write unit tests for the work delivered in **Validasi dan simpan identitas video YouTube**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- URL domain asing ditolak
+- Embed dibangun dari video ID valid
+- Tutor dapat mengubah tautan videonya
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",4.0,RUANG-25,design/README.md: Buat Materi Video,not-done,,
+RUANG-29,Video YouTube tersemat,2,code-review,[FE] Code Review: Video YouTube tersemat,"Review all FE work delivered for **Video YouTube tersemat** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Bangun form tutor dan halaman video siswa**  ·  _design/README.md: Buat Materi Video dan Tonton video_
+  - Pratinjau bekerja untuk URL valid
+  - URL salah mendapat pesan field
+  - Video terbit dapat diputar dari tasklist siswa
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",2.5,RUANG-27,design/README.md: Buat Materi Video dan Tonton video,not-done,,
+RUANG-3,Fondasi VILT dan navigasi Ruang,2,frontend,[FE] Audit token warna global dan komponen dasar,"Audit resources/css/app.css, tailwind.config.js, dan komponen Vue yang digunakan oleh shell. Pertahankan palet Ruang v2 sebagai variabel CSS global; ganti warna literal baru atau bawaan yang terlihat pada layar Ruang dengan token semantik. Pastikan state fokus, hover, error, sukses, dan disabled menggunakan token.",6.0,RUANG-2,Permintaan teknis: setiap warna variabel CSS global,not-done,,
+RUANG-32,Kuis pilihan ganda dan esai,2,unit-test,[BE] Unit Test: Model soal pilihan dan esai beserta validasi,"Write unit tests for the work delivered in **Model soal pilihan dan esai beserta validasi**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Soal pilihan dan esai tersimpan berurutan
+- Kunci tidak bocor ke halaman siswa
+- Soal tidak valid ditolak
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",7.0,RUANG-31,design/README.md: Buat Materi Kuis,not-done,,
+RUANG-33,Kuis pilihan ganda dan esai,2,backend,[BE] Pengumpulan kuis dan penilaian esai,"Buat attempt, answer, score, dan status review pada migrasi/model/controller siswa serta tutor. Nilai pilihan ganda server-side memakai kunci tersimpan; esai masuk antrean tutor untuk diberi poin dan komentar. Cegah submit ganda tanpa kebijakan ulang yang jelas.",14.0,RUANG-31,design/README.md: Kerjakan kuis dan Penilaian esai,not-done,,
+RUANG-38,Kuis pilihan ganda dan esai,2,code-review,[FE] Code Review: Kuis pilihan ganda dan esai,"Review all FE work delivered for **Kuis pilihan ganda dan esai** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Bangun penyusun kuis tutor**  ·  _design/README.md: Buat Materi Kuis_
+  - Pilihan dan esai bisa dicampur dalam satu kuis
+  - Kunci dipilih jelas
+  - Draft kuis tersimpan dan dapat diedit
+
+**Bangun pengerjaan kuis siswa dan antrean esai tutor**  ·  _design/README.md: Kerjakan kuis dan Penilaian esai_
+  - Siswa dapat mengirim kuis sekali
+  - Esai menunggu penilaian ditampilkan tutor
+  - Hasil tidak menampilkan kunci sebelum submit
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-35,RUANG-36","design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai",not-done,,
+RUANG-41,Tasklist tutor dan ritme harian siswa,2,unit-test,[BE] Unit Test: Model rencana harian kelas dan penugasan materi,"Write unit tests for the work delivered in **Model rencana harian kelas dan penugasan materi**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Satu rencana per kelas dan tanggal
+- Slot artikel/video/kuis menerima tipe yang tepat
+- Tutor kelas lain tidak dapat mengubah rencana
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",7.0,RUANG-40,design/README.md: Tasklist harian,not-done,,
+RUANG-42,Tasklist tutor dan ritme harian siswa,2,backend,[BE] Simpan checklist sholat dan penyelesaian materi per siswa per tanggal,Buat prayer_logs dengan lima nama waktu yang tetap dan material_completions per user/plan/material. Endpoints siswa idempoten untuk menandai sholat serta selesai artikel/video; kuis selesai dari pengiriman attempt. Hitung ringkasan 5+3 tanpa menerima jumlah checklist dari klien.,12.0,RUANG-40,design/README.md: Ritme hari ini,not-done,,
+RUANG-47,Tasklist tutor dan ritme harian siswa,2,code-review,[FE] Code Review: Tasklist tutor dan ritme harian siswa,"Review all FE work delivered for **Tasklist tutor dan ritme harian siswa** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Bangun pengatur tasklist tutor**  ·  _design/README.md: Tasklist harian_
+  - Tutor dapat memilih konten tiap tipe dan target
+  - Lima sholat tampak tanpa kontrol hapus
+  - Error konflik/validasi dapat dipahami
+
+**Bangun halaman Ritme hari ini siswa**  ·  _design/README.md: Ritme hari ini_
+  - Checklist menunjukkan 5+3 langkah
+  - Status tersimpan setelah reload
+  - Tautan materi membuka halaman yang benar
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-44,RUANG-45","design/README.md: Tasklist harian, Ritme hari ini",not-done,,
+RUANG-5,Fondasi VILT dan navigasi Ruang,2,code-review,[BE] Code Review: Fondasi VILT dan navigasi Ruang,"Review all BE work delivered for **Fondasi VILT dan navigasi Ruang** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Dokumentasikan dan verifikasi alur XAMPP MySQL**  ·  _Permintaan teknis: MySQL dan XAMPP_
+  - Petunjuk dapat diikuti dengan XAMPP PHP 8.2 dan MariaDB 10.4
+  - Apache hanya mengekspos public/
+  - Kredensial lokal tetap di .env yang diabaikan Git
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",2.5,RUANG-4,design/README.md: peta halaman dan konsep dashboard v2,not-done,,
+RUANG-50,Pelacakan waktu belajar aktif,2,unit-test,[BE] Unit Test: Catat interval belajar aktif dengan batas server,"Write unit tests for the work delivered in **Catat interval belajar aktif dengan batas server**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Siswa tidak dapat menaikkan waktu dengan payload sewenang-wenang
+- Tab ganda tidak menggandakan hitungan
+- Agregasi memakai tanggal Asia/Jakarta
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",7.0,RUANG-49,design/README.md: Jam belajar aktif,not-done,,
+RUANG-53,Pelacakan waktu belajar aktif,2,code-review,[FE] Code Review: Pelacakan waktu belajar aktif,"Review all FE work delivered for **Pelacakan waktu belajar aktif** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Buat composable pelacak waktu di halaman belajar**  ·  _design/README.md: Jam belajar aktif_
+  - Timer berhenti saat tab disembunyikan
+  - Timer tutor pada mode pratinjau tidak menambah durasi siswa
+  - Reload mempertahankan total dari server
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",2.5,RUANG-51,design/README.md: aturan rancangan jam belajar,not-done,,
+RUANG-56,Dashboard v2 dan progres kelas,2,unit-test,[BE] Unit Test: Sediakan ringkasan dashboard sesuai peran,"Write unit tests for the work delivered in **Sediakan ringkasan dashboard sesuai peran**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Ringkasan siswa hanya miliknya
+- Ringkasan tutor hanya kelas yang diajar
+- Tanggal mengikuti Asia/Jakarta
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",5.0,RUANG-55,design/README.md: Beranda dan Progres murid,not-done,,
+RUANG-60,Dashboard v2 dan progres kelas,2,code-review,[FE] Code Review: Dashboard v2 dan progres kelas,"Review all FE work delivered for **Dashboard v2 dan progres kelas** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Bangun dashboard siswa v2 yang diperkuat**  ·  _design/README.md: Beranda murid_
+  - Tidak ada kartu Sesi terdekat
+  - Kartu Ritme menampilkan sholat, materi, dan menit
+  - Layout responsif
+
+**Bangun dashboard tutor dan progres murid**  ·  _design/README.md: Beranda tutor dan Progres murid_
+  - Aksi dashboard membuka halaman yang sesuai
+  - Progres per siswa hanya kelas tutor
+  - Status kosong dan loading jelas
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-57,RUANG-58",design/README.md: Beranda dan Progres murid,not-done,,
+RUANG-9,Autentikasi dan RBAC admin tutor siswa,2,unit-test,[BE] Unit Test: Tambahkan peran pengguna dan pembatasan route,"Write unit tests for the work delivered in **Tambahkan peran pengguna dan pembatasan route**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Siswa tidak dapat mengakses URL tutor/admin secara langsung
+- Tutor tidak dapat mengelola akun admin
+- Registrasi publik tidak dapat memilih peran istimewa
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",6.0,RUANG-8,"Permintaan teknis: RBAC admin, tutor, siswa",not-done,,
+RUANG-11,Autentikasi dan RBAC admin tutor siswa,3,unit-test,[BE] Unit Test: Kelola akun tutor dan siswa oleh admin,"Write unit tests for the work delivered in **Kelola akun tutor dan siswa oleh admin**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Admin dapat membuat tutor dan siswa
+- Tutor dan siswa tidak dapat memanggil aksi admin
+- Tidak ada password seed di source
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",6.0,RUANG-10,"Permintaan teknis: RBAC admin, tutor, siswa",not-done,,
+RUANG-19,Pustaka materi dan artikel,3,unit-test,[BE] Unit Test: Simpan dan validasi blok artikel,"Write unit tests for the work delivered in **Simpan dan validasi blok artikel**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Blok valid dapat disimpan dan dibaca ulang
+- HTML/script tak tepercaya tidak dieksekusi
+- Hanya tutor pemilik dapat menerbitkan
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",5.0,RUANG-18,design/README.md: Buat Materi Artikel,not-done,,
+RUANG-28,Video YouTube tersemat,3,code-review,[BE] Code Review: Video YouTube tersemat,"Review all BE work delivered for **Video YouTube tersemat** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Validasi dan simpan identitas video YouTube**  ·  _design/README.md: Buat Materi Video_
+  - URL domain asing ditolak
+  - Embed dibangun dari video ID valid
+  - Tutor dapat mengubah tautan videonya
+
+Also covers **1 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.0,"RUANG-25,RUANG-26",design/README.md: Buat Materi Video dan Tonton video,not-done,,
+RUANG-34,Kuis pilihan ganda dan esai,3,unit-test,[BE] Unit Test: Pengumpulan kuis dan penilaian esai,"Write unit tests for the work delivered in **Pengumpulan kuis dan penilaian esai**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Skor pilihan dihitung di server
+- Esai menunggu tutor lalu skor final diperbarui
+- Siswa tidak dapat mengirim jawaban sebagai siswa lain
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",7.0,RUANG-33,design/README.md: Kerjakan kuis dan Penilaian esai,not-done,,
+RUANG-43,Tasklist tutor dan ritme harian siswa,3,unit-test,[BE] Unit Test: Simpan checklist sholat dan penyelesaian materi per siswa per tanggal,"Write unit tests for the work delivered in **Simpan checklist sholat dan penyelesaian materi per siswa per tanggal**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Checklist hari berbeda terpisah
+- Tidak ada sholat keenam atau penghapusan slot wajib
+- Kuis tidak bisa ditandai selesai tanpa submit
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",6.0,RUANG-42,design/README.md: Ritme hari ini,not-done,,
+RUANG-52,Pelacakan waktu belajar aktif,3,code-review,[BE] Code Review: Pelacakan waktu belajar aktif,"Review all BE work delivered for **Pelacakan waktu belajar aktif** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Catat interval belajar aktif dengan batas server**  ·  _design/README.md: Jam belajar aktif_
+  - Siswa tidak dapat menaikkan waktu dengan payload sewenang-wenang
+  - Tab ganda tidak menggandakan hitungan
+  - Agregasi memakai tanggal Asia/Jakarta
+
+Also covers **1 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-49,RUANG-50",design/README.md: aturan rancangan jam belajar,not-done,,
+RUANG-59,Dashboard v2 dan progres kelas,3,code-review,[BE] Code Review: Dashboard v2 dan progres kelas,"Review all BE work delivered for **Dashboard v2 dan progres kelas** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Sediakan ringkasan dashboard sesuai peran**  ·  _design/README.md: Beranda dan Progres murid_
+  - Ringkasan siswa hanya miliknya
+  - Ringkasan tutor hanya kelas yang diajar
+  - Tanggal mengikuti Asia/Jakarta
+
+Also covers **1 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.0,"RUANG-55,RUANG-56",design/README.md: Beranda dan Progres murid,not-done,,
+RUANG-6,Fondasi VILT dan navigasi Ruang,3,code-review,[FE] Code Review: Fondasi VILT dan navigasi Ruang,"Review all FE work delivered for **Fondasi VILT dan navigasi Ruang** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Bangun shell aplikasi berbasis komponen dan navigasi per peran**  ·  _design/README.md: peta halaman; dashboard-concepts/render.html: v2_
+  - Menu tutor memuat Tasklist harian dan Buat Materi dengan anak Artikel, Video, Kuis
+  - Menu siswa memuat Beranda, Ritme hari ini, dan Materi
+  - Navigasi ponsel dapat dibuka dan ditutup dengan keyboard
+
+**Audit token warna global dan komponen dasar**  ·  _Permintaan teknis: setiap warna variabel CSS global_
+  - Tidak ada warna literal baru di halaman/komponen Ruang
+  - Tampilan desktop dan ponsel konsisten dengan palet v2
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-2,RUANG-3",design/README.md: peta halaman dan konsep dashboard v2,not-done,,
+RUANG-13,Autentikasi dan RBAC admin tutor siswa,4,code-review,[BE] Code Review: Autentikasi dan RBAC admin tutor siswa,"Review all BE work delivered for **Autentikasi dan RBAC admin tutor siswa** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Tambahkan peran pengguna dan pembatasan route**  ·  _Permintaan teknis: RBAC admin, tutor, siswa_
+  - Siswa tidak dapat mengakses URL tutor/admin secara langsung
+  - Tutor tidak dapat mengelola akun admin
+  - Registrasi publik tidak dapat memilih peran istimewa
+
+**Kelola akun tutor dan siswa oleh admin**  ·  _Permintaan teknis: RBAC admin, tutor, siswa_
+  - Admin dapat membuat tutor dan siswa
+  - Tutor dan siswa tidak dapat memanggil aksi admin
+  - Tidak ada password seed di source
+
+Also covers **2 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",4.5,"RUANG-8,RUANG-9,RUANG-10,RUANG-11","Permintaan teknis: RBAC admin, tutor, siswa",not-done,,
+RUANG-22,Pustaka materi dan artikel,4,code-review,[BE] Code Review: Pustaka materi dan artikel,"Review all BE work delivered for **Pustaka materi dan artikel** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Model materi, status publikasi, dan hak akses tutor**  ·  _design/README.md: Pustaka materi_
+  - Materi draft tidak bisa dibaca siswa
+  - Tutor lain tidak bisa mengubah materi
+  - Pustaka bisa difilter per tipe
+
+**Simpan dan validasi blok artikel**  ·  _design/README.md: Buat Materi Artikel_
+  - Blok valid dapat disimpan dan dibaca ulang
+  - HTML/script tak tepercaya tidak dieksekusi
+  - Hanya tutor pemilik dapat menerbitkan
+
+Also covers **2 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",4.5,"RUANG-16,RUANG-17,RUANG-18,RUANG-19",design/README.md: Buat Materi Artikel dan Pustaka materi,not-done,,
+RUANG-37,Kuis pilihan ganda dan esai,4,code-review,[BE] Code Review: Kuis pilihan ganda dan esai,"Review all BE work delivered for **Kuis pilihan ganda dan esai** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Model soal pilihan dan esai beserta validasi**  ·  _design/README.md: Buat Materi Kuis_
+  - Soal pilihan dan esai tersimpan berurutan
+  - Kunci tidak bocor ke halaman siswa
+  - Soal tidak valid ditolak
+
+**Pengumpulan kuis dan penilaian esai**  ·  _design/README.md: Kerjakan kuis dan Penilaian esai_
+  - Skor pilihan dihitung di server
+  - Esai menunggu tutor lalu skor final diperbarui
+  - Siswa tidak dapat mengirim jawaban sebagai siswa lain
+
+Also covers **2 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",4.5,"RUANG-31,RUANG-32,RUANG-33,RUANG-34","design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai",not-done,,
+RUANG-46,Tasklist tutor dan ritme harian siswa,4,code-review,[BE] Code Review: Tasklist tutor dan ritme harian siswa,"Review all BE work delivered for **Tasklist tutor dan ritme harian siswa** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Model rencana harian kelas dan penugasan materi**  ·  _design/README.md: Tasklist harian_
+  - Satu rencana per kelas dan tanggal
+  - Slot artikel/video/kuis menerima tipe yang tepat
+  - Tutor kelas lain tidak dapat mengubah rencana
+
+**Simpan checklist sholat dan penyelesaian materi per siswa per tanggal**  ·  _design/README.md: Ritme hari ini_
+  - Checklist hari berbeda terpisah
+  - Tidak ada sholat keenam atau penghapusan slot wajib
+  - Kuis tidak bisa ditandai selesai tanpa submit
+
+Also covers **2 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",4.5,"RUANG-40,RUANG-41,RUANG-42,RUANG-43","design/README.md: Tasklist harian, Ritme hari ini",not-done,,
