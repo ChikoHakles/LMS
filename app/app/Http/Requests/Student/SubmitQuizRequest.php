@@ -24,6 +24,7 @@ class SubmitQuizRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'student_id' => ['prohibited'],
             'answers' => ['required', 'array', 'min:1', 'max:50'],
             'answers.*.question_id' => ['required', 'integer', 'distinct'],
             'answers.*.choice_id' => ['nullable', 'integer'],

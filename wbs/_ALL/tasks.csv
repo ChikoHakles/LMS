@@ -227,7 +227,7 @@ This is a separate task because aplikasi Laravel 12 has a coverage gate; the cod
 - Siswa tidak dapat mengirim jawaban sebagai siswa lain
 - The golden path plus at least one failure case per branch the parent task introduced.
 
-**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",7.0,RUANG-33,design/README.md: Kerjakan kuis dan Penilaian esai,not-done,,
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",7.0,RUANG-33,design/README.md: Kerjakan kuis dan Penilaian esai,done,,Acceptance tests cover server-side choice scoring and tampering attempts; unique one-submit behavior; authenticated student ownership and assignment gates; cross-quiz choices and missing answers; tutor-owner queue scope; essay score bounds comments graded-by audit and final score after all essays. Build passed; SQLite suite 58 tests/401 assertions.
 RUANG-43,Tasklist tutor dan ritme harian siswa,3,unit-test,[BE] Unit Test: Simpan checklist sholat dan penyelesaian materi per siswa per tanggal,"Write unit tests for the work delivered in **Simpan checklist sholat dan penyelesaian materi per siswa per tanggal**.
 
 This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
