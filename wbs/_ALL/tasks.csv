@@ -130,7 +130,7 @@ RUANG-5,Fondasi VILT dan navigasi Ruang,2,code-review,[BE] Code Review: Fondasi 
   - Apache hanya mengekspos public/
   - Kredensial lokal tetap di .env yang diabaikan Git
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",2.5,RUANG-4,design/README.md: peta halaman dan konsep dashboard v2,not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",2.5,RUANG-4,design/README.md: peta halaman dan konsep dashboard v2,done,,"BE review passed: XAMPP PHP 8.2/MariaDB 10.4 guidance, app/public-only Apache root with AllowOverride All, and ignored local .env credentials verified. No blocking findings."
 RUANG-50,Pelacakan waktu belajar aktif,2,unit-test,[BE] Unit Test: Catat interval belajar aktif dengan batas server,"Write unit tests for the work delivered in **Catat interval belajar aktif dengan batas server**.
 
 This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
