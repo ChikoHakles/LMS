@@ -7,6 +7,7 @@ use App\Http\Controllers\Student\QuizController as StudentQuizController;
 use App\Http\Controllers\Tutor\MaterialController as TutorMaterialController;
 use App\Http\Controllers\Tutor\EssayReviewController;
 use App\Http\Controllers\Tutor\QuizMaterialController;
+use App\Http\Controllers\Tutor\DailyPlanController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -31,8 +32,10 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
     });
 
     Route::prefix('tutor')->name('tutor.')->middleware('role:tutor')->group(function () {
-        Route::get('daily-plans', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Tasklist harian']))
-            ->name('daily-plans.index');
+        Route::get('daily-plans', [DailyPlanController::class, 'index'])->name('daily-plans.index');
+        Route::post('classes', [DailyPlanController::class, 'storeClass'])->name('classes.store');
+        Route::put('classes/{learningClass}/students', [DailyPlanController::class, 'updateStudents'])->name('classes.students.update');
+        Route::post('daily-plans', [DailyPlanController::class, 'store'])->name('daily-plans.store');
         Route::get('materials/article/create', [TutorMaterialController::class, 'createArticle'])
             ->name('materials.article.create');
         Route::post('materials', [TutorMaterialController::class, 'store'])->name('materials.store');

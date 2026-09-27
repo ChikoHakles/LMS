@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Contracts\StudentMaterialAssignments;
-use App\Services\NoStudentMaterialAssignments;
+use App\Services\DailyPlanStudentMaterialAssignments;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(StudentMaterialAssignments::class, NoStudentMaterialAssignments::class);
+        $this->app->bind(StudentMaterialAssignments::class, DailyPlanStudentMaterialAssignments::class);
     }
 
     /**
