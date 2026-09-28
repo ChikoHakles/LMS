@@ -173,7 +173,7 @@ RUANG-60,Dashboard v2 dan progres kelas,2,code-review,[FE] Code Review: Dashboar
   - Progres per siswa hanya kelas tutor
   - Status kosong dan loading jelas
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-57,RUANG-58",design/README.md: Beranda dan Progres murid,not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5,"RUANG-57,RUANG-58",design/README.md: Beranda dan Progres murid,done,,Frontend review passed responsive layouts route targets scoped tutor progress and visible loading/empty states; no blocking findings; tenggat remains empty without schema support
 RUANG-9,Autentikasi dan RBAC admin tutor siswa,2,unit-test,[BE] Unit Test: Tambahkan peran pengguna dan pembatasan route,"Write unit tests for the work delivered in **Tambahkan peran pengguna dan pembatasan route**.
 
 This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
