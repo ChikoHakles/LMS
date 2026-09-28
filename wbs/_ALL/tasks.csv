@@ -141,7 +141,7 @@ This is a separate task because aplikasi Laravel 12 has a coverage gate; the cod
 - Agregasi memakai tanggal Asia/Jakarta
 - The golden path plus at least one failure case per branch the parent task introduced.
 
-**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",7.0,RUANG-49,design/README.md: Jam belajar aktif,not-done,,
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",7.0,RUANG-49,design/README.md: Jam belajar aktif,done,,Server ignores client totals; 45 second cap and duplicate retries verified; role and assignment boundaries covered; Jakarta midnight split verified; build passed and full suite passed 73 tests / 634 assertions.
 RUANG-53,Pelacakan waktu belajar aktif,2,code-review,[FE] Code Review: Pelacakan waktu belajar aktif,"Review all FE work delivered for **Pelacakan waktu belajar aktif** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Buat composable pelacak waktu di halaman belajar**  ·  _design/README.md: Jam belajar aktif_
