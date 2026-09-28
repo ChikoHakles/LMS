@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import ArticleRenderer, { type ArticleBlock } from '@/components/materials/ArticleRenderer.vue';
+import StudyTimer from '@/components/rhythm/StudyTimer.vue';
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
+import type { StudyTimerContext } from '@/composables/useStudyTimer';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/vue3';
@@ -20,6 +22,7 @@ const props = defineProps<{
     canEdit: boolean;
     assignmentId?: number | null;
     completed?: boolean;
+    timerContext?: StudyTimerContext | null;
 }>();
 const completion = useForm({});
 
@@ -56,6 +59,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     >
                 </div>
             </header>
+            <StudyTimer v-if="!canEdit && timerContext" :key="timerContext.assignmentId" :context="timerContext" />
             <RuangCard class="p-6 sm:p-10">
                 <header class="mx-auto mb-8 max-w-3xl border-b border-border pb-6">
                     <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Artikel</p>

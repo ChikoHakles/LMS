@@ -9,6 +9,7 @@ use App\Models\DailyPlanMaterial;
 use App\Models\Material;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
+use App\Support\StudyTimerContext;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +47,7 @@ class QuizController extends Controller
         return Inertia::render('student/Quiz', [
             'material' => $material->only(['id', 'type', 'title', 'summary', 'published_at']),
             'assignmentId' => $assignment?->getKey(),
+            'timerContext' => StudyTimerContext::forAssignment($assignment),
             'planContext' => $assignment ? [
                 'classId' => $assignment->plan()->value('class_id'),
                 'date' => $assignment->plan()->value('plan_date'),

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DailyPlanMaterial;
 use App\Models\Material;
 use App\Models\MaterialCompletion;
+use App\Support\StudyTimerContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -55,6 +56,7 @@ class MaterialController extends Controller
                     'completed' => $assignment ? MaterialCompletion::query()->where('user_id', $request->user()->getKey())
                         ->where('daily_plan_material_id', $assignment->getKey())->exists() : false,
                 ],
+                'timerContext' => StudyTimerContext::forAssignment($assignment),
             ]);
         }
 
@@ -64,6 +66,7 @@ class MaterialController extends Controller
             'material' => $material->only(['id', 'type', 'title', 'summary', 'published_at', 'blocks']),
             'canEdit' => false,
             'assignmentId' => $assignment?->getKey(),
+            'timerContext' => StudyTimerContext::forAssignment($assignment),
             'completed' => $assignment ? MaterialCompletion::query()->where('user_id', $request->user()->getKey())
                 ->where('daily_plan_material_id', $assignment->getKey())->exists() : false,
         ]);

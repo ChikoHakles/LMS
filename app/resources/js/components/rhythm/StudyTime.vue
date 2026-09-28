@@ -27,6 +27,6 @@ defineProps<{ targetMinutes: number; activeMinutes: number }>();
                 :style="{ width: `${Math.min(100, targetMinutes ? (activeMinutes / targetMinutes) * 100 : 0)}%` }"
             />
         </div>
-        <p class="mt-3 text-xs leading-5 text-muted-foreground">Durasi akan dihitung saat fitur pencatatan waktu aktif tersedia.</p>
+        <p class="mt-3 text-xs leading-5 text-muted-foreground">Durasi memakai interval yang tercatat di server untuk tanggal ini.</p>
     </RuangCard>
 </template>

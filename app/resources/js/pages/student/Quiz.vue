@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import ChoiceAnswer from '@/components/quiz/ChoiceAnswer.vue';
 import EssayAnswer from '@/components/quiz/EssayAnswer.vue';
+import StudyTimer from '@/components/rhythm/StudyTimer.vue';
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
+import type { StudyTimerContext } from '@/composables/useStudyTimer';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
@@ -30,6 +32,7 @@ const props = defineProps<{
     attempt: Attempt | null;
     assignmentId?: number | null;
     planContext?: { classId: number; date: string } | null;
+    timerContext?: StudyTimerContext | null;
 }>();
 const page = usePage<SharedData & { flash: { status?: string } }>();
 const form = useForm({
@@ -80,6 +83,7 @@ function answerFor(questionId: number) {
                 <h1 class="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{{ material.title }}</h1>
                 <p v-if="material.summary" class="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">{{ material.summary }}</p>
             </header>
+            <StudyTimer v-if="timerContext" :key="timerContext.assignmentId" :context="timerContext" />
 
             <div
                 v-if="page.props.flash?.status"

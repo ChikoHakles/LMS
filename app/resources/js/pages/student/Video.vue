@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import StudyTimer from '@/components/rhythm/StudyTimer.vue';
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
+import type { StudyTimerContext } from '@/composables/useStudyTimer';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/vue3';
@@ -18,6 +20,7 @@ const props = defineProps<{
         completed?: boolean;
         assignmentId?: number | null;
     };
+    timerContext?: StudyTimerContext | null;
 }>();
 const completion = useForm({});
 
@@ -51,6 +54,7 @@ function markComplete(): void {
                 <h1 class="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{{ material.title }}</h1>
                 <p v-if="material.summary" class="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">{{ material.summary }}</p>
             </header>
+            <StudyTimer v-if="timerContext" :key="timerContext.assignmentId" :context="timerContext" />
 
             <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_20rem]">
                 <RuangCard class="overflow-hidden p-4 sm:p-6">

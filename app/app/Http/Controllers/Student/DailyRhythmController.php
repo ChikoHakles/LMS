@@ -9,6 +9,7 @@ use App\Models\Material;
 use App\Models\PrayerLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -49,6 +50,12 @@ class DailyRhythmController extends Controller
             : null;
         $prayerCount = $logs->filter(fn ($completed) => (bool) $completed)->count();
         $materialCount = $plan?->materials->filter(fn (DailyPlanMaterial $slot) => $slot->completions->isNotEmpty())->count() ?? 0;
+        $activeSeconds = $plan ? DB::table('study_session_intervals')
+            ->join('study_sessions', 'study_sessions.id', '=', 'study_session_intervals.study_session_id')
+            ->where('study_sessions.user_id', $student->getKey())
+            ->where('study_sessions.daily_plan_id', $plan->getKey())
+            ->whereDate('study_session_intervals.study_date', $date)
+            ->sum('study_session_intervals.seconds') : 0;
 
         return Inertia::render('student/DailyRhythm', [
             'date' => $date,
@@ -69,7 +76,7 @@ class DailyRhythmController extends Controller
                 'id' => $plan->id,
                 'className' => $selectedClass->name,
                 'targetMinutes' => $plan->target_minutes,
-                'activeMinutes' => 0,
+                'activeMinutes' => intdiv((int) $activeSeconds, 60),
                 'materials' => $plan->materials->map(fn (DailyPlanMaterial $slot) => [
                     'id' => $slot->id,
                     'type' => $slot->type,
