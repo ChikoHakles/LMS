@@ -118,6 +118,7 @@ class DashboardController extends Controller
             ->orderBy('name')
             ->get(['id', 'name']);
         $classIds = $classes->modelKeys();
+        $progress = $this->studentProgressRows($tutor, $classIds, $date);
 
         $submissions = QuizAttempt::query()
             ->whereHas('dailyPlanMaterial.plan.learningClass', fn ($query) => $query->where('tutor_id', $tutor->getKey()))
@@ -128,8 +129,9 @@ class DashboardController extends Controller
             'date' => $date,
             'summary' => [
                 'classCount' => $classes->count(),
-                'studentCount' => $this->studentProgressRows($tutor, $classIds, $date)->count(),
+                'studentCount' => $progress->count(),
                 'todayPlanCount' => $classes->sum(fn ($class) => $class->dailyPlans->count()),
+                'materialCount' => Material::query()->ownedBy($tutor)->published()->count(),
                 'submissionCount' => $submissions,
                 'essayQueueCount' => $essayQueue,
             ],
@@ -139,7 +141,7 @@ class DashboardController extends Controller
                 'studentCount' => $class->students_count,
                 'todayPlanCount' => $class->dailyPlans->count(),
             ])->values(),
-            'progressPreview' => $this->studentProgressRows($tutor, $classIds, $date)->take(5)->values(),
+            'progressPreview' => $progress->take(5)->values(),
         ];
     }
 
