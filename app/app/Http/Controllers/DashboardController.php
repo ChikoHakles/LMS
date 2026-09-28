@@ -33,8 +33,12 @@ class DashboardController extends Controller
             return Inertia::render('tutor/Dashboard', $this->tutorSummary($user));
         }
 
-        // Keep the existing account-management landing page for administrators.
-        return Inertia::render('AdminDashboard');
+        if ($user->hasRole(User::ROLE_ADMIN)) {
+            // Keep the existing account-management landing page for administrators.
+            return Inertia::render('AdminDashboard');
+        }
+
+        abort(403);
     }
 
     public function studentProgress(Request $request): Response

@@ -33,6 +33,9 @@ class DashboardTest extends TestCase
             ->component('AdminDashboard')
             ->missing('summary')
             ->missing('classes'));
+
+        $unrecognized = $this->userWithRole('unrecognized');
+        $this->actingAs($unrecognized)->get('/dashboard')->assertForbidden();
     }
 
     public function test_student_dashboard_contains_only_their_own_today_assignments_and_activity(): void

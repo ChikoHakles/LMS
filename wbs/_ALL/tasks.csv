@@ -160,7 +160,7 @@ This is a separate task because aplikasi Laravel 12 has a coverage gate; the cod
 - Tanggal mengikuti Asia/Jakarta
 - The golden path plus at least one failure case per branch the parent task introduced.
 
-**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",5.0,RUANG-55,design/README.md: Beranda dan Progres murid,done,,Six focused cases; full suite 77 tests and 762 assertions passed
+**Definition of done:** `php artisan test` is green and the new/changed code meets alur berhasil, validasi gagal, dan otorisasi lintas peran diuji. Test assertions reflect the parent task's acceptance criteria, not just line execution.",5.0,RUANG-55,design/README.md: Beranda dan Progres murid,done,,Six focused cases; full suite 77 tests and 777 assertions passed
 RUANG-60,Dashboard v2 dan progres kelas,2,code-review,[FE] Code Review: Dashboard v2 dan progres kelas,"Review all FE work delivered for **Dashboard v2 dan progres kelas** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Bangun dashboard siswa v2 yang diperkuat**  ·  _design/README.md: Beranda murid_
@@ -258,7 +258,7 @@ RUANG-59,Dashboard v2 dan progres kelas,3,code-review,[BE] Code Review: Dashboar
 
 Also covers **1 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.0,"RUANG-55,RUANG-56",design/README.md: Beranda dan Progres murid,not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.0,"RUANG-55,RUANG-56",design/README.md: Beranda dan Progres murid,done,,Backend review passed scoped student data tutor-class bounds Asia/Jakarta date and cross-role tests; suite 77 tests/777 assertions
 RUANG-6,Fondasi VILT dan navigasi Ruang,3,code-review,[FE] Code Review: Fondasi VILT dan navigasi Ruang,"Review all FE work delivered for **Fondasi VILT dan navigasi Ruang** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
 
 **Bangun shell aplikasi berbasis komponen dan navigasi per peran**  ·  _design/README.md: peta halaman; dashboard-concepts/render.html: v2_
