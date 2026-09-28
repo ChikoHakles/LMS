@@ -31,6 +31,13 @@ class StudySessionController extends Controller
             $session = DB::transaction(function () use ($student, $assignment): StudySession {
                 User::query()->whereKey($student->getKey())->lockForUpdate()->firstOrFail();
                 $active = StudySession::query()->where('active_user_id', $student->getKey())->lockForUpdate()->first();
+                if ($active && $active->last_seen_at->lt(now()->subSeconds(self::MAX_HEARTBEAT_SECONDS))) {
+                    $active->forceFill([
+                        'active_user_id' => null,
+                        'ended_at' => $active->last_seen_at,
+                    ])->save();
+                    $active = null;
+                }
                 if ($active) {
                     if ($active->daily_plan_material_id !== $assignment->getKey()) {
                         abort(409, 'Sesi belajar lain masih aktif. Hentikan sesi itu sebelum membuka materi lain.');
@@ -55,7 +62,10 @@ class StudySessionController extends Controller
         } catch (QueryException $exception) {
             // The unique active_user_id index is the final race guard if two start requests arrive together.
             $session = StudySession::query()->where('active_user_id', $student->getKey())->first();
-            if (! $session || $session->daily_plan_material_id !== $assignment->getKey()) {
+            if ($session && $session->daily_plan_material_id !== $assignment->getKey()) {
+                abort(409, 'Sesi belajar lain masih aktif. Hentikan sesi itu sebelum membuka materi lain.');
+            }
+            if (! $session) {
                 throw $exception;
             }
         }
