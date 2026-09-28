@@ -30,7 +30,7 @@ class DashboardTest extends TestCase
         $admin = $this->userWithRole(User::ROLE_ADMIN);
 
         $this->actingAs($admin)->get('/dashboard')->assertInertia(fn (Assert $page) => $page
-            ->component('Dashboard')
+            ->component('AdminDashboard')
             ->missing('summary')
             ->missing('classes'));
     }

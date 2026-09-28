@@ -34,7 +34,7 @@ class DashboardController extends Controller
         }
 
         // Keep the existing account-management landing page for administrators.
-        return Inertia::render('Dashboard');
+        return Inertia::render('AdminDashboard');
     }
 
     public function studentProgress(Request $request): Response
