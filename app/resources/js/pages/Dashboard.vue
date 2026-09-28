@@ -68,12 +68,22 @@ const completionPercent = computed(() => {
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Beranda', href: route('dashboard') }];
 
 onMounted(() => {
-    note.value = window.localStorage.getItem(noteStorageKey.value) ?? '';
+    try {
+        note.value = window.localStorage.getItem(noteStorageKey.value) ?? '';
+    } catch {
+        note.value = '';
+    }
     noteReady.value = true;
 });
 
 watch([note, noteStorageKey], ([value, key]) => {
-    if (noteReady.value) window.localStorage.setItem(key, value);
+    if (!noteReady.value) return;
+
+    try {
+        window.localStorage.setItem(key, value);
+    } catch {
+        // Keep the dashboard usable when this browser blocks local storage.
+    }
 });
 
 function materialLabel(type: MaterialItem['type']): string {
@@ -89,9 +99,14 @@ function materialLabel(type: MaterialItem['type']): string {
                 <div>
                     <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Ruang belajar · {{ dateLabel }}</p>
                     <h1 class="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Halo, {{ firstName }}.</h1>
-                    <p class="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Lihat kegiatan yang ditugaskan untuk hari ini dan lanjutkan langkah belajarmu.</p>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                        Lihat kegiatan yang ditugaskan untuk hari ini dan lanjutkan langkah belajarmu.
+                    </p>
                 </div>
-                <Link :href="route('student.daily-rhythm')" class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+                <Link
+                    :href="route('student.daily-rhythm')"
+                    class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+                >
                     Buka ritme hari ini <ArrowRight class="size-4" aria-hidden="true" />
                 </Link>
             </header>
@@ -114,7 +129,11 @@ function materialLabel(type: MaterialItem['type']): string {
                                 </span>
                             </div>
                             <ul v-if="plan.materials.length" class="mt-3 space-y-2">
-                                <li v-for="material in plan.materials" :key="material.id" class="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-muted/50 px-3 py-3">
+                                <li
+                                    v-for="material in plan.materials"
+                                    :key="material.id"
+                                    class="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-muted/50 px-3 py-3"
+                                >
                                     <div class="flex min-w-0 items-start gap-3">
                                         <span class="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-secondary text-accent-foreground">
                                             <Check v-if="material.completed" class="size-4" aria-hidden="true" />
@@ -122,7 +141,9 @@ function materialLabel(type: MaterialItem['type']): string {
                                         </span>
                                         <div class="min-w-0">
                                             <p class="truncate text-sm font-medium">{{ material.title }}</p>
-                                            <p class="mt-0.5 text-xs text-muted-foreground">{{ materialLabel(material.type) }} · {{ material.completed ? 'Selesai' : 'Belum selesai' }}</p>
+                                            <p class="mt-0.5 text-xs text-muted-foreground">
+                                                {{ materialLabel(material.type) }} · {{ material.completed ? 'Selesai' : 'Belum selesai' }}
+                                            </p>
                                         </div>
                                     </div>
                                     <Link :href="material.href" class="shrink-0 text-xs font-semibold text-primary hover:underline">
@@ -164,7 +185,12 @@ function materialLabel(type: MaterialItem['type']): string {
                         </div>
                         <div class="mt-3 grid grid-cols-7 gap-1 text-center text-xs">
                             <span v-for="day in weekdayLabels" :key="day" class="py-1 font-medium text-muted-foreground">{{ day }}</span>
-                            <span v-for="(day, index) in calendarCells" :key="`${index}-${day ?? 'empty'}`" class="grid aspect-square place-items-center rounded-full" :class="day === todayNumber ? 'bg-primary font-semibold text-primary-foreground' : 'text-foreground'">
+                            <span
+                                v-for="(day, index) in calendarCells"
+                                :key="`${index}-${day ?? 'empty'}`"
+                                class="grid aspect-square place-items-center rounded-full"
+                                :class="day === todayNumber ? 'bg-primary font-semibold text-primary-foreground' : 'text-foreground'"
+                            >
                                 {{ day ?? '' }}
                             </span>
                         </div>
@@ -182,14 +208,29 @@ function materialLabel(type: MaterialItem['type']): string {
                     <div class="mt-5 grid gap-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
                         <div>
                             <div class="flex items-baseline justify-between gap-3">
-                                <p class="text-3xl font-bold">{{ summary.prayersCompleted + summary.materialsCompleted }}<span class="text-base font-medium text-muted-foreground"> / {{ summary.prayersTotal + summary.materialsTotal }} langkah</span></p>
-                                <RuangBadge :variant="completionPercent === 100 && summary.prayersTotal + summary.materialsTotal > 0 ? 'success' : 'muted'">{{ completionPercent }}%</RuangBadge>
+                                <p class="text-3xl font-bold">
+                                    {{ summary.prayersCompleted + summary.materialsCompleted
+                                    }}<span class="text-base font-medium text-muted-foreground">
+                                        / {{ summary.prayersTotal + summary.materialsTotal }} langkah</span
+                                    >
+                                </p>
+                                <RuangBadge
+                                    :variant="completionPercent === 100 && summary.prayersTotal + summary.materialsTotal > 0 ? 'success' : 'muted'"
+                                    >{{ completionPercent }}%</RuangBadge
+                                >
                             </div>
                             <RuangProgress :value="completionPercent" label="Penyelesaian ritme hari ini" class="mt-3" />
                             <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                                <span><strong>{{ summary.prayersCompleted }}/{{ summary.prayersTotal }}</strong> sholat</span>
-                                <span><strong>{{ summary.materialsCompleted }}/{{ summary.materialsTotal }}</strong> materi ditugaskan</span>
-                                <span class="inline-flex items-center gap-1.5"><Clock3 class="size-4 text-primary" aria-hidden="true" /><strong>{{ summary.activeMinutes }}</strong> menit aktif</span>
+                                <span
+                                    ><strong>{{ summary.prayersCompleted }}/{{ summary.prayersTotal }}</strong> sholat</span
+                                >
+                                <span
+                                    ><strong>{{ summary.materialsCompleted }}/{{ summary.materialsTotal }}</strong> materi ditugaskan</span
+                                >
+                                <span class="inline-flex items-center gap-1.5"
+                                    ><Clock3 class="size-4 text-primary" aria-hidden="true" /><strong>{{ summary.activeMinutes }}</strong> menit
+                                    aktif</span
+                                >
                             </div>
                         </div>
                         <div class="grid size-20 place-items-center rounded-2xl bg-secondary text-accent-foreground">
@@ -206,9 +247,15 @@ function materialLabel(type: MaterialItem['type']): string {
                         </div>
                         <Clock3 class="size-5 text-primary" aria-hidden="true" />
                     </div>
-                    <p class="mt-5 text-4xl font-bold">{{ summary.activeMinutes }} <span class="text-base font-medium text-muted-foreground">menit</span></p>
+                    <p class="mt-5 text-4xl font-bold">
+                        {{ summary.activeMinutes }} <span class="text-base font-medium text-muted-foreground">menit</span>
+                    </p>
                     <p class="mt-2 text-sm text-muted-foreground">
-                        {{ summary.targetMinutes ? `Target dari tasklist hari ini ${summary.targetMinutes} menit.` : 'Belum ada target durasi dari tasklist hari ini.' }}
+                        {{
+                            summary.targetMinutes
+                                ? `Target dari tasklist hari ini ${summary.targetMinutes} menit.`
+                                : 'Belum ada target durasi dari tasklist hari ini.'
+                        }}
                     </p>
                 </RuangCard>
 
@@ -226,11 +273,19 @@ function materialLabel(type: MaterialItem['type']): string {
                                 <p class="truncate font-medium">{{ material.title }}</p>
                                 <p class="mt-1 text-xs text-muted-foreground">{{ materialLabel(material.type) }} · {{ material.className }}</p>
                             </div>
-                            <Link :href="material.href" class="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-primary hover:underline">Buka <ArrowRight class="size-4" aria-hidden="true" /></Link>
+                            <Link
+                                :href="material.href"
+                                class="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-primary hover:underline"
+                                >Buka <ArrowRight class="size-4" aria-hidden="true"
+                            /></Link>
                         </li>
                     </ul>
                     <p v-else class="mt-4 rounded-xl bg-muted/50 px-4 py-5 text-sm text-muted-foreground">
-                        {{ summary.materialsTotal ? 'Semua materi tasklist hari ini sudah selesai.' : 'Belum ada materi baru yang ditugaskan hari ini.' }}
+                        {{
+                            summary.materialsTotal
+                                ? 'Semua materi tasklist hari ini sudah selesai.'
+                                : 'Belum ada materi baru yang ditugaskan hari ini.'
+                        }}
                     </p>
                 </RuangCard>
 
@@ -250,8 +305,17 @@ function materialLabel(type: MaterialItem['type']): string {
                     </ul>
                     <p v-else class="mt-4 text-sm text-muted-foreground">Belum ada langkah tertunda dari tasklist hari ini.</p>
                     <div class="mt-5 border-t border-border pt-5">
-                        <label for="daily-note" class="inline-flex items-center gap-2 font-semibold"><NotebookPen class="size-4 text-primary" aria-hidden="true" /> Catatan pribadi</label>
-                        <textarea id="daily-note" v-model="note" rows="3" maxlength="500" class="mt-3 w-full resize-y rounded-lg border-input bg-background text-sm" placeholder="Tulis pengingat untuk dirimu sendiri..."></textarea>
+                        <label for="daily-note" class="inline-flex items-center gap-2 font-semibold"
+                            ><NotebookPen class="size-4 text-primary" aria-hidden="true" /> Catatan pribadi</label
+                        >
+                        <textarea
+                            id="daily-note"
+                            v-model="note"
+                            rows="3"
+                            maxlength="500"
+                            class="mt-3 w-full resize-y rounded-lg border-input bg-background text-sm"
+                            placeholder="Tulis pengingat untuk dirimu sendiri..."
+                        ></textarea>
                         <p class="mt-1 text-xs text-muted-foreground">Catatan ini tersimpan di browser pada perangkat ini.</p>
                     </div>
                 </RuangCard>
