@@ -114,4 +114,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(MaterialCompletion::class, 'user_id');
     }
+
+    public function studySessions(): HasMany
+    {
+        return $this->hasMany(StudySession::class, 'user_id');
+    }
 }

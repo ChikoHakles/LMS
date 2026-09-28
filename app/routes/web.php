@@ -6,6 +6,7 @@ use App\Http\Controllers\Student\DailyRhythmController;
 use App\Http\Controllers\Student\MaterialCompletionController;
 use App\Http\Controllers\Student\MaterialController as StudentMaterialController;
 use App\Http\Controllers\Student\QuizController as StudentQuizController;
+use App\Http\Controllers\Student\StudySessionController;
 use App\Http\Controllers\Tutor\DailyPlanController;
 use App\Http\Controllers\Tutor\EssayReviewController;
 use App\Http\Controllers\Tutor\MaterialController as TutorMaterialController;
@@ -73,6 +74,9 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
             ->name('quizzes.index');
         Route::get('quizzes/{material}', [StudentQuizController::class, 'show'])->name('quizzes.show');
         Route::post('quizzes/{material}', [StudentQuizController::class, 'submit'])->name('quizzes.submit');
+        Route::post('study-sessions', [StudySessionController::class, 'start'])->name('study-sessions.start');
+        Route::post('study-sessions/{session}/heartbeat', [StudySessionController::class, 'heartbeat'])->name('study-sessions.heartbeat');
+        Route::post('study-sessions/{session}/stop', [StudySessionController::class, 'stop'])->name('study-sessions.stop');
     });
 });
 
