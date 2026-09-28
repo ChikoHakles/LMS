@@ -149,7 +149,7 @@ RUANG-53,Pelacakan waktu belajar aktif,2,code-review,[FE] Code Review: Pelacakan
   - Timer tutor pada mode pratinjau tidak menambah durasi siswa
   - Reload mempertahankan total dari server
 
-**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",2.5,RUANG-51,design/README.md: aturan rancangan jam belajar,not-done,,
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",2.5,RUANG-51,design/README.md: aturan rancangan jam belajar,done,,FE review passed; hidden tabs and 60 second idle pause the session; only assigned student article video and quiz pages mount the timer; tutor preview stays inert; reload restores totals from the server; same assignment keys remount safely across Inertia navigation. No blocking findings; browser event behavior was source-reviewed and the production build passed.
 RUANG-56,Dashboard v2 dan progres kelas,2,unit-test,[BE] Unit Test: Sediakan ringkasan dashboard sesuai peran,"Write unit tests for the work delivered in **Sediakan ringkasan dashboard sesuai peran**.
 
 This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
