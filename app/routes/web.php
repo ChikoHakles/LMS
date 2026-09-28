@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\MaterialController as AdminMaterialController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Student\DailyRhythmController;
 use App\Http\Controllers\Student\MaterialCompletionController;
 use App\Http\Controllers\Student\MaterialController as StudentMaterialController;
@@ -19,9 +20,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
         Route::get('users', [UserController::class, 'index'])->name('users.index');
@@ -60,7 +59,7 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
         Route::get('materials', [TutorMaterialController::class, 'index'])->name('materials.index');
         Route::get('essays', [EssayReviewController::class, 'index'])->name('essays.index');
         Route::patch('essays/{answer}', [EssayReviewController::class, 'grade'])->name('essays.grade');
-        Route::get('students/progress', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Progres murid']))
+        Route::get('students/progress', [DashboardController::class, 'studentProgress'])
             ->name('students.progress');
     });
 
