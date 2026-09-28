@@ -9,6 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('quiz_attempts', function (Blueprint $table) {
+            // MariaDB may use the old composite unique index to satisfy the
+            // material foreign key, so keep a standalone index before replacing it.
+            $table->index('material_id', 'quiz_attempts_material_id_index');
             $table->dropUnique('quiz_attempts_material_id_student_id_unique');
             $table->foreignId('daily_plan_material_id')->nullable()->after('student_id')
                 ->constrained('daily_plan_materials')->nullOnDelete();
@@ -50,6 +53,7 @@ return new class extends Migration
             $table->dropForeign(['daily_plan_material_id']);
             $table->dropColumn('daily_plan_material_id');
             $table->unique(['material_id', 'student_id']);
+            $table->dropIndex('quiz_attempts_material_id_index');
         });
     }
 };

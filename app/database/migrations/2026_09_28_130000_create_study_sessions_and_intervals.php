@@ -17,8 +17,10 @@ return new class extends Migration
             $table->foreignId('daily_plan_id')->constrained()->cascadeOnDelete();
             $table->foreignId('daily_plan_material_id')->constrained()->cascadeOnDelete();
             $table->foreignId('material_id')->constrained()->cascadeOnDelete();
-            $table->timestamp('started_at');
-            $table->timestamp('last_seen_at');
+            // Older MariaDB versions require explicit defaults for multiple
+            // non-null TIMESTAMP columns, even though the app supplies values.
+            $table->timestamp('started_at')->useCurrent();
+            $table->timestamp('last_seen_at')->useCurrent();
             $table->timestamp('ended_at')->nullable();
             $table->unsignedInteger('seconds')->default(0);
             $table->unsignedInteger('last_sequence')->default(0);
