@@ -3,10 +3,13 @@
 /public/build
 /public/hot
 /public/storage
+/.vercel
 /storage/*.key
 /storage/pail
 /vendor
 .env
+.env.*
+!.env.example
 .env.backup
 .env.production
 .phpactor.json
