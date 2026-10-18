@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
+import SearchableSelect from '@/components/ui/SearchableSelect.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
@@ -126,16 +127,19 @@ function savePlan(): void {
 
             <template v-else>
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <label class="space-y-2 text-sm font-medium">
-                        <span>Kelas</span>
-                        <select
-                            :value="selectedClass?.id ?? ''"
-                            class="w-full rounded-lg border-input bg-background"
-                            @change="changeSelection('class_id', ($event.target as HTMLSelectElement).value)"
-                        >
-                            <option v-for="item in classes" :key="item.id" :value="item.id">{{ item.name }} · {{ item.students_count }} murid</option>
-                        </select>
-                    </label>
+                    <div class="space-y-2 text-sm font-medium">
+                        <label for="select-daily-class">Kelas</label>
+                        <SearchableSelect
+                            id="select-daily-class"
+                            :model-value="selectedClass?.id ?? ''"
+                            :options="classes"
+                            value-key="id"
+                            :label-key="(item) => `${item.name} · ${item.students_count} murid`"
+                            placeholder="Pilih kelas"
+                            aria-label="Kelas"
+                            @update:model-value="changeSelection('class_id', String($event))"
+                        />
+                    </div>
                     <label class="space-y-2 text-sm font-medium">
                         <span>Tanggal tasklist</span>
                         <span class="relative block">
@@ -167,17 +171,17 @@ function savePlan(): void {
                         </div>
                         <form class="space-y-5" @submit.prevent="savePlan">
                             <div v-for="slot in planForm.materials" :key="slot.type">
-                                <label :for="`slot-${slot.type}`" class="text-sm font-semibold">{{ typeLabels[slot.type] }} hari ini</label>
-                                <select
+                                <label :for="`slot-${slot.type}`" class="mb-2 block text-sm font-semibold">{{ typeLabels[slot.type] }} hari ini</label>
+                                <SearchableSelect
                                     :id="`slot-${slot.type}`"
                                     v-model="slot.material_id"
-                                    required
+                                    :options="groupedMaterials[slot.type]"
+                                    value-key="id"
+                                    label-key="title"
                                     :disabled="plan?.locked"
-                                    class="mt-2 w-full rounded-lg border-input bg-background disabled:opacity-60"
-                                >
-                                    <option :value="null" disabled>Pilih {{ typeLabels[slot.type].toLowerCase() }}</option>
-                                    <option v-for="item in groupedMaterials[slot.type]" :key="item.id" :value="item.id">{{ item.title }}</option>
-                                </select>
+                                    :placeholder="`Pilih ${typeLabels[slot.type].toLowerCase()}`"
+                                    :aria-label="`${typeLabels[slot.type]} hari ini`"
+                                />
                                 <p v-if="!groupedMaterials[slot.type].length" class="mt-1 text-xs text-muted-foreground">
                                     Belum ada {{ typeLabels[slot.type].toLowerCase() }} terbit di pustaka.
                                 </p>
@@ -227,23 +231,32 @@ function savePlan(): void {
                                 <div v-if="!students.length" class="rounded-lg bg-muted/60 p-3 text-sm text-muted-foreground">
                                     Belum ada akun murid aktif.
                                 </div>
-                                <div v-else class="max-h-64 space-y-2 overflow-y-auto rounded-lg border border-border p-3">
-                                    <label
-                                        v-for="student in students"
-                                        :key="student.id"
-                                        class="flex cursor-pointer items-start gap-3 rounded-md p-2 hover:bg-muted/50"
+                                <div v-else class="space-y-2">
+                                    <SearchableSelect
+                                        id="member-students"
+                                        v-model="memberForm.student_ids"
+                                        :options="students"
+                                        value-key="id"
+                                        label-key="name"
+                                        multiple
+                                        placeholder="Pilih murid untuk kelas ini..."
+                                        search-placeholder="Cari nama atau email murid..."
+                                        aria-label="Pilih murid di kelas"
                                     >
-                                        <input
-                                            v-model="memberForm.student_ids"
-                                            type="checkbox"
-                                            :value="student.id"
-                                            class="mt-1 rounded border-input text-primary focus:ring-ring"
-                                        />
-                                        <span class="min-w-0">
-                                            <span class="block text-sm font-medium">{{ student.name }}</span>
-                                            <span class="block truncate text-xs text-muted-foreground">{{ student.email }}</span>
-                                        </span>
-                                    </label>
+                                        <template #item="{ option, selected }">
+                                            <div class="min-w-0 flex-1">
+                                                <span :class="['block truncate', selected ? 'font-semibold' : 'font-normal']">
+                                                    {{ option.name }}
+                                                </span>
+                                                <span class="block truncate text-xs text-muted-foreground">
+                                                    {{ option.email }}
+                                                </span>
+                                            </div>
+                                        </template>
+                                    </SearchableSelect>
+                                    <p class="text-xs text-muted-foreground">
+                                        {{ memberForm.student_ids.length }} murid dipilih dari {{ students.length }} akun aktif.
+                                    </p>
                                 </div>
                                 <p v-if="memberForm.errors.student_ids" role="alert" class="text-sm text-destructive">
                                     {{ memberForm.errors.student_ids }}

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import type { HTMLAttributes } from 'vue';
 
 interface Props {
@@ -13,10 +12,29 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-    <span class="flex min-w-0 items-center gap-2.5" :class="props.class">
-        <span class="flex size-9 shrink-0 items-center justify-center rounded-lg" :class="props.tone === 'sidebar' ? 'bg-sidebar-accent' : 'bg-secondary'">
-            <AppLogoIcon class-name="size-6 text-[hsl(var(--ruang-warm))]" />
-        </span>
-        <span class="truncate text-lg font-bold tracking-tight" :class="props.tone === 'sidebar' ? 'text-sidebar-foreground' : 'text-foreground'">ruang<span class="text-[hsl(var(--ruang-warm))]">.</span></span>
+    <span class="flex min-w-0 items-center" :class="props.class">
+        <img
+            src="/brand/damai-karya/icon.png"
+            width="128"
+            height="128"
+            alt="Damai Karya"
+            class="hidden size-8 object-contain group-data-[collapsible=icon]:block"
+        />
+        <img
+            :src="props.tone === 'sidebar' ? '/brand/damai-karya/logo-horizontal-tw.png' : '/brand/damai-karya/logo-horizontal.png'"
+            width="640"
+            height="317"
+            alt="Damai Karya"
+            class="h-11 w-36 object-contain group-data-[collapsible=icon]:hidden"
+            :class="props.tone === 'surface' ? 'dark:hidden' : ''"
+        />
+        <img
+            v-if="props.tone === 'surface'"
+            src="/brand/damai-karya/logo-horizontal-tw.png"
+            width="640"
+            height="317"
+            alt="Damai Karya"
+            class="hidden h-11 w-36 object-contain dark:block"
+        />
     </span>
 </template>

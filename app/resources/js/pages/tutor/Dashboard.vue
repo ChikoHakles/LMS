@@ -71,9 +71,9 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: 'Beranda', href: route('dashboar
     <Head title="Beranda tutor" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <main class="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8" :aria-busy="loading">
-            <header class="flex flex-wrap items-end justify-between gap-4">
+            <header class="flex flex-wrap items-end justify-between gap-4 rounded-[20px] border border-border bg-card p-5">
                 <div>
-                    <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Ruang mengajar · {{ dateLabel }}</p>
+                    <p class="text-sm font-semibold text-primary">Damai Karya · Tutor · {{ dateLabel }}</p>
                     <h1 class="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Beranda tutor</h1>
                     <p class="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Pantau agenda kelas dan langkah murid hari ini.</p>
                 </div>
@@ -111,7 +111,7 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: 'Beranda', href: route('dashboar
                 <RuangCard class="p-5 sm:p-6">
                     <div class="flex items-start justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-primary">Agenda kelas</p>
+                            <p class="text-sm font-semibold text-primary">Agenda kelas</p>
                             <h2 class="mt-1 text-xl font-semibold">Tasklist hari ini</h2>
                         </div>
                         <CalendarDays class="size-5 text-primary" aria-hidden="true" />
@@ -148,7 +148,7 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: 'Beranda', href: route('dashboar
                 <RuangCard class="p-5 sm:p-6">
                     <div class="flex items-start justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-primary">Progres murid</p>
+                            <p class="text-sm font-semibold text-primary">Progres murid</p>
                             <h2 class="mt-1 text-xl font-semibold">Checklist dan durasi aktif</h2>
                         </div>
                         <Link

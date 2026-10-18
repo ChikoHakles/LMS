@@ -5,10 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>Damai Karya</title>
 
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="/brand/damai-karya/icon.png">
+        <link rel="preload" href="/brand/damai-karya/fonts/nunito.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="/brand/damai-karya/fonts/source-sans-3.woff2" as="font" type="font/woff2" crossorigin>
 
         @routes
         @vite(['resources/js/app.ts'])

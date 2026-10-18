@@ -20,7 +20,7 @@ declare module 'vite/client' {
     }
 }
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = 'Damai Karya';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -38,4 +38,3 @@ createInertiaApp({
 
 // This will set light / dark mode on page load...
 initializeTheme();
-

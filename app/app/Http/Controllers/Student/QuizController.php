@@ -20,7 +20,59 @@ use Inertia\Response;
 
 class QuizController extends Controller
 {
-    public function show(Request $request, Material $material): Response
+    public function index(Request $request): Response
+    {
+        $filters = $request->validate(['material' => ['nullable', 'integer']]);
+        $student = $request->user();
+
+        $assignments = DailyPlanMaterial::query()
+            ->select('daily_plan_materials.*')
+            ->join('daily_plans', 'daily_plans.id', '=', 'daily_plan_materials.daily_plan_id')
+            ->where('daily_plan_materials.type', Material::TYPE_QUIZ)
+            ->whereHas('material', fn ($query) => $query->published()->ofType(Material::TYPE_QUIZ))
+            ->whereHas('plan.learningClass.students', fn ($query) => $query->whereKey($student->getKey()))
+            ->when(isset($filters['material']), fn ($query) => $query->where('daily_plan_materials.material_id', $filters['material']))
+            ->with(['material.quizQuestions', 'plan.learningClass'])
+            ->orderByDesc('daily_plans.plan_date')
+            ->orderByDesc('daily_plan_materials.id')
+            ->paginate(12)
+            ->withQueryString();
+
+        $attempts = QuizAttempt::query()
+            ->where('student_id', $student->getKey())
+            ->whereIn('daily_plan_material_id', $assignments->getCollection()->pluck('id'))
+            ->get()
+            ->keyBy('daily_plan_material_id');
+
+        $assignments->through(function (DailyPlanMaterial $assignment) use ($attempts): array {
+            $attempt = $attempts->get($assignment->getKey());
+            $date = $assignment->plan->plan_date->toDateString();
+
+            return [
+                'id' => $assignment->getKey(),
+                'title' => $assignment->material->title,
+                'summary' => $assignment->material->summary,
+                'className' => $assignment->plan->learningClass->name,
+                'date' => $date,
+                'questionCount' => $assignment->material->quizQuestions->count(),
+                'totalPoints' => $assignment->material->quizQuestions->sum('points'),
+                'available' => $date <= today()->toDateString(),
+                'status' => $attempt?->status,
+                'score' => $attempt?->status === QuizAttempt::STATUS_COMPLETED ? $attempt->score : null,
+                'href' => route('student.quizzes.show', [
+                    'material' => $assignment->material_id,
+                    'assignment' => $assignment->getKey(),
+                ], false),
+            ];
+        });
+
+        return Inertia::render('student/Quizzes/Index', [
+            'quizzes' => $assignments,
+            'filteredMaterial' => $filters['material'] ?? null,
+        ]);
+    }
+
+    public function show(Request $request, Material $material): Response|RedirectResponse
     {
         Gate::forUser($request->user())->authorize('view', $material);
         abort_unless($material->type === Material::TYPE_QUIZ && $material->isPublished(), 404);
@@ -35,6 +87,12 @@ class QuizController extends Controller
                 ->where('type', Material::TYPE_QUIZ)
                 ->whereHas('plan.learningClass.students', fn ($query) => $query->whereKey($request->user()->getKey()))
                 ->firstOrFail();
+        } elseif (DailyPlanMaterial::query()
+            ->where('material_id', $material->getKey())
+            ->where('type', Material::TYPE_QUIZ)
+            ->whereHas('plan.learningClass.students', fn ($query) => $query->whereKey($request->user()->getKey()))
+            ->exists()) {
+            return to_route('student.quizzes.index', ['material' => $material->getKey()]);
         }
 
         $questions = $material->quizQuestions()->with(['choices' => fn ($query) => $query->orderBy('position')])->get();
@@ -47,6 +105,7 @@ class QuizController extends Controller
         return Inertia::render('student/Quiz', [
             'material' => $material->only(['id', 'type', 'title', 'summary', 'published_at']),
             'assignmentId' => $assignment?->getKey(),
+            'canSubmit' => ! $assignment || $assignment->plan->plan_date->toDateString() <= today()->toDateString(),
             'timerContext' => StudyTimerContext::forAssignment($assignment),
             'planContext' => $assignment ? [
                 'classId' => $assignment->plan()->value('class_id'),
@@ -72,6 +131,13 @@ class QuizController extends Controller
         $data = $request->validated();
 
         $assignmentId = $data['daily_plan_material_id'] ?? null;
+        if ($assignmentId === null && DailyPlanMaterial::query()
+            ->where('material_id', $material->getKey())
+            ->where('type', Material::TYPE_QUIZ)
+            ->whereHas('plan.learningClass.students', fn ($query) => $query->whereKey($student->getKey()))
+            ->exists()) {
+            throw ValidationException::withMessages(['daily_plan_material_id' => 'Pilih penugasan kuis dari daftar kuis.']);
+        }
         DB::transaction(function () use ($student, $material, $data, $assignments, $assignmentId): void {
             $lockedMaterial = Material::query()->whereKey($material->getKey())->lockForUpdate()->firstOrFail();
             abort_unless($lockedMaterial->isPublished() && $assignments->isAssigned($student, $lockedMaterial), 403);

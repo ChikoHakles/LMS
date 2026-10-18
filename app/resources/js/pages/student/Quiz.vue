@@ -4,6 +4,7 @@ import EssayAnswer from '@/components/quiz/EssayAnswer.vue';
 import StudyTimer from '@/components/rhythm/StudyTimer.vue';
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
+import LatexViewer from '@/components/common/LatexViewer.vue';
 import type { StudyTimerContext } from '@/composables/useStudyTimer';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, SharedData } from '@/types';
@@ -30,6 +31,7 @@ const props = defineProps<{
     material: { id: number; type: 'quiz'; title: string; summary: string | null; published_at: string | null };
     questions: Question[];
     attempt: Attempt | null;
+    canSubmit: boolean;
     assignmentId?: number | null;
     planContext?: { classId: number; date: string } | null;
     timerContext?: StudyTimerContext | null;
@@ -46,18 +48,18 @@ const form = useForm({
 const errors = computed(() => form.errors as Record<string, string>);
 const totalPoints = computed(() => props.questions.reduce((total, question) => total + question.points, 0));
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Materi belajar', href: route('student.materials.index') },
+    { title: 'Kuis & latihan', href: route('student.quizzes.index') },
     {
         title: props.material.title,
         href: props.assignmentId
             ? route('student.quizzes.show', { material: props.material.id, assignment: props.assignmentId })
-            : route('student.quizzes.show', props.material.id),
+            : route('student.quizzes.show', { material: props.material.id }),
     },
 ];
 
 function submitQuiz(): void {
     if (!window.confirm('Kirim jawaban kuis sekarang? Kuis hanya dapat dikirim satu kali.')) return;
-    form.post(route('student.quizzes.submit', props.material.id), { preserveScroll: true });
+    form.post(route('student.quizzes.submit', { material: props.material.id }), { preserveScroll: true });
 }
 
 function answerFor(questionId: number) {
@@ -71,10 +73,10 @@ function answerFor(questionId: number) {
         <div class="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-5 p-4 sm:p-6 lg:p-8">
             <header>
                 <Link
-                    :href="route('student.materials.index')"
+                    :href="route('student.quizzes.index')"
                     class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
-                    <ArrowLeft class="size-4" aria-hidden="true" /> Kembali ke materi
+                    <ArrowLeft class="size-4" aria-hidden="true" /> Kembali ke daftar kuis
                 </Link>
                 <div class="mt-5 flex flex-wrap items-center gap-3">
                     <RuangBadge variant="primary">Kuis</RuangBadge>
@@ -105,11 +107,16 @@ function answerFor(questionId: number) {
                     Jawaban tersimpan. Nilai akhir akan tersedia setelah tutor selesai menilai semua esai.
                 </p>
                 <div v-for="question in questions" :key="question.id" class="rounded-xl border border-border p-4">
-                    <p class="font-medium leading-6">{{ question.prompt }}</p>
-                    <p v-if="answerFor(question.id)?.response" class="mt-2 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
-                        {{ answerFor(question.id)?.response }}
+                    <div class="font-medium leading-6">
+                        <LatexViewer :content="question.prompt" />
+                    </div>
+                    <div v-if="answerFor(question.id)?.response" class="mt-2 text-sm leading-6 text-muted-foreground">
+                        <LatexViewer :content="answerFor(question.id)?.response ?? ''" />
+                    </div>
+                    <p v-else-if="answerFor(question.id)?.choice_id" class="mt-2 text-sm text-muted-foreground">
+                        Jawaban:
+                        {{ question.choices.find((choice) => choice.id === answerFor(question.id)?.choice_id)?.label ?? 'Pilihan tersimpan' }}
                     </p>
-                    <p v-else-if="answerFor(question.id)?.choice_id" class="mt-2 text-sm text-muted-foreground">Jawaban pilihan tersimpan.</p>
                     <div v-if="attempt.status === 'completed' && answerFor(question.id)?.score !== null" class="mt-3 text-sm">
                         <span class="font-semibold">{{ answerFor(question.id)?.score }} / {{ question.points }} poin</span>
                         <p v-if="answerFor(question.id)?.comment" class="mt-1 text-muted-foreground">{{ answerFor(question.id)?.comment }}</p>
@@ -137,7 +144,9 @@ function answerFor(questionId: number) {
                             >{{ question.points }} poin · {{ question.type === 'choice' ? 'Pilihan ganda' : 'Esai' }}</RuangBadge
                         >
                     </div>
-                    <p class="leading-7">{{ question.prompt }}</p>
+                    <div class="leading-7">
+                        <LatexViewer :content="question.prompt" />
+                    </div>
                     <ChoiceAnswer
                         v-if="question.type === 'choice'"
                         v-model="form.answers[index].choice_id"
@@ -155,6 +164,7 @@ function answerFor(questionId: number) {
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <p class="text-sm text-muted-foreground">Periksa semua jawaban sebelum mengirim. Pengiriman hanya tersedia satu kali.</p>
                     <button
+                        v-if="canSubmit"
                         type="button"
                         :disabled="form.processing"
                         class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground disabled:opacity-50"
@@ -162,6 +172,9 @@ function answerFor(questionId: number) {
                     >
                         <Send class="size-4" aria-hidden="true" /> {{ form.processing ? 'Mengirim…' : 'Kirim kuis' }}
                     </button>
+                    <p v-else role="status" class="text-sm font-medium text-muted-foreground">
+                        Kuis ini belum dapat dikirim sebelum tanggal penugasan.
+                    </p>
                 </div>
             </template>
         </div>

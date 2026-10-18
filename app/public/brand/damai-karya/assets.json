@@ -1,0 +1,51 @@
+[
+  {
+    "file": "logo-horizontal.png",
+    "source": "Logo/Logo Damai Karya 7_Horizontal Logo .png",
+    "width": 640,
+    "height": 317,
+    "bytes": 39692
+  },
+  {
+    "file": "logo-horizontal-tw.png",
+    "source": "Logo/Logo Damai Karya 7_Horizontal Logo TW.png",
+    "width": 640,
+    "height": 317,
+    "bytes": 30210
+  },
+  {
+    "file": "logo-main.png",
+    "source": "Logo/Logo Damai Karya 7_Main Logo.png",
+    "width": 480,
+    "height": 480,
+    "bytes": 30641
+  },
+  {
+    "file": "icon.png",
+    "source": "Logo/Logo Damai Karya 7_Icon Logo.png",
+    "width": 128,
+    "height": 128,
+    "bytes": 5418
+  },
+  {
+    "file": "graphic-01.png",
+    "source": "Graphic Element/Graphic Element (Damai Karya 7)-01.png",
+    "width": 256,
+    "height": 256,
+    "bytes": 8861
+  },
+  {
+    "file": "graphic-07.png",
+    "source": "Graphic Element/Graphic Element (Damai Karya 7)-07.png",
+    "width": 256,
+    "height": 256,
+    "bytes": 16586
+  },
+  {
+    "file": "graphic-11.png",
+    "source": "Graphic Element/Graphic Element (Damai Karya 7)-11.png",
+    "width": 256,
+    "height": 256,
+    "bytes": 10200
+  }
+]

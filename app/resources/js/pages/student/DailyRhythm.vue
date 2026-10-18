@@ -4,6 +4,7 @@ import PrayerTracker from '@/components/rhythm/PrayerTracker.vue';
 import StudyTime from '@/components/rhythm/StudyTime.vue';
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
+import SearchableSelect from '@/components/ui/SearchableSelect.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
@@ -59,7 +60,7 @@ function updatePrayer(change: { prayer: string; completed: boolean }): void {
         <div class="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
             <header class="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Ruang belajar</p>
+                    <p class="text-sm font-semibold text-primary">Damai Karya</p>
                     <h1 class="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Ritme hari ini</h1>
                     <p class="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
                         Selesaikan langkah kecil satu per satu. Checklist tersimpan untuk tanggal yang kamu pilih.
@@ -80,16 +81,19 @@ function updatePrayer(change: { prayer: string; completed: boolean }): void {
             </div>
 
             <div class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end">
-                <label v-if="classes.length" class="space-y-2 text-sm font-medium">
-                    <span>Kelas</span>
-                    <select
-                        :value="selectedClassId ?? ''"
-                        class="w-full rounded-lg border-input bg-background"
-                        @change="changeSelection('class_id', ($event.target as HTMLSelectElement).value)"
-                    >
-                        <option v-for="item in classes" :key="item.id" :value="item.id">{{ item.name }}</option>
-                    </select>
-                </label>
+                <div v-if="classes.length" class="space-y-2 text-sm font-medium">
+                    <label for="select-class">Kelas</label>
+                    <SearchableSelect
+                        id="select-class"
+                        :model-value="selectedClassId ?? ''"
+                        :options="classes"
+                        value-key="id"
+                        label-key="name"
+                        placeholder="Pilih kelas"
+                        aria-label="Pilih kelas"
+                        @update:model-value="changeSelection('class_id', String($event))"
+                    />
+                </div>
                 <div v-else class="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
                     Kamu belum terdaftar di kelas.
                 </div>
@@ -119,7 +123,7 @@ function updatePrayer(change: { prayer: string; completed: boolean }): void {
                         <p class="text-2xl font-bold">
                             {{ summary.completed }}<span class="text-base text-muted-foreground">/{{ summary.total }}</span>
                         </p>
-                        <p class="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">langkah</p>
+                        <p class="text-[10px] font-semibold text-muted-foreground">langkah</p>
                     </div>
                 </div>
                 <div>

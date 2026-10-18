@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { Link, usePage } from '@inertiajs/vue3';
 import type { SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const page = usePage<SharedData>();
-const name = page.props.name;
+const name = 'Damai Karya';
 const quote = page.props.quote;
 
 defineProps<{
@@ -16,7 +16,7 @@ defineProps<{
 <template>
     <div class="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
         <div class="relative hidden h-full flex-col bg-sidebar p-10 text-sidebar-foreground dark:border-r lg:flex">
-            <div class="absolute inset-0 bg-sidebar-accent" />
+            <div class="absolute inset-0 bg-sidebar" />
             <Link :href="route('home')" class="relative z-20 flex items-center text-lg font-medium">
                 <AppLogoIcon class="mr-2 size-8 fill-current text-primary-foreground" />
                 {{ name }}
@@ -39,5 +39,3 @@ defineProps<{
         </div>
     </div>
 </template>
-
-

@@ -69,8 +69,7 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
         Route::put('daily-plan-materials/{assignment}/complete', [MaterialCompletionController::class, 'store'])->name('daily-plan-materials.complete');
         Route::get('materials', [StudentMaterialController::class, 'index'])->name('materials.index');
         Route::get('materials/{material}', [StudentMaterialController::class, 'show'])->name('materials.show');
-        Route::get('quizzes', fn () => Inertia::render('WorkspacePlaceholder', ['title' => 'Kuis dan latihan']))
-            ->name('quizzes.index');
+        Route::get('quizzes', [StudentQuizController::class, 'index'])->name('quizzes.index');
         Route::get('quizzes/{material}', [StudentQuizController::class, 'show'])->name('quizzes.show');
         Route::post('quizzes/{material}', [StudentQuizController::class, 'submit'])->name('quizzes.submit');
         Route::post('study-sessions', [StudySessionController::class, 'start'])->name('study-sessions.start');

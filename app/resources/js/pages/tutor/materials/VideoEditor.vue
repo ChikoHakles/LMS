@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
+import LatexEditor from '@/components/common/LatexEditor.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
@@ -164,16 +165,15 @@ function publishVideo(): void {
                     </div>
 
                     <div>
-                        <label for="video-summary" class="text-sm font-semibold">Ringkasan</label>
-                        <textarea
+                        <label for="video-summary" class="mb-2 block text-sm font-semibold">Ringkasan</label>
+                        <LatexEditor
                             id="video-summary"
                             v-model="form.summary"
-                            maxlength="1000"
-                            rows="4"
-                            class="mt-2 w-full resize-y rounded-lg border-input bg-background text-sm leading-6 focus:ring-ring"
+                            mode="full"
+                            :min-rows="4"
                             placeholder="Jelaskan pokok bahasan dan hal yang perlu diperhatikan murid."
+                            :error="form.errors.summary"
                         />
-                        <p v-if="form.errors.summary" class="mt-1 text-sm text-destructive">{{ form.errors.summary }}</p>
                     </div>
 
                     <div>

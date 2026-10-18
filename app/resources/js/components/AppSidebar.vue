@@ -47,12 +47,12 @@ function closeMobileNavigation() {
 
 <template>
     <Sidebar collapsible="icon" variant="inset" class="border-r-0">
-        <SheetTitle v-if="isMobile" class="sr-only">Navigasi Ruang</SheetTitle>
+        <SheetTitle v-if="isMobile" class="sr-only">Navigasi Damai Karya</SheetTitle>
         <SidebarHeader class="border-b border-sidebar-border px-4 py-4">
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="route('dashboard')" aria-label="Beranda Ruang" @click="closeMobileNavigation">
+                        <Link :href="route('dashboard')" aria-label="Beranda Damai Karya" @click="closeMobileNavigation">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>
@@ -67,14 +67,20 @@ function closeMobileNavigation() {
                     <SidebarMenu>
                         <SidebarMenuItem v-for="item in navigation" :key="item.title">
                             <template v-if="item.children">
-                                <div class="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-sidebar-foreground/80 group-data-[collapsible=icon]:hidden">
+                                <div
+                                    class="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-sidebar-foreground/80 group-data-[collapsible=icon]:hidden"
+                                >
                                     <component :is="item.icon" class="size-4 shrink-0" aria-hidden="true" />
                                     <span>{{ item.title }}</span>
                                 </div>
                                 <SidebarMenuSub>
                                     <SidebarMenuSubItem v-for="child in item.children" :key="child.title">
                                         <SidebarMenuSubButton as-child :is-active="isItemActive(child)">
-                                            <Link :href="itemHref(child)" :aria-current="isItemActive(child) ? 'page' : undefined" @click="closeMobileNavigation">
+                                            <Link
+                                                :href="itemHref(child)"
+                                                :aria-current="isItemActive(child) ? 'page' : undefined"
+                                                @click="closeMobileNavigation"
+                                            >
                                                 <component :is="child.icon" aria-hidden="true" />
                                                 <span>{{ child.title }}</span>
                                             </Link>
@@ -95,9 +101,10 @@ function closeMobileNavigation() {
         </SidebarContent>
 
         <SidebarFooter class="border-t border-sidebar-border px-3 py-3">
-            <div class="mb-1 px-2 text-xs font-medium uppercase tracking-[0.12em] text-sidebar-foreground/70 group-data-[collapsible=icon]:hidden">{{ roleLabel }}</div>
+            <div class="mb-1 px-2 text-xs font-medium uppercase tracking-[0.12em] text-sidebar-foreground/70 group-data-[collapsible=icon]:hidden">
+                {{ roleLabel }}
+            </div>
             <NavUser />
         </SidebarFooter>
     </Sidebar>
 </template>
-

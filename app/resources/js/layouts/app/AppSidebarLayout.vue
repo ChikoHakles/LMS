@@ -16,10 +16,11 @@ withDefaults(defineProps<Props>(), {
 
 <template>
     <AppShell variant="sidebar">
+        <a href="#main-content" class="dk-skip">Lewati ke konten utama</a>
         <AppSidebar />
         <AppContent variant="sidebar">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
-            <slot />
+            <div id="main-content" tabindex="-1" class="flex min-w-0 flex-1 flex-col"><slot /></div>
         </AppContent>
     </AppShell>
 </template>

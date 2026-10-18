@@ -1,13 +1,20 @@
 <script setup lang="ts">
+import LatexEditor from '@/components/common/LatexEditor.vue';
 import ChoiceEditor from '@/components/quiz/ChoiceEditor.vue';
+import SearchableSelect from '@/components/ui/SearchableSelect.vue';
 import type { QuizQuestionDraft } from '@/types/quiz';
 import { watch } from 'vue';
 
 const question = defineModel<QuizQuestionDraft>('question', { required: true });
-const props = defineProps<{
+defineProps<{
     position: number;
     errors: Record<string, string>;
 }>();
+
+const questionTypeOptions = [
+    { value: 'choice', label: 'Pilihan ganda' },
+    { value: 'essay', label: 'Esai' },
+];
 
 watch(
     () => question.value.type,
@@ -27,32 +34,26 @@ watch(
     <div class="space-y-5">
         <div class="grid gap-4 sm:grid-cols-[minmax(0,1fr)_10rem]">
             <div>
-                <label :for="`question-prompt-${position}`" class="text-sm font-semibold">Pertanyaan {{ position + 1 }}</label>
-                <textarea
+                <label :for="`question-prompt-${position}`" class="mb-2 block text-sm font-semibold">Pertanyaan {{ position + 1 }}</label>
+                <LatexEditor
                     :id="`question-prompt-${position}`"
                     v-model="question.prompt"
-                    rows="3"
-                    maxlength="10000"
-                    required
-                    :aria-invalid="Boolean(errors[`questions.${position}.prompt`])"
-                    class="mt-2 w-full resize-y rounded-lg border-input bg-background text-sm leading-6 focus:ring-ring"
+                    mode="full"
+                    :min-rows="3"
                     placeholder="Tulis pertanyaan atau instruksi esai"
+                    :error="errors[`questions.${position}.prompt`]"
                 />
-                <p v-if="errors[`questions.${position}.prompt`]" class="mt-1 text-sm text-destructive">
-                    {{ errors[`questions.${position}.prompt`] }}
-                </p>
             </div>
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-1">
                 <div>
-                    <label :for="`question-type-${position}`" class="text-sm font-semibold">Jenis</label>
-                    <select
+                    <label :for="`question-type-${position}`" class="mb-2 block text-sm font-semibold">Jenis</label>
+                    <SearchableSelect
                         :id="`question-type-${position}`"
                         v-model="question.type"
-                        class="mt-2 w-full rounded-lg border-input bg-background text-sm focus:ring-ring"
-                    >
-                        <option value="choice">Pilihan ganda</option>
-                        <option value="essay">Esai</option>
-                    </select>
+                        :options="questionTypeOptions"
+                        placeholder="Pilih jenis..."
+                        aria-label="Jenis pertanyaan"
+                    />
                 </div>
                 <div>
                     <label :for="`question-points-${position}`" class="text-sm font-semibold">Poin</label>

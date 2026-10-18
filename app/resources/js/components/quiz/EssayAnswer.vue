@@ -1,21 +1,20 @@
 <script setup lang="ts">
-defineModel<string>({ required: true });
+import LatexEditor from '@/components/common/LatexEditor.vue';
+
+const model = defineModel<string>({ required: true });
 defineProps<{ questionId: number; error?: string }>();
 </script>
 
 <template>
     <div>
-        <label :for="`essay-answer-${questionId}`" class="text-sm font-semibold">Jawaban esai</label>
-        <textarea
+        <label :for="`essay-answer-${questionId}`" class="mb-2 block text-sm font-semibold">Jawaban esai</label>
+        <LatexEditor
             :id="`essay-answer-${questionId}`"
-            v-model="$model"
-            rows="5"
-            maxlength="10000"
-            required
-            :aria-invalid="Boolean(error)"
-            class="mt-2 w-full resize-y rounded-lg border-input bg-background text-sm leading-6 focus:ring-ring"
-            placeholder="Tulis jawaban dengan jelas"
+            v-model="model"
+            mode="compact"
+            :min-rows="4"
+            placeholder="Tulis jawaban dengan jelas (mendukung LaTeX $...$ dan formula)"
+            :error="error"
         />
-        <p v-if="error" role="alert" class="mt-1 text-sm text-destructive">{{ error }}</p>
     </div>
 </template>

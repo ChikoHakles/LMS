@@ -95,9 +95,9 @@ function materialLabel(type: MaterialItem['type']): string {
     <Head title="Beranda" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <main class="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-5 p-4 sm:gap-6 sm:p-6 lg:p-8">
-            <header class="flex flex-wrap items-end justify-between gap-4">
-                <div>
-                    <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Ruang belajar · {{ dateLabel }}</p>
+            <header class="dk-hero flex flex-wrap items-end justify-between gap-4">
+                <div class="relative z-10 min-w-0 flex-1 sm:pr-28">
+                    <p class="text-sm font-semibold text-primary">Damai Karya · {{ dateLabel }}</p>
                     <h1 class="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Halo, {{ firstName }}.</h1>
                     <p class="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
                         Lihat kegiatan yang ditugaskan untuk hari ini dan lanjutkan langkah belajarmu.
@@ -107,15 +107,23 @@ function materialLabel(type: MaterialItem['type']): string {
                     :href="route('student.daily-rhythm')"
                     class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
                 >
-                    Buka ritme hari ini <ArrowRight class="size-4" aria-hidden="true" />
+                    Lanjut belajar <ArrowRight class="size-4" aria-hidden="true" />
                 </Link>
+                <img
+                    src="/brand/damai-karya/graphic-01.png"
+                    width="112"
+                    height="112"
+                    alt=""
+                    aria-hidden="true"
+                    class="dk-decor absolute right-6 top-5 hidden size-24 sm:block"
+                />
             </header>
 
             <div class="grid gap-5 lg:grid-cols-12">
                 <RuangCard class="p-5 sm:p-6 lg:col-span-7">
                     <div class="mb-5 flex items-start justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-primary">Agenda</p>
+                            <p class="text-sm font-semibold text-primary">Agenda</p>
                             <h2 class="mt-1 text-xl font-semibold">Kegiatan hari ini</h2>
                         </div>
                         <RuangBadge variant="muted">{{ agenda.length }} tasklist</RuangBadge>
@@ -140,7 +148,7 @@ function materialLabel(type: MaterialItem['type']): string {
                                             <BookOpen v-else class="size-4" aria-hidden="true" />
                                         </span>
                                         <div class="min-w-0">
-                                            <p class="truncate text-sm font-medium">{{ material.title }}</p>
+                                            <p class="break-words text-sm font-medium">{{ material.title }}</p>
                                             <p class="mt-0.5 text-xs text-muted-foreground">
                                                 {{ materialLabel(material.type) }} · {{ material.completed ? 'Selesai' : 'Belum selesai' }}
                                             </p>
@@ -164,7 +172,7 @@ function materialLabel(type: MaterialItem['type']): string {
                 <RuangCard class="p-5 sm:p-6 lg:col-span-5">
                     <div class="mb-3 flex items-center justify-between gap-2">
                         <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-primary">Tenggat</p>
+                            <p class="text-sm font-semibold text-primary">Tenggat</p>
                             <h2 class="mt-1 text-xl font-semibold">Yang perlu dikumpulkan</h2>
                         </div>
                         <CalendarDays class="size-5 text-muted-foreground" aria-hidden="true" />
@@ -200,7 +208,7 @@ function materialLabel(type: MaterialItem['type']): string {
                 <RuangCard class="p-5 sm:p-6 lg:col-span-7">
                     <div class="flex flex-wrap items-start justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-primary">Ritme hari ini</p>
+                            <p class="text-sm font-semibold text-primary">Ritme hari ini</p>
                             <h2 class="mt-1 text-xl font-semibold">Langkah kecil, progres nyata</h2>
                         </div>
                         <Link :href="route('student.daily-rhythm')" class="text-sm font-semibold text-primary hover:underline">Buka checklist</Link>
@@ -242,7 +250,7 @@ function materialLabel(type: MaterialItem['type']): string {
                 <RuangCard class="p-5 sm:p-6 lg:col-span-5">
                     <div class="flex items-start justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-primary">Waktu belajar</p>
+                            <p class="text-sm font-semibold text-primary">Waktu belajar</p>
                             <h2 class="mt-1 text-xl font-semibold">Durasi aktif hari ini</h2>
                         </div>
                         <Clock3 class="size-5 text-primary" aria-hidden="true" />
@@ -262,7 +270,7 @@ function materialLabel(type: MaterialItem['type']): string {
                 <RuangCard class="p-5 sm:p-6 lg:col-span-7">
                     <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-primary">Materi baru</p>
+                            <p class="text-sm font-semibold text-primary">Materi untuk dilanjutkan</p>
                             <h2 class="mt-1 text-xl font-semibold">Mulai dari sini</h2>
                         </div>
                         <BookOpen class="size-5 text-primary" aria-hidden="true" />
@@ -270,7 +278,7 @@ function materialLabel(type: MaterialItem['type']): string {
                     <ul v-if="newMaterials.length" class="mt-4 divide-y divide-border">
                         <li v-for="material in newMaterials" :key="material.id" class="flex items-center justify-between gap-3 py-3">
                             <div class="min-w-0">
-                                <p class="truncate font-medium">{{ material.title }}</p>
+                                <p class="break-words font-medium">{{ material.title }}</p>
                                 <p class="mt-1 text-xs text-muted-foreground">{{ materialLabel(material.type) }} · {{ material.className }}</p>
                             </div>
                             <Link
@@ -293,7 +301,7 @@ function materialLabel(type: MaterialItem['type']): string {
                     <div class="flex items-center gap-2">
                         <ListTodo class="size-5 text-primary" aria-hidden="true" />
                         <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-primary">Prioritas</p>
+                            <p class="text-sm font-semibold text-primary">Prioritas</p>
                             <h2 class="mt-1 text-xl font-semibold">Langkah berikutnya</h2>
                         </div>
                     </div>

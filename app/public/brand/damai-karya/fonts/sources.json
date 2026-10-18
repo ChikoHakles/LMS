@@ -1,0 +1,16 @@
+[
+    {
+        "font": "https://raw.githubusercontent.com/google/fonts/main/ofl/nunito/Nunito%5Bwght%5D.ttf",
+        "license": "https://raw.githubusercontent.com/google/fonts/main/ofl/nunito/OFL.txt",
+        "conversion": "fontTools WOFF2; Latin U+0020\u2013024F and punctuation U+2000\u2013206F subset; variable weights retained"
+    },
+    {
+        "font": "https://raw.githubusercontent.com/adobe-fonts/source-sans/release/WOFF2/VF/SourceSans3VF-Upright.ttf.woff2",
+        "license": "https://raw.githubusercontent.com/google/fonts/main/ofl/sourcesans3/OFL.txt",
+        "file": "source-sans-3.woff2",
+        "sha256": "5f16566f7a40d39b339ad26be151fa5a1ab1f0c2574c7a2e619765584a1acbd8",
+        "git_blob_sha1": "96cc9fd06ceb275ec3d6103ad97c5647212c88c5",
+        "bytes": 170188,
+        "conversion": "none; upstream bytes unchanged"
+    }
+]

@@ -3,20 +3,26 @@ import { computed, type HTMLAttributes } from 'vue';
 
 type BadgeVariant = 'primary' | 'soft' | 'success' | 'danger' | 'muted';
 
-const props = withDefaults(defineProps<{
-    variant?: BadgeVariant;
-    class?: HTMLAttributes['class'];
-}>(), {
-    variant: 'soft',
-});
+const props = withDefaults(
+    defineProps<{
+        variant?: BadgeVariant;
+        class?: HTMLAttributes['class'];
+    }>(),
+    {
+        variant: 'soft',
+    },
+);
 
-const variantClass = computed(() => ({
-    primary: 'bg-primary text-primary-foreground',
-    soft: 'bg-secondary text-secondary-foreground',
-    success: 'bg-success-soft text-success',
-    danger: 'bg-destructive/10 text-destructive',
-    muted: 'bg-muted text-muted-foreground',
-}[props.variant]));
+const variantClass = computed(
+    () =>
+        ({
+            primary: 'bg-primary text-primary-foreground',
+            soft: 'bg-secondary text-secondary-foreground',
+            success: 'bg-success text-success-foreground',
+            danger: 'bg-destructive text-destructive-foreground',
+            muted: 'bg-muted text-muted-foreground',
+        })[props.variant],
+);
 </script>
 
 <template>
@@ -24,4 +30,3 @@ const variantClass = computed(() => ({
         <slot />
     </span>
 </template>
-

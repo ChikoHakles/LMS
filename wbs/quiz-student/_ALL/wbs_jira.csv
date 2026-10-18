@@ -1,0 +1,39 @@
+Issue Type,Issue Id,Epic Name,Epic Link,Summary,Description,Original Estimate,Labels,Traceability,Blocked By,Blocked By
+Epic,RUANG-1,Alur kuis siswa dari penugasan sampai nilai,,Alur kuis siswa dari penugasan sampai nilai,"Sambungkan menu Kuis & latihan ke penugasan nyata, pengerjaan, dan hasil; pertahankan alur pembuatan serta penilaian tutor yang sudah berjalan.",,wbs,"design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai, Ritme hari ini; inspeksi kode 2026-10-02",,
+Story,RUANG-2,,Alur kuis siswa dari penugasan sampai nilai,[BE] Sajikan daftar kuis siswa per penugasan dan nilai,"TL;DR: Ganti route placeholder student.quizzes.index dengan QuizController::index. Context: siswa membutuhkan daftar kuis yang diberikan tutor beserta status dan nilai setiap penugasan. What to build: Query daily_plan_materials bertipe quiz yang kelasnya diikuti siswa dan materinya terbit; hubungkan quiz_attempts berdasarkan daily_plan_material_id dan student_id, bukan hanya material_id. Kembalikan judul, ringkasan, nama kelas, tanggal, jumlah soal/poin, status pengerjaan, nilai dan URL show berisi assignment. Terima filter material hanya bila milik penugasan siswa; paginasi terurut tanggal. Files: routes/web.php; app/Http/Controllers/Student/QuizController.php. Acceptance: siswa hanya melihat penugasan kelasnya; satu materi pada dua tanggal muncul dua kali dengan hasil berbeda; draft dan kelas lain tidak bocor; kuis masa depan terlihat tetapi belum dapat dikirim. Technical notes: ikuti pola MaterialPolicy dan DailyPlanStudentMaterialAssignments; jangan kirim kunci jawaban. Out of scope: mengubah editor tutor.",7h,backend,QUIZ-05,,
+Story,RUANG-3,,Alur kuis siswa dari penugasan sampai nilai,[BE] Unit Test: Sajikan daftar kuis siswa per penugasan dan nilai,"Write unit tests for the work delivered in **Sajikan daftar kuis siswa per penugasan dan nilai**.
+
+This is a separate task because aplikasi Laravel 12 has a coverage gate; the code change is not done until its tests pass that gate.
+
+**Cover at minimum:**
+- Daftar hanya memuat penugasan kuis terbit milik kelas siswa
+- Hasil per penugasan ditampilkan tanpa kunci
+- Siswa tidak bisa melihat kuis kelas lain
+- The golden path plus at least one failure case per branch the parent task introduced.
+
+**Definition of done:** `php artisan test --compact --filter=Quiz` is green and the new/changed code meets otorisasi, penugasan, pengiriman sekali, penilaian, dan hasil per penugasan. Test assertions reflect the parent task's acceptance criteria, not just line execution.",3.5h,unit-test,QUIZ-05,RUANG-2,
+Story,RUANG-4,,Alur kuis siswa dari penugasan sampai nilai,[FE] Bangun halaman Kuis & latihan siswa yang terhubung ke backend,"TL;DR: Buat resources/js/pages/student/Quizzes/Index.vue dari props QuizController::index. Context: menu siswa saat ini membuka WorkspacePlaceholder. What to build: kartu penugasan berisi tanggal, kelas, jumlah soal/poin, status Belum dikerjakan/Menunggu penilaian/Selesai dinilai, nilai akhir bila tersedia, serta tombol kerjakan atau lihat hasil. Tampilkan keadaan kosong dan navigasi halaman. Link ke student.quizzes.show harus membawa assignment. Files: resources/js/pages/student/Quizzes/Index.vue dan navigasi bila perlu. Acceptance: siswa dapat masuk dari menu, membuka kuis yang tepat dan kembali ke daftar; status penilaian esai jelas; tampilan ponsel dan keyboard layak. Technical notes: gunakan komponen Ruang dan token warna yang sudah ada. Out of scope: membuat ulang Quiz.vue.",9h,frontend,QUIZ-06,RUANG-2,
+Story,RUANG-5,,Alur kuis siswa dari penugasan sampai nilai,[FE] Hubungkan pintu masuk pustaka dan halaman hasil ke alur penugasan,"TL;DR: Pastikan semua pintu masuk kuis siswa mempertahankan konteks penugasan. Context: MaterialCard dari pustaka membuka Quiz.vue tanpa assignment sehingga submit tidak menandai ritme selesai. What to change: untuk kuis pada MaterialCard, arahkan ke student.quizzes.index dengan filter material; pertahankan tautan assignment dari ritme. Di Quiz.vue, kembali ke daftar kuis dan tampilkan jawaban pilihan yang dipilih serta hasilnya tanpa membocorkan kunci sebelum submit. Files: resources/js/components/materials/MaterialCard.vue; resources/js/pages/student/Quiz.vue. Acceptance: siswa dari pustaka memilih penugasan yang benar; submit menandai progres; halaman hasil menampilkan pilihan siswa dan nilai sesuai status. Technical notes: gunakan props yang disediakan server dan jangan kirim is_correct pada props prapengiriman. Out of scope: mengubah skema data.",6h,frontend,QUIZ-07,RUANG-4,
+Story,RUANG-6,,Alur kuis siswa dari penugasan sampai nilai,[BE] Code Review: Alur kuis siswa dari penugasan sampai nilai,"Review all BE work delivered for **Alur kuis siswa dari penugasan sampai nilai** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Sajikan daftar kuis siswa per penugasan dan nilai**  ·  _QUIZ-05_
+  - Daftar hanya memuat penugasan kuis terbit milik kelas siswa
+  - Hasil per penugasan ditampilkan tanpa kunci
+  - Siswa tidak bisa melihat kuis kelas lain
+
+Also covers **1 unit-test task(s)** for the above — verify the tests assert the acceptance criteria, not just execute lines.
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3h,code-review backend,"design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai, Ritme hari ini; inspeksi kode 2026-10-02",RUANG-2,RUANG-3
+Story,RUANG-7,,Alur kuis siswa dari penugasan sampai nilai,[FE] Code Review: Alur kuis siswa dari penugasan sampai nilai,"Review all FE work delivered for **Alur kuis siswa dari penugasan sampai nilai** before merge. Each item below is a task this review gates, with the requirements it must satisfy:
+
+**Bangun halaman Kuis & latihan siswa yang terhubung ke backend**  ·  _QUIZ-06_
+  - Menu tidak menuju placeholder
+  - Tautan membawa ID penugasan
+  - Nilai hanya tampil setelah selesai dinilai
+
+**Hubungkan pintu masuk pustaka dan halaman hasil ke alur penugasan**  ·  _QUIZ-07_
+  - Pustaka mengarahkan kuis ke daftar penugasan
+  - Hasil menampilkan jawaban yang dipilih
+  - Penugasan yang dikirim tercatat selesai di ritme
+
+**For the review:** confirm every acceptance criterion above actually holds in the code; check adherence to project conventions and error handling; raise blocking comments for anything that would fail in production for plausible inputs.",3.5h,code-review frontend,"design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai, Ritme hari ini; inspeksi kode 2026-10-02",RUANG-4,RUANG-5

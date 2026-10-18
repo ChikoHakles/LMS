@@ -54,6 +54,10 @@ Alternatif pengembangan tanpa VirtualHost adalah menjalankan `php artisan serve`
 - `.env.example`: contoh konfigurasi lokal tanpa kata sandi.
 - `tests`: pengujian Laravel.
 
+## Deploy ke Vercel
+
+Project ini memakai Laravel dengan Inertia/Vue. Panduan container Vercel, environment variables, database, dan migrasi ada di [`docs/vercel-deploy.md`](docs/vercel-deploy.md).
+
 ## Pemeriksaan fondasi
 
 ```powershell

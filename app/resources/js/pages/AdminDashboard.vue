@@ -9,13 +9,11 @@ import { BookOpenCheck, Compass, Sparkles } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const page = usePage<SharedData>();
-const role = computed(() => normalizeRuangRole((page.props.auth.user as typeof page.props.auth.user & { role?: string } | null)?.role));
+const role = computed(() => normalizeRuangRole((page.props.auth.user as (typeof page.props.auth.user & { role?: string }) | null)?.role));
 const roleLabel = computed(() => roleLabels[role.value]);
 const firstName = computed(() => page.props.auth.user?.name?.trim().split(/\s+/)[0] || 'Teman');
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Beranda', href: route('dashboard') },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Beranda', href: route('dashboard') }];
 </script>
 
 <template>
@@ -23,10 +21,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
-            <header class="space-y-3">
+            <header class="space-y-3 rounded-[20px] border border-border bg-card p-5">
                 <RuangBadge variant="primary">{{ roleLabel }}</RuangBadge>
                 <div>
-                    <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Ruang belajar</p>
+                    <p class="text-sm font-semibold text-primary">Damai Karya</p>
                     <h1 class="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Selamat datang, {{ firstName }}.</h1>
                     <p class="mt-2 max-w-2xl text-base text-muted-foreground">Satu tempat untuk kegiatan belajar, mengajar, dan pengelolaan kelas.</p>
                 </div>
@@ -39,7 +37,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <BookOpenCheck class="size-6" aria-hidden="true" />
                         </div>
                         <h2 class="text-xl font-semibold text-card-foreground">Semua langkah ada di satu ruang.</h2>
-                        <p class="mt-2 max-w-xl leading-7 text-muted-foreground">Pilih bagian dari menu untuk membuka aktivitas sesuai peran akun Anda. Navigasi dapat dibuka dan ditutup dari tombol di bagian atas.</p>
+                        <p class="mt-2 max-w-xl leading-7 text-muted-foreground">
+                            Pilih bagian dari menu untuk membuka aktivitas sesuai peran akun Anda. Navigasi dapat dibuka dan ditutup dari tombol di
+                            bagian atas.
+                        </p>
                     </div>
                 </RuangCard>
 
@@ -49,11 +50,13 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <Compass class="size-6" aria-hidden="true" />
                         </div>
                         <h2 class="text-lg font-semibold text-card-foreground">Mulai dari menu utama</h2>
-                        <p class="mt-2 leading-7 text-muted-foreground">Materi dan aktivitas akan tampil sesuai akses yang diberikan untuk akun Anda.</p>
+                        <p class="mt-2 leading-7 text-muted-foreground">
+                            Materi dan aktivitas akan tampil sesuai akses yang diberikan untuk akun Anda.
+                        </p>
                     </div>
-                    <div class="mt-6 flex items-center gap-2 text-sm font-medium text-accent-foreground">
+                    <div class="mt-6 flex items-center gap-2 text-sm font-medium text-foreground">
                         <Sparkles class="size-4" aria-hidden="true" />
-                        <span>Ruang untuk belajar bertumbuh</span>
+                        <span>Damai Karya · Belajar bertumbuh</span>
                     </div>
                 </RuangCard>
             </div>

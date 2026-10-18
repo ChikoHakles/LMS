@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import QuestionEditor from '@/components/quiz/QuestionEditor.vue';
+import LatexEditor from '@/components/common/LatexEditor.vue';
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -161,17 +162,15 @@ function publishQuiz(): void {
                         <p v-if="errors.title" class="mt-1 text-sm text-destructive">{{ errors.title }}</p>
                     </div>
                     <div>
-                        <label for="quiz-summary" class="text-sm font-semibold">Ringkasan</label>
-                        <textarea
+                        <label for="quiz-summary" class="mb-2 block text-sm font-semibold">Ringkasan</label>
+                        <LatexEditor
                             id="quiz-summary"
                             v-model="form.summary"
-                            rows="2"
-                            maxlength="1000"
-                            :aria-invalid="Boolean(errors.summary)"
-                            class="mt-2 w-full resize-y rounded-lg border-input bg-background text-sm leading-6 focus:ring-ring"
+                            mode="full"
+                            :min-rows="2"
                             placeholder="Petunjuk singkat untuk siswa"
+                            :error="errors.summary"
                         />
-                        <p v-if="errors.summary" class="mt-1 text-sm text-destructive">{{ errors.summary }}</p>
                     </div>
                 </div>
                 <p v-if="errors.questions" role="alert" class="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">

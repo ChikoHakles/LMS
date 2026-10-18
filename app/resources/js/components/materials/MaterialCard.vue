@@ -45,7 +45,7 @@ const icons = { article: FileText, video: Play, quiz: ClipboardList };
                             : material.type === 'video'
                               ? 'tutor.materials.video.edit'
                               : 'tutor.materials.quiz.edit',
-                        material.id,
+                        { material: material.id },
                     )
                 "
                 class="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
@@ -54,14 +54,18 @@ const icons = { article: FileText, video: Play, quiz: ClipboardList };
             </Link>
             <Link
                 v-if="!readOnly && material.type === 'article'"
-                :href="route('tutor.materials.show', material.id)"
+                :href="route('tutor.materials.show', { material: material.id })"
                 class="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
             >
                 <ArrowUpRight class="size-4" aria-hidden="true" /> Pratinjau
             </Link>
             <Link
                 v-if="showStudentAction"
-                :href="route(material.type === 'quiz' ? 'student.quizzes.show' : 'student.materials.show', material.id)"
+                :href="
+                    material.type === 'quiz'
+                        ? route('student.quizzes.index', { material: material.id })
+                        : route('student.materials.show', { material: material.id })
+                "
                 class="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
             >
                 <ArrowUpRight class="size-4" aria-hidden="true" />

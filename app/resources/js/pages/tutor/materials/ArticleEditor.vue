@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import LatexEditor from '@/components/common/LatexEditor.vue';
 import ArticleRenderer, { type ArticleBlock } from '@/components/materials/ArticleRenderer.vue';
+import SearchableSelect from '@/components/ui/SearchableSelect.vue';
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -26,6 +28,10 @@ const form = useForm({ title: props.material?.title ?? '', summary: props.materi
 const isPreview = ref(false);
 const isPublishing = ref(false);
 const errors = computed(() => form.errors as Record<string, string>);
+const headingLevelOptions = [
+    { value: 2, label: 'Judul bagian' },
+    { value: 3, label: 'Subjudul' },
+];
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Pustaka materi', href: route('tutor.materials.index') },
     { title: props.material ? 'Edit artikel' : 'Buat Materi: Artikel', href: page.url },
@@ -178,16 +184,15 @@ function publishArticle(): void {
                             <p v-if="errors.title" class="mt-1 text-sm text-destructive">{{ errors.title }}</p>
                         </div>
                         <div>
-                            <label for="article-summary" class="text-sm font-semibold">Ringkasan</label>
-                            <textarea
+                            <label for="article-summary" class="mb-2 block text-sm font-semibold">Ringkasan</label>
+                            <LatexEditor
                                 id="article-summary"
                                 v-model="form.summary"
-                                maxlength="1000"
-                                rows="3"
-                                class="mt-2 w-full resize-y rounded-lg border-input bg-background text-sm leading-6 focus:ring-ring"
+                                mode="full"
+                                :min-rows="3"
                                 placeholder="Ringkasan singkat untuk kartu pustaka"
+                                :error="errors.summary"
                             />
-                            <p v-if="errors.summary" class="mt-1 text-sm text-destructive">{{ errors.summary }}</p>
                         </div>
                     </RuangCard>
 
@@ -222,24 +227,23 @@ function publishArticle(): void {
                                     <Trash2 class="size-4" aria-hidden="true" />
                                 </button>
                             </div>
-                            <textarea
+                            <LatexEditor
                                 v-if="block.type === 'paragraph'"
                                 v-model="block.text"
-                                rows="4"
-                                maxlength="10000"
-                                class="w-full resize-y rounded-lg border-input bg-background text-sm leading-7 focus:ring-ring"
+                                mode="full"
+                                :min-rows="4"
                                 placeholder="Tulis paragraf..."
                             />
                             <div v-else-if="block.type === 'heading'" class="space-y-3">
                                 <label class="sr-only" :for="`heading-level-${index}`">Tingkat judul</label>
-                                <select
+                                <SearchableSelect
                                     :id="`heading-level-${index}`"
                                     v-model="block.level"
-                                    class="rounded-lg border-input bg-background text-sm focus:ring-ring"
-                                >
-                                    <option :value="2">Judul bagian</option>
-                                    <option :value="3">Subjudul</option>
-                                </select>
+                                    :options="headingLevelOptions"
+                                    placeholder="Pilih tingkat judul"
+                                    aria-label="Tingkat judul"
+                                    class="max-w-xs"
+                                />
                                 <input
                                     v-model="block.text"
                                     maxlength="10000"
@@ -261,11 +265,10 @@ function publishArticle(): void {
                                 />
                             </div>
                             <div v-else-if="block.type === 'quote'" class="space-y-3">
-                                <textarea
+                                <LatexEditor
                                     v-model="block.text"
-                                    rows="3"
-                                    maxlength="10000"
-                                    class="w-full resize-y rounded-lg border-input bg-background text-sm leading-7 focus:ring-ring"
+                                    mode="full"
+                                    :min-rows="3"
                                     placeholder="Teks kutipan"
                                 />
                                 <input

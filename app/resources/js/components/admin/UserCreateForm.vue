@@ -3,11 +3,13 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import SearchableSelect from '@/components/ui/SearchableSelect.vue';
+import { computed } from 'vue';
 import type { RuangRole } from '@/navigation/role-navigation';
 import { useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 
-defineProps<{
+const props = defineProps<{
     roles: RuangRole[];
 }>();
 
@@ -15,6 +17,13 @@ const roleLabels: Record<string, string> = {
     tutor: 'Tutor',
     student: 'Siswa',
 };
+
+const roleOptions = computed(() =>
+    props.roles.map((r) => ({
+        value: r,
+        label: roleLabels[r] ?? r,
+    })),
+);
 
 const form = useForm({
     name: '',
@@ -70,14 +79,13 @@ function submit() {
 
             <div class="grid gap-2">
                 <Label for="new-user-role">Peran</Label>
-                <select
+                <SearchableSelect
                     id="new-user-role"
                     v-model="form.role"
-                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    :aria-invalid="Boolean(form.errors.role)"
-                >
-                    <option v-for="role in roles" :key="role" :value="role">{{ roleLabels[role] ?? role }}</option>
-                </select>
+                    :options="roleOptions"
+                    placeholder="Pilih peran..."
+                    aria-label="Peran"
+                />
                 <InputError :message="form.errors.role" />
             </div>
 

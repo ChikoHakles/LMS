@@ -1,0 +1,53 @@
+{
+  "project_key": "RUANG",
+  "mode": "gap",
+  "profile": {
+    "be_label": "aplikasi Laravel 12",
+    "test_command": "php artisan test --compact --filter=Quiz",
+    "coverage_gate": "otorisasi, penugasan, pengiriman sekali, penilaian, dan hasil per penugasan",
+    "unit_test_disciplines": ["BE"],
+    "review_per_discipline": true
+  },
+  "requirements": ["QUIZ-01", "QUIZ-02", "QUIZ-03", "QUIZ-04", "QUIZ-05", "QUIZ-06", "QUIZ-07"],
+  "implemented_requirements": ["QUIZ-01", "QUIZ-02", "QUIZ-03", "QUIZ-04"],
+  "epics": [
+    {
+      "key": "STUDENT-QUIZ",
+      "title": "Alur kuis siswa dari penugasan sampai nilai",
+      "summary": "Sambungkan menu Kuis & latihan ke penugasan nyata, pengerjaan, dan hasil; pertahankan alur pembuatan serta penilaian tutor yang sudah berjalan.",
+      "source": "design/README.md: Buat Materi Kuis, Kerjakan kuis, Penilaian esai, Ritme hari ini; inspeksi kode 2026-10-02",
+      "tasks": [
+        {
+          "id": "INDEX-BE",
+          "discipline": "BE",
+          "title": "Sajikan daftar kuis siswa per penugasan dan nilai",
+          "description": "TL;DR: Ganti route placeholder student.quizzes.index dengan QuizController::index. Context: siswa membutuhkan daftar kuis yang diberikan tutor beserta status dan nilai setiap penugasan. What to build: Query daily_plan_materials bertipe quiz yang kelasnya diikuti siswa dan materinya terbit; hubungkan quiz_attempts berdasarkan daily_plan_material_id dan student_id, bukan hanya material_id. Kembalikan judul, ringkasan, nama kelas, tanggal, jumlah soal/poin, status pengerjaan, nilai dan URL show berisi assignment. Terima filter material hanya bila milik penugasan siswa; paginasi terurut tanggal. Files: routes/web.php; app/Http/Controllers/Student/QuizController.php. Acceptance: siswa hanya melihat penugasan kelasnya; satu materi pada dua tanggal muncul dua kali dengan hasil berbeda; draft dan kelas lain tidak bocor; kuis masa depan terlihat tetapi belum dapat dikirim. Technical notes: ikuti pola MaterialPolicy dan DailyPlanStudentMaterialAssignments; jangan kirim kunci jawaban. Out of scope: mengubah editor tutor.",
+          "estimate_hours": 7,
+          "touches_be_source": true,
+          "traceability": "QUIZ-05",
+          "acceptance_criteria": ["Daftar hanya memuat penugasan kuis terbit milik kelas siswa", "Hasil per penugasan ditampilkan tanpa kunci", "Siswa tidak bisa melihat kuis kelas lain"]
+        },
+        {
+          "id": "INDEX-FE",
+          "discipline": "FE",
+          "title": "Bangun halaman Kuis & latihan siswa yang terhubung ke backend",
+          "description": "TL;DR: Buat resources/js/pages/student/Quizzes/Index.vue dari props QuizController::index. Context: menu siswa saat ini membuka WorkspacePlaceholder. What to build: kartu penugasan berisi tanggal, kelas, jumlah soal/poin, status Belum dikerjakan/Menunggu penilaian/Selesai dinilai, nilai akhir bila tersedia, serta tombol kerjakan atau lihat hasil. Tampilkan keadaan kosong dan navigasi halaman. Link ke student.quizzes.show harus membawa assignment. Files: resources/js/pages/student/Quizzes/Index.vue dan navigasi bila perlu. Acceptance: siswa dapat masuk dari menu, membuka kuis yang tepat dan kembali ke daftar; status penilaian esai jelas; tampilan ponsel dan keyboard layak. Technical notes: gunakan komponen Ruang dan token warna yang sudah ada. Out of scope: membuat ulang Quiz.vue.",
+          "estimate_hours": 9,
+          "depends_on": ["INDEX-BE"],
+          "traceability": "QUIZ-06",
+          "acceptance_criteria": ["Menu tidak menuju placeholder", "Tautan membawa ID penugasan", "Nilai hanya tampil setelah selesai dinilai"]
+        },
+        {
+          "id": "ENTRY-FE",
+          "discipline": "FE",
+          "title": "Hubungkan pintu masuk pustaka dan halaman hasil ke alur penugasan",
+          "description": "TL;DR: Pastikan semua pintu masuk kuis siswa mempertahankan konteks penugasan. Context: MaterialCard dari pustaka membuka Quiz.vue tanpa assignment sehingga submit tidak menandai ritme selesai. What to change: untuk kuis pada MaterialCard, arahkan ke student.quizzes.index dengan filter material; pertahankan tautan assignment dari ritme. Di Quiz.vue, kembali ke daftar kuis dan tampilkan jawaban pilihan yang dipilih serta hasilnya tanpa membocorkan kunci sebelum submit. Files: resources/js/components/materials/MaterialCard.vue; resources/js/pages/student/Quiz.vue. Acceptance: siswa dari pustaka memilih penugasan yang benar; submit menandai progres; halaman hasil menampilkan pilihan siswa dan nilai sesuai status. Technical notes: gunakan props yang disediakan server dan jangan kirim is_correct pada props prapengiriman. Out of scope: mengubah skema data.",
+          "estimate_hours": 6,
+          "depends_on": ["INDEX-FE"],
+          "traceability": "QUIZ-07",
+          "acceptance_criteria": ["Pustaka mengarahkan kuis ke daftar penugasan", "Hasil menampilkan jawaban yang dipilih", "Penugasan yang dikirim tercatat selesai di ritme"]
+        }
+      ]
+    }
+  ]
+}

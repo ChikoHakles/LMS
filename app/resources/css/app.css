@@ -1,95 +1,287 @@
+@import 'katex/dist/katex.min.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body,
-html {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+@font-face {
+    font-family: 'Nunito';
+    src: url('/brand/damai-karya/fonts/nunito.woff2') format('woff2');
+    font-weight: 200 1000;
+    font-display: swap;
 }
-
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('/brand/damai-karya/fonts/source-sans-3.woff2') format('woff2');
+    font-weight: 200 900;
+    font-display: swap;
+}
 @layer base {
     :root {
-        /* Satu sumber warna Ruang v2. Gunakan token semantik di komponen. */
-        --ruang-background: 36 42% 95%;
-        --ruang-paper: 40 100% 99%;
-        --ruang-ink: 18 14% 18%;
-        --ruang-muted: 25 9% 49%;
-        --ruang-line: 31 35% 87%;
-        --ruang-terracotta: 12 43% 47%;
-        --ruang-terracotta-dark: 12 48% 38%;
-        --ruang-soft: 27 60% 90%;
-        --ruang-warm: 36 57% 59%;
-        --ruang-sidebar: 11 28% 23%;
-        --ruang-sidebar-text: 22 62% 89%;
-        --ruang-success: 143 25% 40%;
-        --ruang-success-soft: 132 29% 93%;
-        --ruang-danger: 7 47% 44%;
-        --ruang-danger-soft: 7 47% 95%;
-        --background: var(--ruang-background);
-        --foreground: var(--ruang-ink);
-        --card: var(--ruang-paper);
-        --card-foreground: var(--ruang-ink);
-        --popover: var(--ruang-paper);
-        --popover-foreground: var(--ruang-ink);
-        --primary: var(--ruang-terracotta);
-        --primary-foreground: var(--ruang-paper);
-        --secondary: var(--ruang-soft);
-        --secondary-foreground: var(--ruang-ink);
-        --muted: var(--ruang-soft);
-        --muted-foreground: var(--ruang-muted);
-        --accent: var(--ruang-soft);
-        --accent-foreground: var(--ruang-terracotta-dark);
-        --destructive: var(--ruang-danger);
-        --success: var(--ruang-success);
-        --success-foreground: var(--ruang-paper);
-        --success-soft: var(--ruang-success-soft);
-        --destructive-foreground: var(--ruang-paper);
-        --border: var(--ruang-line);
-        --input: var(--ruang-line);
-        --ring: var(--ruang-terracotta);
-        --chart-1: var(--ruang-terracotta);
-        --chart-2: var(--ruang-success);
-        --chart-3: var(--ruang-sidebar);
-        --chart-4: var(--ruang-warm);
-        --chart-5: var(--ruang-danger);
-        --radius: 0.625rem;
-        --sidebar-background: var(--ruang-sidebar);
-        --sidebar-foreground: var(--ruang-sidebar-text);
-        --sidebar-primary: var(--ruang-paper);
-        --sidebar-primary-foreground: var(--ruang-sidebar);
-        --sidebar-accent: var(--ruang-terracotta-dark);
-        --sidebar-accent-foreground: var(--ruang-paper);
-        --sidebar-border: var(--ruang-terracotta-dark);
-        --sidebar-ring: var(--ruang-warm);
-    }
+        /* Damai Karya Color Palette: Slate & Refined Iris (60-30-10) */
+        --dk-slate-900: 222.2 84% 4.9%; /* #0F172A */
+        --dk-slate-800: 217.2 32.6% 17.5%; /* #1E293B */
+        --dk-slate-600: 215.3 19.3% 34.5%; /* #475569 */
+        --dk-slate-500: 215.4 16.3% 46.9%; /* #64748B */
+        --dk-slate-200: 214.3 31.8% 91.4%; /* #E2E8F0 */
+        --dk-slate-100: 210 40% 96.1%; /* #F1F5F9 */
+        --dk-slate-50: 210 40% 98%; /* #F8FAFC */
+        --dk-white: 0 0% 100%; /* #FFFFFF */
+        --dk-iris: 262.1 83.3% 57.8%; /* #7C3AED */
+        --dk-iris-dark: 263.4 70% 50.4%; /* #6D28D9 */
+        --dk-coral: 17.096774 100% 63.529412%; /* #FF7A45 */
+        --dk-mint: 156.060606 82.5% 52.941176%; /* #24EA9B */
+        --dk-yellow: 51.688312 100% 54.705882%; /* #FFDF18 */
 
+        /* Core Canvas & Inks */
+        --ruang-background: 210 40% 98%;
+        --ruang-paper: 0 0% 100%;
+        --ruang-ink: 222.2 84% 4.9%;
+        --ruang-muted: 215.3 19.3% 34.5%;
+        --ruang-line: 214.3 31.8% 91.4%;
+        --ruang-terracotta: 262.1 83.3% 57.8%;
+        --ruang-terracotta-dark: 263.4 70% 50.4%;
+        --ruang-soft: 210 40% 96.1%;
+        --ruang-warm: 51.688312 100% 54.705882%;
+        --ruang-sidebar: 222.2 84% 4.9%;
+        --ruang-sidebar-text: 210 40% 98%;
+        --ruang-success: 142.1 76.2% 36.3%;
+        --ruang-success-soft: 142.1 76.2% 92%;
+        --ruang-danger: 0 84.2% 60.2%;
+        --ruang-danger-soft: 0 84.2% 94%;
+
+        /* Semantic Tokens */
+        --background: 210 40% 98%;
+        --foreground: 222.2 84% 4.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 84% 4.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 84% 4.9%;
+        --primary: 262.1 83.3% 57.8%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 210 40% 96.1%;
+        --secondary-foreground: 222.2 84% 4.9%;
+        --muted: 210 40% 96.1%;
+        --muted-foreground: 215.3 19.3% 34.5%;
+        --accent: 210 40% 96.1%;
+        --accent-foreground: 222.2 84% 4.9%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 100%;
+        --success: 142.1 76.2% 36.3%;
+        --success-foreground: 0 0% 100%;
+        --success-soft: 142.1 76.2% 92%;
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+        --ring: 262.1 83.3% 57.8%;
+
+        /* Sidebar Tokens */
+        --sidebar-background: 222.2 84% 4.9%;
+        --sidebar-foreground: 210 40% 98%;
+        --sidebar-primary: 262.1 83.3% 57.8%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 217.2 32.6% 17.5%;
+        --sidebar-accent-foreground: 210 40% 98%;
+        --sidebar-border: 217.2 32.6% 17.5%;
+        --sidebar-ring: 262.1 83.3% 57.8%;
+
+        --chart-1: 262.1 83.3% 57.8%;
+        --chart-2: 142.1 76.2% 36.3%;
+        --chart-3: 222.2 84% 4.9%;
+        --chart-4: 51.688312 100% 54.705882%;
+        --chart-5: 0 84.2% 60.2%;
+        --radius: 0.75rem;
+        --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+    }
     .dark {
-        --ruang-background: 24 14% 12%;
-        --ruang-paper: 24 14% 16%;
-        --ruang-ink: 36 35% 94%;
-        --ruang-muted: 28 10% 68%;
-        --ruang-line: 24 12% 27%;
-        --ruang-terracotta: 12 48% 61%;
-        --ruang-terracotta-dark: 12 49% 52%;
-        --ruang-soft: 24 13% 23%;
-        --ruang-warm: 36 57% 63%;
-        --ruang-sidebar: 18 20% 10%;
-        --ruang-sidebar-text: 34 30% 87%;
-        --ruang-success: 143 34% 63%;
-        --ruang-success-soft: 143 23% 22%;
-        --ruang-danger: 7 57% 66%;
-        --primary-foreground: var(--ruang-ink);
-        --destructive-foreground: var(--ruang-ink);
-        --success-foreground: var(--ruang-ink);
-        --ruang-danger-soft: 7 28% 23%;
+        --ruang-background: 222.2 47.4% 11.2%;
+        --ruang-paper: 217.2 32.6% 17.5%;
+        --ruang-ink: 210 40% 98%;
+        --ruang-muted: 215 20.2% 65.1%;
+        --ruang-line: 215 25% 27%;
+        --ruang-terracotta: 262.1 83.3% 57.8%;
+        --ruang-soft: 217.2 32.6% 17.5%;
+        --background: 222.2 47.4% 11.2%;
+        --foreground: 210 40% 98%;
+        --card: 217.2 32.6% 17.5%;
+        --card-foreground: 210 40% 98%;
+        --popover: 217.2 32.6% 17.5%;
+        --popover-foreground: 210 40% 98%;
+        --primary: 262.1 83.3% 57.8%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 217.2 32.6% 17.5%;
+        --secondary-foreground: 210 40% 98%;
+        --muted: 217.2 32.6% 17.5%;
+        --muted-foreground: 215 20.2% 65.1%;
+        --accent: 217.2 32.6% 17.5%;
+        --accent-foreground: 210 40% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 210 40% 98%;
+        --success: 142.1 70.6% 45.3%;
+        --success-foreground: 210 40% 98%;
+        --success-soft: 142.1 70.6% 15%;
+        --border: 215 25% 27%;
+        --input: 215 25% 27%;
+        --ring: 262.1 83.3% 57.8%;
+        --sidebar-background: 222.9 38.9% 7.1%;
+        --sidebar-foreground: 210 40% 98%;
+        --sidebar-primary: 262.1 83.3% 57.8%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 217.2 32.6% 17.5%;
+        --sidebar-accent-foreground: 210 40% 98%;
+        --sidebar-border: 215 25% 27%;
+        --sidebar-ring: 262.1 83.3% 57.8%;
     }
-
     * {
         @apply border-border;
     }
-
     body {
         @apply bg-background text-foreground;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+        overflow-wrap: anywhere;
+    }
+    h1 {
+        font-weight: 800;
+    }
+    :focus-visible {
+        outline: 3px solid hsl(var(--ring));
+        outline-offset: 3px;
+    }
+    button,
+    [role='button'],
+    a {
+        touch-action: manipulation;
+    }
+    input:not([type='checkbox']):not([type='radio']),
+    select {
+        min-height: 3rem;
+    }
+    textarea {
+        border: 1px solid hsl(var(--input));
+        padding: 0.75rem;
+        border-radius: 0.75rem;
+    }
+    article {
+        line-height: 1.65;
+        overflow-wrap: anywhere;
     }
 }
+@layer components {
+    .dk-hero {
+        position: relative;
+        isolation: isolate;
+        border-radius: 1.5rem;
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 1.5rem;
+    }
+    .dk-hero h1 {
+        color: #f8fafc;
+    }
+    .dk-hero p {
+        color: #f8fafc;
+    }
+    .dk-hero a {
+        min-height: 3rem;
+        background: #7c3aed;
+        color: #ffffff;
+        border-radius: 0.75rem;
+    }
 
+    .dk-hero :focus-visible {
+        outline-color: #7c3aed;
+    }
+    .dk-decor {
+        pointer-events: none;
+        user-select: none;
+        object-fit: contain;
+    }
+    .dk-skip {
+        position: fixed;
+        top: 0.75rem;
+        left: 0.75rem;
+        z-index: 100;
+        transform: translateY(-200%);
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        background: #7c3aed;
+        color: #ffffff;
+    }
+    .dk-skip:focus {
+        transform: none;
+    }
+}
+@layer utilities {
+    [data-sidebar='header'] [data-sidebar='menu-button']:hover {
+        background: #1e293b;
+        color: #f8fafc;
+    }
+    [data-sidebar='header'] [data-sidebar='menu-button'] {
+        padding: 0;
+    }
+    body {
+        font-family: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+    }
+    [data-sidebar='menu-button'][data-size='lg'] {
+        min-height: 3rem;
+    }
+    .text-destructive,
+    .text-success {
+        color: hsl(var(--foreground));
+    }
+    p.text-destructive,
+    span.text-destructive {
+        border-left: 3px solid #ef4444;
+        padding-left: 0.5rem;
+    }
+    .bg-success-soft.text-success {
+        color: hsl(var(--foreground));
+    }
+    [class*='peer-checked:text-success']:is(.peer:checked ~ *) {
+        color: hsl(var(--foreground));
+    }
+    .bg-primary:hover {
+        background-color: #6d28d9;
+        color: #ffffff;
+    }
+    .dark .bg-primary:hover {
+        background-color: #6d28d9;
+        color: #ffffff;
+    }
+    .dk-hero a:hover,
+    .dk-hero a.bg-primary:hover {
+        background: #6d28d9;
+        color: #ffffff;
+    }
+    [data-sidebar='menu-button'],
+    [data-sidebar='menu-sub-button'] {
+        min-height: 2.75rem;
+    }
+    [data-sidebar='menu-button'][data-active='true'],
+    [data-sidebar='menu-sub-button'][data-active='true'] {
+        background: #6d28d9;
+        color: #ffffff;
+    }
+    a.inline-flex,
+    button:not([data-sidebar='rail']):not([role='checkbox']):not([role='radio']):not([role='switch']) {
+        min-height: 2.75rem;
+    }
+    [data-sidebar] :focus-visible {
+        outline-color: #7c3aed;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
+import LatexEditor from '@/components/common/LatexEditor.vue';
+import LatexViewer from '@/components/common/LatexViewer.vue';
 import { useForm } from '@inertiajs/vue3';
 import { Check, Send } from 'lucide-vue-next';
 
@@ -37,11 +39,15 @@ function submitReview(): void {
                 <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Pertanyaan · maksimal {{ answer.question.points }} poin
                 </p>
-                <h2 class="mt-1 font-semibold leading-6">{{ answer.question.prompt }}</h2>
+                <div class="mt-1 font-semibold leading-6">
+                    <LatexViewer :content="answer.question.prompt" />
+                </div>
             </div>
             <div class="rounded-lg border border-border bg-card p-4">
                 <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Jawaban siswa</p>
-                <p class="mt-2 whitespace-pre-wrap text-sm leading-6">{{ answer.response }}</p>
+                <div class="mt-2 text-sm leading-6">
+                    <LatexViewer :content="answer.response" />
+                </div>
             </div>
         </section>
 
@@ -62,17 +68,15 @@ function submitReview(): void {
                 <p v-if="form.errors.score" role="alert" class="mt-1 text-sm text-destructive">{{ form.errors.score }}</p>
             </div>
             <div>
-                <label :for="`essay-comment-${answer.id}`" class="text-sm font-semibold">Komentar tutor</label>
-                <textarea
+                <label :for="`essay-comment-${answer.id}`" class="mb-2 block text-sm font-semibold">Komentar tutor</label>
+                <LatexEditor
                     :id="`essay-comment-${answer.id}`"
                     v-model="form.comment"
-                    rows="3"
-                    maxlength="2000"
-                    :aria-invalid="Boolean(form.errors.comment)"
-                    class="mt-2 w-full resize-y rounded-lg border-input bg-background text-sm leading-6 focus:ring-ring"
+                    mode="compact"
+                    :min-rows="3"
                     placeholder="Berikan catatan untuk siswa (opsional)"
+                    :error="form.errors.comment"
                 />
-                <p v-if="form.errors.comment" role="alert" class="mt-1 text-sm text-destructive">{{ form.errors.comment }}</p>
             </div>
             <div class="sm:col-span-2">
                 <button

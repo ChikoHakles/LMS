@@ -23,14 +23,18 @@ const userName = computed(() => page.props.auth.user?.name ?? '');
     <header class="z-10 flex min-h-16 shrink-0 items-center gap-3 border-b border-border bg-card px-4 sm:px-6">
         <SidebarTrigger v-if="props.showSidebarTrigger" />
 
-        <Link v-else class="shrink-0" :href="route('dashboard')" aria-label="Beranda Ruang">
+        <Link v-else class="shrink-0" :href="route('dashboard')" aria-label="Beranda Damai Karya">
             <AppLogo tone="surface" />
         </Link>
 
         <nav aria-label="Jejak navigasi" class="min-w-0 flex-1">
             <ol class="flex min-w-0 items-center gap-2 text-sm">
                 <li class="shrink-0">
-                    <Link :href="route('dashboard')" class="text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Ruang</Link>
+                    <Link
+                        :href="route('dashboard')"
+                        class="text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        >Damai Karya</Link
+                    >
                 </li>
                 <template v-for="(item, index) in props.breadcrumbs" :key="`${item.href}-${index}`">
                     <li aria-hidden="true" class="shrink-0 text-muted-foreground">/</li>
@@ -52,4 +56,3 @@ const userName = computed(() => page.props.auth.user?.name ?? '');
         <div v-if="userName" class="hidden max-w-48 truncate text-sm font-medium text-foreground sm:block">{{ userName }}</div>
     </header>
 </template>
-
