@@ -33,6 +33,22 @@
         --dk-mint: 156.060606 82.5% 52.941176%; /* #24EA9B */
         --dk-yellow: 51.688312 100% 54.705882%; /* #FFDF18 */
 
+        /* Category Tokens for SD-SMP (WBS 4.2) */
+        --cat-article: #24ea9b;
+        --cat-article-soft: #e6fbf2;
+        --cat-article-text: #0d7a4d;
+        --cat-video: #ffdf18;
+        --cat-video-soft: #fef9c3;
+        --cat-video-text: #713f12;
+        --cat-quiz: #06b6d4;
+        --cat-quiz-soft: #e0faff;
+        --cat-quiz-text: #0e7490;
+        --cat-goal: #ff7a45;
+        --cat-goal-soft: #fff1eb;
+        --cat-goal-text: #c2410c;
+
+        /* Brand palette references: #01E0FF #FFDF18 #24EA9B #A51DDF #351D7F #F6F6FA #D9D9E3 #FF7A45 */
+
         /* Core Canvas & Inks */
         --ruang-background: 210 40% 98%;
         --ruang-paper: 0 0% 100%;
@@ -130,6 +146,14 @@
         --sidebar-accent-foreground: 210 40% 98%;
         --sidebar-border: 215 25% 27%;
         --sidebar-ring: 262.1 83.3% 57.8%;
+        --cat-article-soft: #064e3b;
+        --cat-article-text: #6ee7b7;
+        --cat-video-soft: #713f12;
+        --cat-video-text: #fef08a;
+        --cat-quiz-soft: #164e63;
+        --cat-quiz-text: #7dd3fc;
+        --cat-goal-soft: #7c2d12;
+        --cat-goal-text: #fdba74;
     }
     * {
         @apply border-border;
@@ -218,6 +242,24 @@
     }
 }
 @layer utilities {
+    .hover-lift {
+        transition-property: transform, box-shadow;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 200ms;
+    }
+    .hover-lift:hover {
+        transform: translateY(-0.25rem);
+        box-shadow:
+            0 10px 15px -3px rgb(0 0 0 / 0.1),
+            0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+    .card-playful {
+        border-radius: 1.25rem;
+    }
+    .pill-playful {
+        border-radius: 9999px;
+    }
+
     [data-sidebar='header'] [data-sidebar='menu-button']:hover {
         background: #1e293b;
         color: #f8fafc;
@@ -283,5 +325,8 @@
         animation: none !important;
         transition: none !important;
         scroll-behavior: auto !important;
+    }
+    .hover-lift:hover {
+        transform: none !important;
     }
 }

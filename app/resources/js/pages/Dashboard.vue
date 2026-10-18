@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
-import RuangProgress from '@/components/ruang/RuangProgress.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/vue3';
@@ -95,32 +94,64 @@ function materialLabel(type: MaterialItem['type']): string {
     <Head title="Beranda" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <main class="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-5 p-4 sm:gap-6 sm:p-6 lg:p-8">
-            <header class="dk-hero flex flex-wrap items-end justify-between gap-4">
-                <div class="relative z-10 min-w-0 flex-1 sm:pr-28">
-                    <p class="text-sm font-semibold text-primary">Damai Karya · {{ dateLabel }}</p>
-                    <h1 class="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Halo, {{ firstName }}.</h1>
-                    <p class="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                        Lihat kegiatan yang ditugaskan untuk hari ini dan lanjutkan langkah belajarmu.
-                    </p>
-                </div>
-                <Link
-                    :href="route('student.daily-rhythm')"
-                    class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
-                >
-                    Lanjut belajar <ArrowRight class="size-4" aria-hidden="true" />
-                </Link>
+            <header
+                class="dk-hero relative flex flex-wrap items-end justify-between gap-4 overflow-hidden rounded-[24px] border border-primary/20 bg-gradient-to-br from-[#1E1B4B] via-[#2E1065] to-[#4338CA] p-6 text-white shadow-md sm:p-8"
+            >
                 <img
-                    src="/brand/damai-karya/graphic-01.png"
-                    width="112"
-                    height="112"
+                    src="/ornaments/graphic-11.png"
+                    width="96"
+                    height="96"
                     alt=""
                     aria-hidden="true"
-                    class="dk-decor absolute right-6 top-5 hidden size-24 sm:block"
+                    class="pointer-events-none absolute -left-4 -top-4 size-24 select-none opacity-20 sm:size-32"
                 />
+                <img
+                    src="/ornaments/graphic-14.png"
+                    width="96"
+                    height="96"
+                    alt=""
+                    aria-hidden="true"
+                    class="pointer-events-none absolute bottom-0 right-36 size-20 select-none opacity-20 sm:size-28"
+                />
+
+                <div class="relative z-10 min-w-0 flex-1 sm:pr-32">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-[#FFDF18] backdrop-blur-sm"
+                    >
+                        <Sparkles class="size-3.5" aria-hidden="true" /> Petualangan Hari Ini · {{ dateLabel }}
+                    </span>
+                    <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Halo, {{ firstName }}!</h1>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-200">
+                        Semangat belajarnya, {{ firstName }}!
+                        {{
+                            summary.materialsTotal
+                                ? `Ada ${summary.materialsTotal} materi seru menunggumu hari ini. Yuk selesaikan langkahmu!`
+                                : 'Siap untuk petualangan belajar baru hari ini? Buka checklist ritmemu!'
+                        }}
+                    </p>
+                    <div class="mt-5">
+                        <Link
+                            :href="route('student.daily-rhythm')"
+                            class="inline-flex items-center gap-2 rounded-xl bg-[#FFDF18] px-5 py-2.5 text-sm font-bold text-[#1E1B4B] shadow-md transition-transform hover:-translate-y-0.5 hover:bg-[#FFDF18]/90"
+                        >
+                            Lanjut belajar <ArrowRight class="size-4" aria-hidden="true" />
+                        </Link>
+                    </div>
+                </div>
+
+                <div class="relative z-10 hidden shrink-0 items-center justify-center sm:flex">
+                    <img
+                        src="/brand/damai-karya/graphic-01.png"
+                        width="128"
+                        height="128"
+                        alt="Maskot Damai Karya"
+                        class="size-28 select-none drop-shadow-lg transition-transform hover:scale-105 sm:size-32"
+                    />
+                </div>
             </header>
 
             <div class="grid gap-5 lg:grid-cols-12">
-                <RuangCard class="p-5 sm:p-6 lg:col-span-7">
+                <RuangCard class="hover-lift p-5 transition-all sm:p-6 lg:col-span-7">
                     <div class="mb-5 flex items-start justify-between gap-3">
                         <div>
                             <p class="text-sm font-semibold text-primary">Agenda</p>
@@ -140,10 +171,17 @@ function materialLabel(type: MaterialItem['type']): string {
                                 <li
                                     v-for="material in plan.materials"
                                     :key="material.id"
-                                    class="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-muted/50 px-3 py-3"
+                                    class="hover-lift relative flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/80 bg-card p-3.5 shadow-sm transition-all"
                                 >
                                     <div class="flex min-w-0 items-start gap-3">
-                                        <span class="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-secondary text-accent-foreground">
+                                        <span
+                                            class="mt-0.5 grid size-9 shrink-0 place-items-center rounded-xl"
+                                            :class="
+                                                material.completed
+                                                    ? 'bg-[#E6FBF2] text-[#0D7A4D] dark:bg-[#064E3B]/40 dark:text-[#6EE7B7]'
+                                                    : 'bg-secondary text-accent-foreground'
+                                            "
+                                        >
                                             <Check v-if="material.completed" class="size-4" aria-hidden="true" />
                                             <BookOpen v-else class="size-4" aria-hidden="true" />
                                         </span>
@@ -157,6 +195,24 @@ function materialLabel(type: MaterialItem['type']): string {
                                     <Link :href="material.href" class="shrink-0 text-xs font-semibold text-primary hover:underline">
                                         {{ material.completed ? 'Buka lagi' : 'Lanjutkan' }}
                                     </Link>
+                                    <img
+                                        v-if="material.completed"
+                                        src="/ornaments/graphic-10.png"
+                                        width="24"
+                                        height="24"
+                                        alt="Selesai"
+                                        aria-hidden="true"
+                                        class="pointer-events-none absolute -right-2 -top-2 size-6 select-none drop-shadow-sm"
+                                    />
+                                    <img
+                                        v-else
+                                        src="/ornaments/graphic-09.png"
+                                        width="24"
+                                        height="24"
+                                        alt="Siap dikerjakan"
+                                        aria-hidden="true"
+                                        class="pointer-events-none absolute -right-2 -top-2 size-6 select-none drop-shadow-sm"
+                                    />
                                 </li>
                             </ul>
                             <p v-else class="mt-3 text-sm text-muted-foreground">Belum ada materi terbit pada tasklist ini.</p>
@@ -169,7 +225,7 @@ function materialLabel(type: MaterialItem['type']): string {
                     </div>
                 </RuangCard>
 
-                <RuangCard class="p-5 sm:p-6 lg:col-span-5">
+                <RuangCard class="hover-lift p-5 transition-all sm:p-6 lg:col-span-5">
                     <div class="mb-3 flex items-center justify-between gap-2">
                         <div>
                             <p class="text-sm font-semibold text-primary">Tenggat</p>
@@ -205,7 +261,7 @@ function materialLabel(type: MaterialItem['type']): string {
                     </div>
                 </RuangCard>
 
-                <RuangCard class="p-5 sm:p-6 lg:col-span-7">
+                <RuangCard class="hover-lift p-5 transition-all sm:p-6 lg:col-span-7">
                     <div class="flex flex-wrap items-start justify-between gap-3">
                         <div>
                             <p class="text-sm font-semibold text-primary">Ritme hari ini</p>
@@ -227,7 +283,19 @@ function materialLabel(type: MaterialItem['type']): string {
                                     >{{ completionPercent }}%</RuangBadge
                                 >
                             </div>
-                            <RuangProgress :value="completionPercent" label="Penyelesaian ritme hari ini" class="mt-3" />
+                            <div
+                                class="mt-4 h-3.5 w-full overflow-hidden rounded-full bg-muted/80 p-0.5 shadow-inner"
+                                role="progressbar"
+                                :aria-valuenow="completionPercent"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                aria-label="Penyelesaian ritme hari ini"
+                            >
+                                <div
+                                    class="h-full rounded-full bg-gradient-to-r from-[#24EA9B] via-[#06B6D4] to-[#7C3AED] transition-all duration-300"
+                                    :style="{ width: `${completionPercent}%` }"
+                                />
+                            </div>
                             <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
                                 <span
                                     ><strong>{{ summary.prayersCompleted }}/{{ summary.prayersTotal }}</strong> sholat</span
@@ -247,7 +315,7 @@ function materialLabel(type: MaterialItem['type']): string {
                     </div>
                 </RuangCard>
 
-                <RuangCard class="p-5 sm:p-6 lg:col-span-5">
+                <RuangCard class="hover-lift p-5 transition-all sm:p-6 lg:col-span-5">
                     <div class="flex items-start justify-between gap-3">
                         <div>
                             <p class="text-sm font-semibold text-primary">Waktu belajar</p>
@@ -267,7 +335,7 @@ function materialLabel(type: MaterialItem['type']): string {
                     </p>
                 </RuangCard>
 
-                <RuangCard class="p-5 sm:p-6 lg:col-span-7">
+                <RuangCard class="hover-lift p-5 transition-all sm:p-6 lg:col-span-7">
                     <div class="flex items-center justify-between gap-3">
                         <div>
                             <p class="text-sm font-semibold text-primary">Materi untuk dilanjutkan</p>
@@ -297,7 +365,7 @@ function materialLabel(type: MaterialItem['type']): string {
                     </p>
                 </RuangCard>
 
-                <RuangCard class="p-5 sm:p-6 lg:col-span-5">
+                <RuangCard class="hover-lift p-5 transition-all sm:p-6 lg:col-span-5">
                     <div class="flex items-center gap-2">
                         <ListTodo class="size-5 text-primary" aria-hidden="true" />
                         <div>

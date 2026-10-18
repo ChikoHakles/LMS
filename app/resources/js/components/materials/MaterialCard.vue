@@ -4,7 +4,7 @@ import RuangCard from '@/components/ruang/RuangCard.vue';
 import { Link } from '@inertiajs/vue3';
 import { ArrowUpRight, ClipboardList, FileText, PencilLine, Play } from 'lucide-vue-next';
 
-const props = defineProps<{
+defineProps<{
     material: {
         id: number;
         type: 'article' | 'video' | 'quiz';
@@ -20,14 +20,33 @@ const props = defineProps<{
 
 const labels = { article: 'Artikel', video: 'Video', quiz: 'Kuis' };
 const icons = { article: FileText, video: Play, quiz: ClipboardList };
+
+const categoryStyles = {
+    article: {
+        border: 'border-[#24EA9B]/50 hover:border-[#24EA9B]',
+        badge: 'bg-[#E6FBF2] text-[#0D7A4D] border border-[#24EA9B]/50 dark:bg-[#064E3B]/50 dark:text-[#6EE7B7]',
+        btn: 'bg-primary text-primary-foreground hover:bg-primary/90 font-semibold',
+    },
+    video: {
+        border: 'border-[#FFDF18]/60 hover:border-[#FFDF18]',
+        badge: 'bg-[#FEF9C3] text-[#713F12] border border-[#FFDF18]/60 dark:bg-[#713F12]/50 dark:text-[#FEF08A]',
+        btn: 'bg-primary text-primary-foreground hover:bg-primary/90 font-semibold',
+    },
+    quiz: {
+        border: 'border-[#06B6D4]/50 hover:border-[#06B6D4]',
+        badge: 'bg-[#E0FAFF] text-[#0E7490] border border-[#06B6D4]/50 dark:bg-[#164E63]/50 dark:text-[#7DD3FC]',
+        btn: 'bg-primary text-primary-foreground hover:bg-primary/90 font-semibold',
+    },
+};
 </script>
 
 <template>
-    <RuangCard class="flex h-full flex-col p-5 transition-shadow hover:shadow-md">
+    <RuangCard class="hover-lift flex h-full flex-col p-5 transition-all" :class="categoryStyles[material.type].border">
         <div class="flex items-start justify-between gap-3">
-            <RuangBadge variant="soft"
-                ><component :is="icons[material.type]" class="mr-1 inline size-3.5" aria-hidden="true" />{{ labels[material.type] }}</RuangBadge
-            >
+            <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold" :class="categoryStyles[material.type].badge">
+                <component :is="icons[material.type]" class="mr-1 inline size-3.5" aria-hidden="true" />
+                {{ labels[material.type] }}
+            </span>
             <RuangBadge :variant="material.status === 'published' ? 'success' : 'muted'">{{
                 material.status === 'published' ? 'Terbit' : 'Draf'
             }}</RuangBadge>

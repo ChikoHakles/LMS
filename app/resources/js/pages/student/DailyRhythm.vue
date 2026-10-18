@@ -117,13 +117,23 @@ function updatePrayer(change: { prayer: string; completed: boolean }): void {
                 </RuangBadge>
             </div>
 
-            <RuangCard class="grid gap-5 p-5 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:p-6">
-                <div class="grid size-24 place-items-center rounded-full border-[6px] border-primary/20 bg-primary/5 text-center">
+            <RuangCard
+                class="hover-lift relative grid gap-5 overflow-hidden p-5 transition-all sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:p-6"
+            >
+                <img
+                    src="/ornaments/graphic-14.png"
+                    width="64"
+                    height="64"
+                    alt=""
+                    aria-hidden="true"
+                    class="pointer-events-none absolute -right-2 -top-2 hidden size-16 select-none opacity-20 dark:opacity-10 sm:block"
+                />
+                <div class="grid size-24 place-items-center rounded-full border-[6px] border-[#24EA9B]/30 bg-[#24EA9B]/5 text-center shadow-inner">
                     <div>
                         <p class="text-2xl font-bold">
                             {{ summary.completed }}<span class="text-base text-muted-foreground">/{{ summary.total }}</span>
                         </p>
-                        <p class="text-[10px] font-semibold text-muted-foreground">langkah</p>
+                        <p class="text-[10px] font-semibold uppercase text-muted-foreground">langkah</p>
                     </div>
                 </div>
                 <div>
@@ -135,14 +145,17 @@ function updatePrayer(change: { prayer: string; completed: boolean }): void {
                         {{ summary.prayersCompleted }}/5 sholat · {{ summary.materialsCompleted }}/3 materi
                     </p>
                     <div
-                        class="mt-4 h-2 overflow-hidden rounded-full bg-muted"
+                        class="mt-4 h-3.5 overflow-hidden rounded-full bg-muted/80 p-0.5 shadow-inner"
                         role="progressbar"
                         :aria-valuenow="summary.completed"
                         :aria-valuemin="0"
                         :aria-valuemax="summary.total"
                         aria-label="Progres ritme harian"
                     >
-                        <span class="block h-full rounded-full bg-primary transition-all" :style="{ width: `${completionPercent}%` }" />
+                        <span
+                            class="block h-full rounded-full bg-gradient-to-r from-[#24EA9B] via-[#06B6D4] to-[#7C3AED] transition-all duration-300"
+                            :style="{ width: `${completionPercent}%` }"
+                        />
                     </div>
                 </div>
             </RuangCard>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import LatexViewer from '@/components/common/LatexViewer.vue';
 import ChoiceAnswer from '@/components/quiz/ChoiceAnswer.vue';
 import EssayAnswer from '@/components/quiz/EssayAnswer.vue';
 import StudyTimer from '@/components/rhythm/StudyTimer.vue';
 import RuangBadge from '@/components/ruang/RuangBadge.vue';
 import RuangCard from '@/components/ruang/RuangCard.vue';
-import LatexViewer from '@/components/common/LatexViewer.vue';
 import type { StudyTimerContext } from '@/composables/useStudyTimer';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, SharedData } from '@/types';
@@ -96,16 +96,33 @@ function answerFor(questionId: number) {
                 {{ page.props.flash.status }}
             </div>
 
-            <RuangCard v-if="attempt" class="space-y-5 p-5 sm:p-6">
-                <div class="flex flex-wrap items-center gap-3">
-                    <RuangBadge :variant="attempt.status === 'completed' ? 'success' : 'muted'">
-                        {{ attempt.status === 'completed' ? 'Selesai dinilai' : 'Menunggu penilaian esai' }}
-                    </RuangBadge>
-                    <p v-if="attempt.status === 'completed'" class="text-sm font-semibold">Nilai {{ attempt.score }} / {{ totalPoints }}</p>
+            <RuangCard v-if="attempt" class="space-y-5 border border-[#24EA9B]/40 p-5 sm:p-6">
+                <div
+                    class="flex flex-col items-center gap-4 rounded-2xl border border-[#24EA9B]/40 bg-[#E6FBF2]/80 p-4 text-center dark:bg-[#064E3B]/30 sm:flex-row sm:text-left"
+                >
+                    <img
+                        src="/brand/damai-karya/graphic-07.png"
+                        width="96"
+                        height="96"
+                        alt="Kuis selesai"
+                        aria-hidden="true"
+                        class="size-20 shrink-0 select-none drop-shadow-sm"
+                    />
+                    <div class="min-w-0">
+                        <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                            <h2 class="text-xl font-bold text-[#0D7A4D] dark:text-[#6EE7B7]">Hebat! Kuis Selesai Dikerjakan!</h2>
+                            <RuangBadge :variant="attempt.status === 'completed' ? 'success' : 'muted'">
+                                {{ attempt.status === 'completed' ? 'Selesai dinilai' : 'Menunggu penilaian esai' }}
+                            </RuangBadge>
+                        </div>
+                        <p v-if="attempt.status === 'completed'" class="mt-1 font-semibold text-foreground">
+                            Nilai kamu: {{ attempt.score }} / {{ totalPoints }} poin
+                        </p>
+                        <p v-else class="mt-1 text-sm text-muted-foreground">
+                            Jawaban tersimpan. Nilai akhir akan tersedia setelah tutor selesai menilai semua esai.
+                        </p>
+                    </div>
                 </div>
-                <p v-if="attempt.status === 'awaiting_review'" class="text-sm leading-6 text-muted-foreground">
-                    Jawaban tersimpan. Nilai akhir akan tersedia setelah tutor selesai menilai semua esai.
-                </p>
                 <div v-for="question in questions" :key="question.id" class="rounded-xl border border-border p-4">
                     <div class="font-medium leading-6">
                         <LatexViewer :content="question.prompt" />

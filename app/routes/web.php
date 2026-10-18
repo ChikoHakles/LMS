@@ -80,3 +80,14 @@ Route::middleware(['auth', 'account.active', 'verified'])->group(function () {
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+Route::get('brand/damai-karya/ornaments/{file}', function (string $file) {
+    $filename = basename($file);
+    if (! preg_match('/^graphic-[0-9]{2}\.png$/', $filename)) {
+        abort(404);
+    }
+    $path = public_path('ornaments/' . $filename);
+    if (file_exists($path)) {
+        return response()->file($path);
+    }
+    abort(404);
+})->where('file', 'graphic-[0-9]{2}\.png');
